@@ -48,6 +48,12 @@ public class Docente{
         this.coordenador = coordenador;
     }
 
-
+    public Docente(long codigo, String nome, Date nascimento, Date ingresso, boolean coordenador){
+        this.codigo = codigo;
+        this.nome = nome;
+        this.dataIngresso = ingresso;
+        this.dataNascimento = nascimento;
+        this.coordenador = coordenador;
+    }
 
 }
