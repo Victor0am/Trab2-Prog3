@@ -50,5 +50,11 @@ public class Veiculo{
         this.numero = numero;
     }
 
-
+    public Veiculo(String sigla, String nome, char tipo, float fatorImpacto, int numero) {
+        this.sigla = sigla;
+        this.nome = nome;
+        this.tipo = tipo;
+        this.fatorImpacto = fatorImpacto;
+        this.numero = numero;
+    }
 }

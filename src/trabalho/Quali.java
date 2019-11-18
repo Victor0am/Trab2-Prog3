@@ -23,6 +23,8 @@ public class Quali{
     }
 
 
-
-
+    public Quali(String sigla, int pontuacao) {
+        this.sigla = sigla;
+        this.pontuacao = pontuacao;
+    }
 }

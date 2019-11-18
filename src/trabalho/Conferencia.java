@@ -14,4 +14,9 @@ public class Conferencia extends Veiculo{
     public void setLocal(String local) {
         this.local = local;
     }
+
+    public Conferencia(String sigla, String nome, char tipo, float fatorImpacto, int numero, String local) {
+        super(sigla, nome, tipo, fatorImpacto, numero);
+        this.local = local;
+    }
 }

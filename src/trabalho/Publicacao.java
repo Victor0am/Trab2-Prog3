@@ -40,4 +40,11 @@ public class Publicacao{
     public void setPaginaFinal(int paginaFinal) {
         this.paginaFinal = paginaFinal;
     }
+
+    public Publicacao(int ano, String titulo, int paginaInicial, int paginaFinal) {
+        this.ano = ano;
+        this.titulo = titulo;
+        this.paginaInicial = paginaInicial;
+        this.paginaFinal = paginaFinal;
+    }
 }
