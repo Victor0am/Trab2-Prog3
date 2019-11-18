@@ -3,17 +3,18 @@ import java.util.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 public class Main {
-    ArrayList<Docente> docentesCadastrados;
+    // public static ArrayList<Docente> dcentesCadastrados;
     public static void main(String[] args) {
+        ArrayList<Docente> docentesCadastrados = new ArrayList<Docente>();
         Scanner leitor = new Scanner(System.in);
         try  {
-            FileReader arquivo = new FileReader("script-java/testes/01/in/docentes.csv");
+            FileReader arquivo = new FileReader("../script-java/testes/01/in/docentes.csv");
             BufferedReader leituraDeArquivo = new BufferedReader(arquivo);
             String linha = leituraDeArquivo.readLine();
             linha = leituraDeArquivo.readLine();
             while(linha !=null){
 
-                System.out.println(linha);
+                // System.out.println(linha);
                 String[] campos = linha.split(";");
                 long codigo = Long.parseLong(campos[0]);
                 String nome = campos[1];
@@ -26,6 +27,8 @@ public class Main {
                     }
                 }
                 Docente docente = new Docente(codigo, nome, nascimento, ingresso, coordenador);
+                docente.imprimeDocente();
+                docentesCadastrados.add(docente);
                 linha = leituraDeArquivo.readLine();
             }
             arquivo.close();
@@ -36,6 +39,18 @@ public class Main {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println();
+        // System.out.println();
     }
+
+    // private static void imprimeDocentes(){
+    //     for (Docente d: docentesCadastrados){
+    //         System.out.printf("Codigo:\t%ld\n", d.getCodigo());
+    //         System.out.printf("Nome:\t%s\n", d.getNome());
+    //         System.out.println("Data de Nascimento:\t" +d.getDataNascimento().toString());
+    //         System.out.println("Data de Ingresso:\t" + d.getDataIngresso().toString());
+    //         System.out.println("Coordenador: " + 
+    //                             ((d.isCoordenador() == true)? "Sim" : "Não" ));
+    //     } 
+            
+    // }
 }

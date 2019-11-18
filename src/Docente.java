@@ -56,4 +56,13 @@ public class Docente{
         this.coordenador = coordenador;
     }
 
+    public void imprimeDocente(){
+        System.out.printf("Codigo:\t%d\n", getCodigo());
+            System.out.printf("Nome:\t%s\n", getNome());
+            System.out.println("Data de Nascimento:\t" + getDataNascimento());
+            System.out.println("Data de Ingresso:\t" + getDataIngresso());
+            System.out.println("Coordenador: " + 
+                                ((isCoordenador() == true)? "Sim" : "Não" ));
+    }
+
 }
