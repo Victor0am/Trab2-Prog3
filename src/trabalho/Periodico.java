@@ -23,9 +23,8 @@ public class Periodico extends Veiculo{
     private String issn;
     private int volume;
 
-    public Periodico(String sigla, String nome, char tipo, float fatorImpacto, int numero, String issn, int volume) {
-        super(sigla, nome, tipo, fatorImpacto, numero);
+    public Periodico(String sigla, String nome, char tipo, double fatorImpacto, String issn) {
+        super(sigla, nome, tipo, fatorImpacto);
         this.issn = issn;
-        this.volume = volume;
     }
 }

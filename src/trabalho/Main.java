@@ -10,50 +10,55 @@ public class Main {
     public static void main(String[] args) {
         // FileReader arquivo;
         // String[] flags = new String[args.length - 1];
-        for (int i = 1; i < args.length; i++){
-            switch (args[i]){
-            case (args[i] == "-d"){
-                FileReader arq1 = new FileReader("docentes.csv");
-                i++;
-                continue;
-            }
-            case (args[i] == "-v"){
-                FileReader arq2 = new FileReader("veiculos.csv");
-                i++;
-                continue;
-            }
-            case (args[i] == "-p"){
-                FileReader arq3 = new FileReader("publicacoes.csv");
-                i++;
-                continue;
-            }
-            case (args[i] == "-q"){
-                FileReader arq4 = new FileReader("qualis.csv");
-                i++;
-                continue;
-            }
-            case (args[i] == "-r"){
-                FileReader arq5 = new FileReader("regras.csv");
-                i++;
-                continue;
-            }
-            case (args[i] == "-a"){
-                FileReader arq6 = new FileReader("docentes.csv");
-                i++;
-                continue;
-            }
-            }
-        }
+        // for (int i = 1; i < args.length; i++){
+        //     switch (args[i]){
+        //     case (args[i] == "-d"){
+        //         FileReader arq1 = new FileReader("docentes.csv");
+        //         i++;
+        //         continue;
+        //     }
+        //     case (args[i] == "-v"){
+        //         FileReader arq2 = new FileReader("veiculos.csv");
+        //         i++;
+        //         continue;
+        //     }
+        //     case (args[i] == "-p"){
+        //         FileReader arq3 = new FileReader("publicacoes.csv");
+        //         i++;
+        //         continue;
+        //     }
+        //     case (args[i] == "-q"){
+        //         FileReader arq4 = new FileReader("qualis.csv");
+        //         i++;
+        //         continue;
+        //     }
+        //     case (args[i] == "-r"){
+        //         FileReader arq5 = new FileReader("regras.csv");
+        //         i++;
+        //         continue;
+        //     }
+        //     case (args[i] == "-a"){
+        //         FileReader arq6 = new FileReader("docentes.csv");
+        //         i++;
+        //         continue;
+        //     }
+        //     }
+        // }
         Scanner leitor = new Scanner(System.in);
         Sistema ppgi = new Sistema();
         try  {
             FileReader arq1 = new FileReader("docentes.csv");
+            FileReader arq2 = new FileReader("veiculos.csv");
+            BufferedReader fdocente = new BufferedReader(arq1);
+            BufferedReader fveiculo = new BufferedReader(arq2);
             // FileReader arquivo = new FileReader("docentes.csv");
             // BufferedReader leituraDeArquivo = new BufferedReader(arquivo);
-            BufferedReader fdocente = new BufferedReader(arq1);
             ppgi.carregaArquivoDocentes(fdocente);
-            ppgi.imprimeDocentes();
+            ppgi.carregaArquivoVeiculos(fveiculo);
+            // ppgi.imprimeDocentes();
+            ppgi.imprimeVeiculos();
             arq1.close();
+            arq2.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

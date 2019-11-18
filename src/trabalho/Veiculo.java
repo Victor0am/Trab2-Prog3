@@ -7,7 +7,7 @@ public class Veiculo{
     protected String sigla;
     protected String nome;
     protected char tipo;
-    protected float fatorImpacto;
+    protected double fatorImpacto;
     protected int numero;
 
     public String getSigla() {
@@ -34,11 +34,11 @@ public class Veiculo{
         this.tipo = tipo;
     }
 
-    public float getFatorImpacto() {
+    public double getFatorImpacto() {
         return fatorImpacto;
     }
 
-    public void setFatorImpacto(float fatorImpacto) {
+    public void setFatorImpacto(double fatorImpacto) {
         this.fatorImpacto = fatorImpacto;
     }
 
@@ -50,11 +50,18 @@ public class Veiculo{
         this.numero = numero;
     }
 
-    public Veiculo(String sigla, String nome, char tipo, float fatorImpacto, int numero) {
+    public void imprimeVeiculo(){
+        System.out.printf("Sigla:\t%s\n", sigla);
+        System.out.printf("Nome:\t%s\n", nome);
+        System.out.printf("Tipo:\t%c\n", tipo);
+        System.out.printf("Impacto:\t%.3f\n", fatorImpacto);
+    }
+
+    public Veiculo(String sigla, String nome, char tipo, double fatorImpacto) {
         this.sigla = sigla;
         this.nome = nome;
         this.tipo = tipo;
         this.fatorImpacto = fatorImpacto;
-        this.numero = numero;
     }
+
 }
