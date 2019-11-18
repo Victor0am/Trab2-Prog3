@@ -49,16 +49,18 @@ public class Main {
         try  {
             FileReader arq1 = new FileReader("docentes.csv");
             FileReader arq2 = new FileReader("veiculos.csv");
+            FileReader arq3 = new FileReader("publicacoes.csv");
             BufferedReader fdocente = new BufferedReader(arq1);
             BufferedReader fveiculo = new BufferedReader(arq2);
-            // FileReader arquivo = new FileReader("docentes.csv");
-            // BufferedReader leituraDeArquivo = new BufferedReader(arquivo);
+            BufferedReader fpublicacoes = new BufferedReader(arq3);
             ppgi.carregaArquivoDocentes(fdocente);
             ppgi.carregaArquivoVeiculos(fveiculo);
+            ppgi.carregaArquivoPublicacoes(fpublicacoes);
             // ppgi.imprimeDocentes();
-            ppgi.imprimeVeiculos();
+            // ppgi.imprimeVeiculos();
             arq1.close();
             arq2.close();
+            arq3.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

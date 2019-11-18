@@ -10,11 +10,7 @@ import java.text.ParseException;
 public class Sistema{
     private HashMap<Long,Docente> docentesCadastrados = new HashMap<Long,Docente>();
     private HashMap<String, Veiculo> veiculosCadastrados = new HashMap<String, Veiculo>();
-    
-    
-
-
-
+    private ArrayList<Publicacao> publicacoesCadastradas = new ArrayList<Publicacao>();    
 
     /* ************************* DOCENTES ************************** */
 
@@ -86,12 +82,10 @@ public class Sistema{
                 switch (tipo){
                 case 'C':
                     veiculo = new Conferencia(sigla, nome, tipo, impacto);
-                    veiculo.imprimeVeiculo();
                     break;
                 case 'P':
                     String issn = campos[4];
                     veiculo = new Periodico(sigla, nome, tipo, impacto, issn);
-                    veiculo.imprimeVeiculo();
                     break;
                 }
                 linha = arquivo.readLine();
@@ -113,4 +107,45 @@ public class Sistema{
             pair.getValue().imprimeVeiculo();
         }
     }
+
+    public boolean isPeriodico(String veiculo){
+        if (veiculosCadastrados.get(veiculo).getTipo() == 'P'){
+            System.out.println(veiculosCadastrados.get(veiculo).tipo);
+            return true;
+        }
+        return false;
+    }
+
+    /* ************************* Publicações ************************** */
+
+    public void carregaArquivoPublicacoes(BufferedReader arquivo){
+        try{
+            String linha = arquivo.readLine();
+            linha = arquivo.readLine();
+            while(linha != null){
+                String[] campos = linha.split(";");
+                int ano = Integer.parseInt(campos[0]);
+                String veiculo = campos[1];
+                String titulo = campos[2];
+                String autores = campos[3];
+                int volume;
+                String local;
+                if (isPeriodico(veiculo)){
+                    volume = Integer.parseInt(campos[4]);
+                }
+                else{
+                    local = campos[5];
+                }
+                int pinicial = Integer.parseInt(campos[6]);
+                int pfinal = Integer.parseInt(campos[7]);
+                Publicacao publicacao = new Publicacao(ano, titulo, pinicial, pfinal);
+                publicacoesCadastradas.add(publicacao);
+                linha = arquivo.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
 }
