@@ -4,7 +4,37 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 public class Main {
     public static ArrayList<Docente> docentesCadastrados = new ArrayList<Docente>();
+    public static ArrayList<Regra> regras = new ArrayList<Regra>();
     public static void main(String[] args) {
+        String[] flags = new String[args.length - 1];
+        /* for (int i = 1; i < args.length; i++){
+            if (args[i] == "-d"){
+                //
+                i++;
+                continue;
+            }
+            if (args[i] == "-v"){
+                //
+                i++;
+                continue;
+            }
+            if (args[i] == "-p"){
+                //
+                i++;
+            }
+            if (args[i] == "-q"){
+                //
+                i++;
+            }
+            if (args[i] == "-r"){
+                //
+                i++;
+            }
+            if (args[i] == "-a"){
+                //
+                i++;
+            }
+        } */
         Scanner leitor = new Scanner(System.in);
         try  {
             FileReader arquivo = new FileReader("../script-java/testes/01/in/docentes.csv");
@@ -16,10 +46,7 @@ public class Main {
                 long codigo = Long.parseLong(campos[0]);
                 String nome = campos[1];
                 Date nascimento = new SimpleDateFormat("dd/MM/yyyy").parse(campos[2]);
-                // Date nascimento = new SimpleDateFormat("dd/MM/yyyy").parse(campos[2]);
                 Date ingresso = new SimpleDateFormat("dd/MM/yyyy").parse(campos[3]);
-                // String ing2 = new Date().format(ingresso);
-                // Date ingresso = new SimpleDateFormat("dd/MM/yyyy").parse(campos[3]);
                 boolean coordenador = false;
                 // System.out.println(linha);
                 if (campos.length == 5) {
@@ -28,7 +55,6 @@ public class Main {
                     }
                 }
                 Docente docente = new Docente(codigo, nome, nascimento, ingresso, coordenador);
-                // docente.imprimeDocente();
                 docentesCadastrados.add(docente);
                 linha = leituraDeArquivo.readLine();
             }
@@ -44,10 +70,13 @@ public class Main {
         // System.out.println();
     }
 
+    // Métodos Gerais da Main
+
+    /*Imprime as informações de cada docente cadastrado*/
     private static void imprimeDocentes(){
         for (Docente d: docentesCadastrados){
             d.imprimeDocente();
-        } 
-            
+        }
     }
+
 }

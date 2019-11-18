@@ -49,4 +49,12 @@ public class Regra{
         this.pontuacaoMinima = pontuacaoMinima;
     }
 
+    public Regra(Date inicio, Date fim, float multiplicador, int anos, int pontuacao){
+        this.dataInicio = inicio;
+        this.dataInicio = fim;
+        this.multiplicador = multiplicador;
+        this.anosVigencia = anos;
+        this.pontuacaoMinima = pontuacao;
+    }
+
 }
