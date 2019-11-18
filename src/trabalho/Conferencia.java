@@ -1,3 +1,5 @@
+package trabalho;
+
 //import Veiculo.java;
 import java.util.*;
 

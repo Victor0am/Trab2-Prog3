@@ -1,10 +1,12 @@
+package trabalho;
+
 import java.text.ParseException;
 import java.util.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 public class Main {
-    public static ArrayList<Docente> docentesCadastrados = new ArrayList<Docente>();
-    public static ArrayList<Regra> regras = new ArrayList<Regra>();
+    // public static ArrayList<Docente> docentesCadastrados = new ArrayList<Docente>();
+    // public static ArrayList<Regra> regras = new ArrayList<Regra>();
     public static void main(String[] args) {
         String[] flags = new String[args.length - 1];
         /* for (int i = 1; i < args.length; i++){
@@ -36,8 +38,9 @@ public class Main {
             }
         } */
         Scanner leitor = new Scanner(System.in);
+        Sistema ppgi = new Sistema();
         try  {
-            FileReader arquivo = new FileReader("../script-java/testes/01/in/docentes.csv");
+            FileReader arquivo = new FileReader("docentes.csv");
             BufferedReader leituraDeArquivo = new BufferedReader(arquivo);
             String linha = leituraDeArquivo.readLine();
             linha = leituraDeArquivo.readLine();
@@ -55,10 +58,11 @@ public class Main {
                     }
                 }
                 Docente docente = new Docente(codigo, nome, nascimento, ingresso, coordenador);
-                docentesCadastrados.add(docente);
+                // docentesCadastrados.add(docente);
+                ppgi.insereDocente(docente);
                 linha = leituraDeArquivo.readLine();
             }
-            imprimeDocentes();
+            ppgi.imprimeDocentes();
             arquivo.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -73,10 +77,10 @@ public class Main {
     // Métodos Gerais da Main
 
     /*Imprime as informações de cada docente cadastrado*/
-    private static void imprimeDocentes(){
-        for (Docente d: docentesCadastrados){
-            d.imprimeDocente();
-        }
-    }
+    // private static void imprimeDocentes(){
+    //     for (Docente d: docentesCadastrados){
+    //         d.imprimeDocente();
+    //     }
+    // }
 
 }

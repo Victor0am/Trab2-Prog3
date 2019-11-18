@@ -1,3 +1,5 @@
+package trabalho;
+
 import java.util.*;
 
 public class Quali{
