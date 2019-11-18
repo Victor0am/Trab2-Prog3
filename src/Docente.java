@@ -1,5 +1,5 @@
 import java.util.*;
-
+import java.text.SimpleDateFormat;
 
 public class Docente{
     private long codigo;
@@ -57,12 +57,16 @@ public class Docente{
     }
 
     public void imprimeDocente(){
+        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+        String data;
         System.out.printf("Codigo:\t%d\n", getCodigo());
-            System.out.printf("Nome:\t%s\n", getNome());
-            System.out.println("Data de Nascimento:\t" + getDataNascimento());
-            System.out.println("Data de Ingresso:\t" + getDataIngresso());
-            System.out.println("Coordenador: " + 
-                                ((isCoordenador() == true)? "Sim" : "Não" ));
+        System.out.printf("Nome:\t%s\n", getNome());
+        data = DATE_FORMAT.format(getDataNascimento());
+        System.out.println("Data de Nascimento:\t" + data);
+        data = DATE_FORMAT.format(getDataIngresso());
+        System.out.println("Data de Ingresso:\t" + data);
+        System.out.println("Coordenador: " + 
+                            ((isCoordenador() == true)? "Sim" : "Não" ));
     }
 
 }
