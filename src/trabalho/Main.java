@@ -58,6 +58,7 @@ public class Main {
             ppgi.carregaArquivoPublicacoes(fpublicacoes);
             // ppgi.imprimeDocentes();
             // ppgi.imprimeVeiculos();
+            ppgi.imprimePublicacoes();
             arq1.close();
             arq2.close();
             arq3.close();

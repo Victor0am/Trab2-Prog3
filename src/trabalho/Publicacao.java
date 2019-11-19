@@ -47,4 +47,11 @@ public class Publicacao{
         this.paginaInicial = paginaInicial;
         this.paginaFinal = paginaFinal;
     }
+
+    public void imprime(){
+        System.out.printf("Ano:\t\t%d\n", ano);
+        System.out.printf("Titulo:\t\t%s\n", titulo);
+        System.out.printf("Página inicial:\t%d\n", paginaInicial);
+        System.out.printf("Página final:\t%d\n", paginaFinal);
+    }
 }

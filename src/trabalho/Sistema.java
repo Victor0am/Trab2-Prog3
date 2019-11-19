@@ -82,10 +82,12 @@ public class Sistema{
                 switch (tipo){
                 case 'C':
                     veiculo = new Conferencia(sigla, nome, tipo, impacto);
+                    insereVeiculo(veiculo);
                     break;
                 case 'P':
                     String issn = campos[4];
                     veiculo = new Periodico(sigla, nome, tipo, impacto, issn);
+                    insereVeiculo(veiculo);
                     break;
                 }
                 linha = arquivo.readLine();
@@ -110,7 +112,6 @@ public class Sistema{
 
     public boolean isPeriodico(String veiculo){
         if (veiculosCadastrados.get(veiculo).getTipo() == 'P'){
-            System.out.println(veiculosCadastrados.get(veiculo).tipo);
             return true;
         }
         return false;
@@ -128,16 +129,17 @@ public class Sistema{
                 String veiculo = campos[1];
                 String titulo = campos[2];
                 String autores = campos[3];
+                int numero = Integer.parseInt(campos[4]);
                 int volume;
                 String local;
                 if (isPeriodico(veiculo)){
-                    volume = Integer.parseInt(campos[4]);
+                    volume = Integer.parseInt(campos[5]);
                 }
                 else{
-                    local = campos[5];
+                    local = campos[6];
                 }
-                int pinicial = Integer.parseInt(campos[6]);
-                int pfinal = Integer.parseInt(campos[7]);
+                int pinicial = Integer.parseInt(campos[7]);
+                int pfinal = Integer.parseInt(campos[8]);
                 Publicacao publicacao = new Publicacao(ano, titulo, pinicial, pfinal);
                 publicacoesCadastradas.add(publicacao);
                 linha = arquivo.readLine();
@@ -145,6 +147,12 @@ public class Sistema{
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
+    public void imprimePublicacoes(){
+        for (Publicacao p : publicacoesCadastradas){
+            p.imprime();
         }
     }
 
