@@ -1,14 +1,16 @@
 package trabalho;
 
 import java.util.*;
+import java.text.SimpleDateFormat;
 
 
 public class Regra{
     private Date dataInicio;
     private Date dataFim;
-    private float multiplicador;
+    private double multiplicador;
     private int anosVigencia;
     private int pontuacaoMinima;
+    private int[] pontos = new int[8];
 //    private vector<Integer> pontos;
 
     public Date getDataInicio() {
@@ -27,11 +29,11 @@ public class Regra{
         this.dataFim = dataFim;
     }
 
-    public float getMultiplicador() {
+    public double getMultiplicador() {
         return multiplicador;
     }
 
-    public void setMultiplicador(float multiplicador) {
+    public void setMultiplicador(double multiplicador) {
         this.multiplicador = multiplicador;
     }
 
@@ -51,9 +53,21 @@ public class Regra{
         this.pontuacaoMinima = pontuacaoMinima;
     }
 
-    public Regra(Date inicio, Date fim, float multiplicador, int anos, int pontuacao){
+    public void imprime(){
+        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+        String data;
+        data = DATE_FORMAT.format(this.dataInicio);
+        System.out.println("Data de inicio:\t" + data);
+        data = DATE_FORMAT.format(this.dataFim);
+        System.out.println("Data de fim:\t" + data);
+        System.out.printf("Multiplicador:\t%.3f\n", this.multiplicador);
+        System.out.printf("Anos de vigência:\t%d\n", this.anosVigencia);
+        System.out.printf("Pontuação Mínima:\t%d", this.pontuacaoMinima);
+    }
+
+    public Regra(Date inicio, Date fim, double multiplicador, int anos, int pontuacao){
         this.dataInicio = inicio;
-        this.dataInicio = fim;
+        this.dataFim = fim;
         this.multiplicador = multiplicador;
         this.anosVigencia = anos;
         this.pontuacaoMinima = pontuacao;

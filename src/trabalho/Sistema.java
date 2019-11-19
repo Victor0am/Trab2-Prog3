@@ -11,6 +11,7 @@ public class Sistema{
     private HashMap<Long,Docente> docentesCadastrados = new HashMap<Long,Docente>();
     private HashMap<String, Veiculo> veiculosCadastrados = new HashMap<String, Veiculo>();
     private ArrayList<Publicacao> publicacoesCadastradas = new ArrayList<Publicacao>();    
+    private ArrayList<Regra> regrasCadastradas = new ArrayList<Regra>();
 
     /* ************************* DOCENTES ************************** */
 
@@ -71,12 +72,7 @@ public class Sistema{
                 String sigla = campos[0];
                 String nome = campos[1];
                 char tipo = campos[2].charAt(0);
-                for (int i = 0; i < campos[3].length(); i++){
-                    if (campos[3].charAt(i) == ','){
-                        campos[3] = campos[3].substring(0,i)+'.'+campos[3].substring(i+1,campos[3].length());
-                        break;
-                    }
-                }
+                campos[3] = campos[3].replace(',', '.');
                 double impacto = Double.parseDouble(campos[3]);
                 Veiculo veiculo = null;
                 switch (tipo){
@@ -153,6 +149,42 @@ public class Sistema{
     public void imprimePublicacoes(){
         for (Publicacao p : publicacoesCadastradas){
             p.imprime();
+        }
+    }
+
+    /* ************************* Regras ************************** */
+
+    public void carregaArquivoRegras(BufferedReader arquivo){
+        try{
+            String linha = arquivo.readLine();
+            linha = arquivo.readLine();
+            while(linha != null){
+                String[] campos = linha.split(";");
+                Date dataInicio = new SimpleDateFormat("dd/MM/yyyy").parse(campos[0]);
+                Date dataFim = new SimpleDateFormat("dd/MM/yyyy").parse(campos[1]);
+                String qualis = campos[2];
+                String pontos = campos[3];
+                campos[4] = campos[4].replace(',', '.');
+                double multiplicador = Double.parseDouble(campos[4]);
+                int anos = Integer.parseInt(campos[5]);
+                int pontuacao = Integer.parseInt(campos[6]);
+                Regra regra = new Regra(dataInicio, dataFim, multiplicador, anos, pontuacao);
+                regrasCadastradas.add(regra);
+                linha = arquivo.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro: " + e.getMessage());
+        } catch (ParseException e){
+            e.printStackTrace();
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
+
+    public void imprimeRegras(){
+        for (Regra r : regrasCadastradas){
+            r.imprime();
         }
     }
 

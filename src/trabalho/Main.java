@@ -8,6 +8,7 @@ public class Main {
     // public static ArrayList<Docente> docentesCadastrados = new ArrayList<Docente>();
     // public static ArrayList<Regra> regras = new ArrayList<Regra>();
     public static void main(String[] args) {
+        //int anoDaRegra;
         // FileReader arquivo;
         // String[] flags = new String[args.length - 1];
         // for (int i = 1; i < args.length; i++){
@@ -38,7 +39,7 @@ public class Main {
         //         continue;
         //     }
         //     case (args[i] == "-a"){
-        //         FileReader arq6 = new FileReader("docentes.csv");
+        //         anoDaRegra = Integer.parseInt(args[i]);
         //         i++;
         //         continue;
         //     }
@@ -50,15 +51,20 @@ public class Main {
             FileReader arq1 = new FileReader("docentes.csv");
             FileReader arq2 = new FileReader("veiculos.csv");
             FileReader arq3 = new FileReader("publicacoes.csv");
+            FileReader arq4 = new FileReader("regras.csv");
+            FileReader arq5 = new FileReader("qualis.csv");
             BufferedReader fdocente = new BufferedReader(arq1);
             BufferedReader fveiculo = new BufferedReader(arq2);
             BufferedReader fpublicacoes = new BufferedReader(arq3);
+            BufferedReader fregras = new BufferedReader(arq4);
             ppgi.carregaArquivoDocentes(fdocente);
             ppgi.carregaArquivoVeiculos(fveiculo);
+            ppgi.carregaArquivoRegras(fregras);
             ppgi.carregaArquivoPublicacoes(fpublicacoes);
             // ppgi.imprimeDocentes();
             // ppgi.imprimeVeiculos();
-            ppgi.imprimePublicacoes();
+            // ppgi.imprimePublicacoes();
+            ppgi.imprimeRegras();
             arq1.close();
             arq2.close();
             arq3.close();

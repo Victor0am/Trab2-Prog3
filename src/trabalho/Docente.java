@@ -61,14 +61,14 @@ public class Docente{
     public void imprimeDocente(){
         SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
         String data;
-        System.out.printf("Codigo:\t%d\n", getCodigo());
-        System.out.printf("Nome:\t%s\n", getNome());
-        data = DATE_FORMAT.format(getDataNascimento());
+        System.out.printf("Codigo:\t%d\n", codigo);
+        System.out.printf("Nome:\t%s\n", nome);
+        data = DATE_FORMAT.format(dataNascimento);
         System.out.println("Data de Nascimento:\t" + data);
-        data = DATE_FORMAT.format(getDataIngresso());
+        data = DATE_FORMAT.format(dataIngresso);
         System.out.println("Data de Ingresso:\t" + data);
         System.out.println("Coordenador: " + 
-                            ((isCoordenador() == true)? "Sim" : "Não" ));
+                            ((coordenador == true)? "Sim" : "Não" ));
     }
 
 }
