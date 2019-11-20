@@ -157,6 +157,7 @@ public class Sistema{
     public void carregaArquivoRegras(BufferedReader arquivo){
         try{
             String linha = arquivo.readLine();
+            System.out.println(linha);
             linha = arquivo.readLine();
             while(linha != null){
                 String[] campos = linha.split(";");
@@ -188,4 +189,22 @@ public class Sistema{
         }
     }
 
+    /* ************************* Qualis ************************** */
+
+    public void carregaArquivoQualis(BufferedReader arquivo){
+        try{
+            String linha = arquivo.readLine();
+            linha = arquivo.readLine();
+            while(linha != null){
+                String[] campos = linha.split(";");
+                int ano = Integer.parseInt(campos[0]);
+                String veiculo = campos[1];
+                String classificacao = campos[2];
+                linha = arquivo.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
 }
