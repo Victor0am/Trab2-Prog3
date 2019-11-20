@@ -67,8 +67,8 @@ public class Main {
             ppgi.carregaArquivoRegras(fregras);
             ppgi.carregaArquivoPublicacoes(fpublicacoes);
             ppgi.carregaArquivoQualis(fqualis);
-            ppgi.imprimeDocentes();
-            // ppgi.imprimeVeiculos();
+            // ppgi.imprimeDocentes();
+            ppgi.imprimeVeiculos();
             // ppgi.imprimePublicacoes();
             // ppgi.imprimeRegras();
             arq1.close();

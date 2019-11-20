@@ -9,6 +9,7 @@ public class Veiculo{
     protected char tipo;
     protected double fatorImpacto;
     protected int numero;
+    protected ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
 
     public String getSigla() {
         return sigla;
@@ -50,11 +51,17 @@ public class Veiculo{
         this.numero = numero;
     }
 
+    public ArrayList<Publicacao> getPublicacoes(){
+        return publicacoes;
+    }
+
     public void imprimeVeiculo(){
-        System.out.printf("Sigla:\t%s\n", sigla);
-        System.out.printf("Nome:\t%s\n", nome);
+        System.out.printf("<%s>\t%s\n", sigla, nome);
         System.out.printf("Tipo:\t%c\n", tipo);
         System.out.printf("Impacto:\t%.3f\n", fatorImpacto);
+        for (Publicacao p: publicacoes){
+            p.imprime();
+        }
     }
 
     public Veiculo(String sigla, String nome, char tipo, double fatorImpacto) {

@@ -5,6 +5,7 @@ import java.util.*;
 
 public class Publicacao{
     private int ano;
+    private String veiculo;
     private String titulo;
     private int paginaInicial;
     private int paginaFinal;
@@ -34,6 +35,14 @@ public class Publicacao{
         this.titulo = titulo;
     }
 
+    public String getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(String veiculo) {
+        this.veiculo = veiculo;
+    }
+
     public int getPaginaInicial() {
         return paginaInicial;
     }
@@ -50,8 +59,9 @@ public class Publicacao{
         this.paginaFinal = paginaFinal;
     }
 
-    public Publicacao(int ano, String titulo, int paginaInicial, int paginaFinal, Long autor) {
+    public Publicacao(int ano, String veiculo, String titulo, int paginaInicial, int paginaFinal, Long autor) {
         this.ano = ano;
+        this.veiculo = veiculo;
         this.titulo = titulo;
         this.paginaInicial = paginaInicial;
         this.paginaFinal = paginaFinal;
@@ -60,6 +70,7 @@ public class Publicacao{
 
     public void imprime(){
         System.out.printf("\tTitulo:\t\t%s\n", titulo);
+        System.out.printf("\tVeículo:\t\t%s\n", veiculo);
         System.out.printf("\tAno:\t\t%d\n", ano);
         System.out.printf("\tPágina inicial:\t%d\n", paginaInicial);
         System.out.printf("\tPágina final:\t%d\n", paginaFinal);

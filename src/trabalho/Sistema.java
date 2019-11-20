@@ -143,8 +143,9 @@ public class Sistema{
                 for (int i = 0; i < autor.length; i++){
                     autor[i] = autor[i].replaceAll(" ", "");
                     autorLong[i] = Long.parseLong(autor[i]);
-                    publicacao = new Publicacao(ano, titulo, pinicial, pfinal, autorLong[i]);
+                    publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong[i]);
                     atribuiPublicacao(publicacao);
+                    registraPublicacao(publicacao);
                 }
                 publicacoesCadastradas.add(publicacao);
                 linha = arquivo.readLine();
@@ -163,6 +164,10 @@ public class Sistema{
 
     public void atribuiPublicacao(Publicacao p){
         docentesCadastrados.get(p.getAutor()).getPublicacoes().add(p);
+    }
+
+    public void registraPublicacao(Publicacao p){
+        veiculosCadastrados.get(p.getVeiculo()).getPublicacoes().add(p);
     }
 
     /* ************************* Regras ************************** */
