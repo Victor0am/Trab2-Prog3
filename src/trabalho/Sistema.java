@@ -120,11 +120,15 @@ public class Sistema{
             String linha = arquivo.readLine();
             linha = arquivo.readLine();
             while(linha != null){
+                Publicacao publicacao = null;
                 String[] campos = linha.split(";");
                 int ano = Integer.parseInt(campos[0]);
                 String veiculo = campos[1];
                 String titulo = campos[2];
-                Long autores = Long.parseLong(campos[3]);
+                // Long autores = Long.parseLong(campos[3]);
+                String autores = campos[3];
+                String[] autor = autores.split(",");
+                long[] autorLong = new long [autor.length];
                 int numero = Integer.parseInt(campos[4]);
                 int volume;
                 String local;
@@ -136,8 +140,12 @@ public class Sistema{
                 }
                 int pinicial = Integer.parseInt(campos[7]);
                 int pfinal = Integer.parseInt(campos[8]);
-                Publicacao publicacao = new Publicacao(ano, titulo, pinicial, pfinal, autores);
-                atribuiPublicacao(publicacao);
+                for (int i = 0; i < autor.length; i++){
+                    autor[i] = autor[i].replaceAll(" ", "");
+                    autorLong[i] = Long.parseLong(autor[i]);
+                    publicacao = new Publicacao(ano, titulo, pinicial, pfinal, autorLong[i]);
+                    atribuiPublicacao(publicacao);
+                }
                 publicacoesCadastradas.add(publicacao);
                 linha = arquivo.readLine();
             }
