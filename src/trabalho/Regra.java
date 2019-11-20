@@ -10,7 +10,7 @@ public class Regra{
     private double multiplicador;
     private int anosVigencia;
     private int pontuacaoMinima;
-    private int[] pontos = new int[8];
+    private int[] pontos ;
 //    private vector<Integer> pontos;
 
     public Date getDataInicio() {
@@ -65,12 +65,13 @@ public class Regra{
         System.out.printf("Pontuação Mínima:\t%d", this.pontuacaoMinima);
     }
 
-    public Regra(Date inicio, Date fim, double multiplicador, int anos, int pontuacao){
+    public Regra(Date inicio, Date fim, double multiplicador, int anos, int pontuacao, int [] pontos){
         this.dataInicio = inicio;
         this.dataFim = fim;
         this.multiplicador = multiplicador;
         this.anosVigencia = anos;
         this.pontuacaoMinima = pontuacao;
+        this.pontos = pontos;
     }
 
 }

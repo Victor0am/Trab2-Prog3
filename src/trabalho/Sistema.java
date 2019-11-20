@@ -168,7 +168,7 @@ public class Sistema{
                 double multiplicador = Double.parseDouble(campos[4]);
                 int anos = Integer.parseInt(campos[5]);
                 int pontuacao = Integer.parseInt(campos[6]);
-                Regra regra = new Regra(dataInicio, dataFim, multiplicador, anos, pontuacao);
+                Regra regra = new Regra(dataInicio, dataFim, multiplicador, anos, pontuacao, designaPontosPorQuali(qualis, pontos));
                 regrasCadastradas.add(regra);
                 linha = arquivo.readLine();
             }
@@ -179,6 +179,30 @@ public class Sistema{
             e.printStackTrace();
             System.out.println("Erro: " + e.getMessage());
         }
+    }
+
+    public int[] designaPontosPorQuali(String stringQualis, String stringPontos){
+        String[] separaPontos = stringPontos.split(",");
+        String[] separaQualis = stringQualis.split(",");
+        int [] vetorPosicao = new int[separaQualis.length];
+        int[] vetorPontos = new int[8];
+        Qualis[] qualis = Qualis.values();
+        for (int i = 0; i< separaQualis.length; i++) {
+            for (Qualis q: qualis){
+                if(separaQualis[i] == q.toString()){
+                    vetorPosicao[i] =  q.ordinal();
+                }
+            }
+        }
+        for(int i = 0; i<8; i++){
+            int j = 0;
+            int pontuacao = 0;
+            if(vetorPosicao[j] == i){
+                pontuacao = Integer.parseInt(separaPontos[j]);
+            }
+            vetorPontos[i] = pontuacao;
+        }
+        return vetorPontos;
     }
 
 
