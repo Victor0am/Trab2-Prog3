@@ -9,11 +9,6 @@ public class Main {
     // public static ArrayList<Regra> regras = new ArrayList<Regra>();
     public static void main(String[] args) {
         int anoDaRegra;
-        // String arq1s = null;
-        // String arq2s = null;
-        // String arq3s = null;
-        // String arq4s = null;
-        // String arq5s = null;
         FileReader arq1 = null;
         FileReader arq2 = null;
         FileReader arq3 = null;
@@ -68,7 +63,7 @@ public class Main {
             ppgi.carregaArquivoPublicacoes(fpublicacoes);
             ppgi.carregaArquivoQualis(fqualis);
             // ppgi.imprimeDocentes();
-            ppgi.imprimeVeiculos();
+            // ppgi.imprimeVeiculos();
             // ppgi.imprimePublicacoes();
             // ppgi.imprimeRegras();
             arq1.close();
@@ -79,7 +74,10 @@ public class Main {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
         }
     }
 

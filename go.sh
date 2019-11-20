@@ -8,3 +8,4 @@ cp testes/01/in/*.csv .
 ant compile
 
 ant run
+

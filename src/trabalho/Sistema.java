@@ -85,6 +85,9 @@ public class Sistema{
                     veiculo = new Periodico(sigla, nome, tipo, impacto, issn);
                     insereVeiculo(veiculo);
                     break;
+                default:
+                    throw new IllegalArgumentException("Tipo de veículo desconhecido " +
+                    "para veículo " + sigla + ": " + tipo +".");
                 }
                 linha = arquivo.readLine();
             }
@@ -103,19 +106,25 @@ public class Sistema{
     public void imprimeVeiculos(){
         for (Map.Entry<String,Veiculo> pair : veiculosCadastrados.entrySet()) {
             pair.getValue().imprimeVeiculo();
+            System.out.println();
         }
     }
 
     public boolean isPeriodico(String veiculo){
-        if (veiculosCadastrados.get(veiculo).getTipo() == 'P'){
-            return true;
-        }
-        return false;
+            // System.out.println(veiculo);
+            veiculosCadastrados.get(veiculo);
+            if (veiculosCadastrados.get(veiculo) == null){
+                return false;
+            }
+            if (veiculosCadastrados.get(veiculo).getTipo() == 'P'){
+                return true;
+            }
+            return false;
     }
 
     /* ************************* Publicações ************************** */
 
-    public void carregaArquivoPublicacoes(BufferedReader arquivo){
+    public void carregaArquivoPublicacoes(BufferedReader arquivo) throws IOException{
         try{
             String linha = arquivo.readLine();
             linha = arquivo.readLine();
@@ -132,13 +141,13 @@ public class Sistema{
                 int numero = Integer.parseInt(campos[4]);
                 int volume;
                 String local;
+                int pinicial = Integer.parseInt(campos[7]);
                 if (isPeriodico(veiculo)){
                     volume = Integer.parseInt(campos[5]);
                 }
                 else{
                     local = campos[6];
                 }
-                int pinicial = Integer.parseInt(campos[7]);
                 int pfinal = Integer.parseInt(campos[8]);
                 for (int i = 0; i < autor.length; i++){
                     autor[i] = autor[i].replaceAll(" ", "");
@@ -151,8 +160,7 @@ public class Sistema{
                 linha = arquivo.readLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Erro: " + e.getMessage());
+            throw new IOException(e.getMessage());
         }
     }
 
@@ -166,9 +174,22 @@ public class Sistema{
         docentesCadastrados.get(p.getAutor()).getPublicacoes().add(p);
     }
 
-    public void registraPublicacao(Publicacao p){
-        veiculosCadastrados.get(p.getVeiculo()).getPublicacoes().add(p);
+    public void registraPublicacao(Publicacao p) throws IOException{
+        Veiculo veiculos = null;
+        veiculos = veiculosCadastrados.get(p.getVeiculo());
+        try{
+            if (veiculos != null){
+                veiculos.getPublicacoes().add(p);
+            }
+            else{
+                throw new IOException("Sigla de veículo não definida usada na" +
+                " publicação “" + p.getTitulo() + "”: " + p.getVeiculo() + ".");
+            }
+        }catch(IOException e){
+            throw new IOException(e.getMessage());
+        }
     }
+
 
     /* ************************* Regras ************************** */
 
