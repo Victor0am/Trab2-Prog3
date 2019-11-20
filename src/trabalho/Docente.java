@@ -7,8 +7,9 @@ public class Docente{
     private long codigo;
     private String nome;
     private Date dataNascimento;
-    private  Date dataIngresso;
+    private Date dataIngresso;
     private boolean coordenador;
+    private ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
 
     public long getCodigo() {
         return codigo;
@@ -50,6 +51,10 @@ public class Docente{
         this.coordenador = coordenador;
     }
 
+    public ArrayList<Publicacao> getPublicacoes(){
+        return publicacoes;
+    }
+
     public Docente(long codigo, String nome, Date nascimento, Date ingresso, boolean coordenador){
         this.codigo = codigo;
         this.nome = nome;
@@ -59,6 +64,7 @@ public class Docente{
     }
 
     public void imprimeDocente(){
+        System.out.println("=============================");
         SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
         String data;
         System.out.printf("Codigo:\t%d\n", codigo);
@@ -68,7 +74,17 @@ public class Docente{
         data = DATE_FORMAT.format(dataIngresso);
         System.out.println("Data de Ingresso:\t" + data);
         System.out.println("Coordenador: " + 
-                            ((coordenador == true)? "Sim" : "Não" ));
+        ((coordenador == true)? "Sim" : "Não" ));
+        System.out.println("Publicações:");
+        if (publicacoes.isEmpty()){
+            System.out.println("\tDocente não possui publicações registradas");
+        }
+        else{
+            for (Publicacao p : publicacoes){
+                System.out.println("\t-----------------------------");
+                p.imprime();
+            }
+        }
     }
 
 }

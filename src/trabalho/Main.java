@@ -57,11 +57,6 @@ public class Main {
         // Scanner leitor = new Scanner(System.in);
         Sistema ppgi = new Sistema();
         try  {
-            // FileReader arq1 = new FileReader(args[1]);
-            // FileReader arq2 = new FileReader("veiculos.csv");
-            // FileReader arq3 = new FileReader("publicacoes.csv");
-            // FileReader arq4 = new FileReader("regras.csv");
-            // FileReader arq5 = new FileReader("qualis.csv");
             BufferedReader fdocente = new BufferedReader(arq1);
             BufferedReader fveiculo = new BufferedReader(arq2);
             BufferedReader fpublicacoes = new BufferedReader(arq3);
@@ -72,10 +67,10 @@ public class Main {
             ppgi.carregaArquivoRegras(fregras);
             ppgi.carregaArquivoPublicacoes(fpublicacoes);
             ppgi.carregaArquivoQualis(fqualis);
-            // ppgi.imprimeDocentes();
+            ppgi.imprimeDocentes();
             // ppgi.imprimeVeiculos();
             // ppgi.imprimePublicacoes();
-            ppgi.imprimeRegras();
+            // ppgi.imprimeRegras();
             arq1.close();
             arq2.close();
             arq3.close();

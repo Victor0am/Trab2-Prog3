@@ -124,7 +124,7 @@ public class Sistema{
                 int ano = Integer.parseInt(campos[0]);
                 String veiculo = campos[1];
                 String titulo = campos[2];
-                String autores = campos[3];
+                Long autores = Long.parseLong(campos[3]);
                 int numero = Integer.parseInt(campos[4]);
                 int volume;
                 String local;
@@ -136,7 +136,8 @@ public class Sistema{
                 }
                 int pinicial = Integer.parseInt(campos[7]);
                 int pfinal = Integer.parseInt(campos[8]);
-                Publicacao publicacao = new Publicacao(ano, titulo, pinicial, pfinal);
+                Publicacao publicacao = new Publicacao(ano, titulo, pinicial, pfinal, autores);
+                atribuiPublicacao(publicacao);
                 publicacoesCadastradas.add(publicacao);
                 linha = arquivo.readLine();
             }
@@ -152,12 +153,15 @@ public class Sistema{
         }
     }
 
+    public void atribuiPublicacao(Publicacao p){
+        docentesCadastrados.get(p.getAutor()).getPublicacoes().add(p);
+    }
+
     /* ************************* Regras ************************** */
 
     public void carregaArquivoRegras(BufferedReader arquivo){
         try{
             String linha = arquivo.readLine();
-            System.out.println(linha);
             linha = arquivo.readLine();
             while(linha != null){
                 String[] campos = linha.split(";");
