@@ -339,6 +339,7 @@ public class Sistema{
                     + "qualificação do ano “" + ano + "”: "+ veiculo + ".");
                 }
                 String classificacao = campos[2];
+                veiculosCadastrados.get(veiculo).qualis.put(ano, classificacao);
                 linha = arquivo.readLine();
             }
         } catch (IOException e){
