@@ -1,6 +1,5 @@
 package trabalho;
 
-import java.io.BufferedReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.io.*;
@@ -15,7 +14,12 @@ public class Sistema{
 
     /* ************************* DOCENTES ************************** */
 
-    public void carregaArquivoDocentes(BufferedReader arquivo){
+    /**
+     * Carrega dados de docentes no sistema.
+     * @param arquivo
+     * @throws IOException
+     */
+    public void carregaArquivoDocentes(BufferedReader arquivo) throws IOException {
         try{
             String linha = arquivo.readLine();
             linha = arquivo.readLine();
@@ -33,13 +37,11 @@ public class Sistema{
                     }
                 }
                 Docente docente = new Docente(codigo, nome, nascimento, ingresso, coordenador);
-                // docentesCadastrados.add(docente);
                 insereDocente(docente);
                 linha = arquivo.readLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Erro: " + e.getMessage());
+            throw new IOException(e.getMessage());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -55,13 +57,34 @@ public class Sistema{
 
     /**
      * Insere um docente na Hash de docentes cadastrados
+     * @param d
+     * @throws IOException
      */
-    public void insereDocente(Docente d){
-        this.docentesCadastrados.put(d.getCodigo(), d);
+    public void insereDocente(Docente d) throws IOException {
+        try{
+            if (verificaDocente(d)){
+                this.docentesCadastrados.put(d.getCodigo(), d);
+            }
+            else{
+                throw new IOException("Código repetido para " +d.getNome() + ": " + d.getCodigo() +".");
+            }
+        }catch(IOException e){
+            throw new IOException(e.getMessage());
+        }
+    }
+
+    /**
+     * Verifica se já existe algum docente cadastrado com aquele código
+     * @param d
+     * @return
+     */
+    public boolean verificaDocente(Docente d){
+        Docente docente = docentesCadastrados.get(d.getCodigo());
+        return (docente == null);
     }
 
 
-    /* ************************* Veiculo ************************** */
+    /* ************************* VEICULOS ************************** */
 
     public void carregaArquivoVeiculos(BufferedReader arquivo){
         try{
@@ -122,7 +145,7 @@ public class Sistema{
             return false;
     }
 
-    /* ************************* Publicações ************************** */
+    /* ************************* PUBLICAÇÕES ************************** */
 
     public void carregaArquivoPublicacoes(BufferedReader arquivo) throws IOException{
         try{
@@ -191,7 +214,7 @@ public class Sistema{
     }
 
 
-    /* ************************* Regras ************************** */
+    /* ************************* REGRAS ************************** */
 
     public void carregaArquivoRegras(BufferedReader arquivo){
         try{
@@ -251,7 +274,7 @@ public class Sistema{
         }
     }
 
-    /* ************************* Qualis ************************** */
+    /* ************************* QUALIS ************************** */
 
     public void carregaArquivoQualis(BufferedReader arquivo) throws IOException{
         try{
@@ -262,7 +285,7 @@ public class Sistema{
                 int ano = Integer.parseInt(campos[0]);
                 String veiculo = campos[1];
                 if (veiculosCadastrados.get(veiculo) == null){
-                    throw new IOException("Sigla de veículo não definida usada na" 
+                    throw new IOException("Sigla de veículo não definida usada na " 
                     + "qualificação do ano “" + ano + "”: "+ veiculo + ".");
                 }
                 String classificacao = campos[2];
