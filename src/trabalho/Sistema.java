@@ -253,7 +253,7 @@ public class Sistema{
 
     /* ************************* Qualis ************************** */
 
-    public void carregaArquivoQualis(BufferedReader arquivo){
+    public void carregaArquivoQualis(BufferedReader arquivo) throws IOException{
         try{
             String linha = arquivo.readLine();
             linha = arquivo.readLine();
@@ -261,12 +261,15 @@ public class Sistema{
                 String[] campos = linha.split(";");
                 int ano = Integer.parseInt(campos[0]);
                 String veiculo = campos[1];
+                if (veiculosCadastrados.get(veiculo) == null){
+                    throw new IOException("Sigla de veículo não definida usada na" 
+                    + "qualificação do ano “" + ano + "”: "+ veiculo + ".");
+                }
                 String classificacao = campos[2];
                 linha = arquivo.readLine();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Erro: " + e.getMessage());
+        } catch (IOException e){
+            throw new IOException(e.getMessage());
         }
     }
 }
