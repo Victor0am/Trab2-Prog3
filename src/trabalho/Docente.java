@@ -10,6 +10,7 @@ public class Docente{
     private Date dataIngresso;
     private boolean coordenador;
     private ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
+    private int pontuacao;
 
     public long getCodigo() {
         return codigo;
@@ -85,6 +86,10 @@ public class Docente{
                 p.imprime();
             }
         }
+    }
+
+    public void calculaPontuacao(){
+
     }
 
 }

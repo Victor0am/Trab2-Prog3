@@ -263,8 +263,13 @@ public class Sistema{
                 String[] campos = linha.split(";");
                 Date dataInicio = new SimpleDateFormat("dd/MM/yyyy").parse(campos[0]);
                 Date dataFim = new SimpleDateFormat("dd/MM/yyyy").parse(campos[1]);
-                String qualis = campos[2];
-                String pontos = campos[3];
+                String qualis[] = campos[2].split(",");
+                String pontos[] = campos[3].split(",");
+                for (String quali:qualis) {
+                    if(!checaQuali(quali)){
+                        throw new IOException("Qualis desconhecido para regras de" + dataInicio +": " + quali);
+                    }
+                }
                 campos[4] = campos[4].replace(',', '.');
                 double multiplicador = Double.parseDouble(campos[4]);
                 int anos = Integer.parseInt(campos[5]);
@@ -282,25 +287,23 @@ public class Sistema{
         }
     }
 
-    public int[] designaPontosPorQuali(String stringQualis, String stringPontos){
-        String[] separaPontos = stringPontos.split(",");
-        String[] separaQualis = stringQualis.split(",");
-        int [] vetorPosicao = new int[separaQualis.length];
-        int[] vetorPontos = new int[8];
+    public ArrayList<Integer> designaPontosPorQuali(String stringQualis[], String stringPontos[]){
+        int [] vetorPosicao = new int[stringQualis.length];
+        ArrayList<Integer> vetorPontos = new ArrayList<Integer>();
         Qualis[] qualis = Qualis.values();
-        for (int i = 0; i< separaQualis.length; i++) {
+        for (int i = 0; i< stringQualis.length; i++) {
             for (Qualis q: qualis){
-                if(separaQualis[i] == q.toString()){
+                if(stringQualis[i] == q.toString()){
                     vetorPosicao[i] =  q.ordinal();
                 }
             }
         }
         for(int i = 0, pontuacao = 0, j = 0; i<8; i++){
             if(vetorPosicao[j] == i){
-                pontuacao = Integer.parseInt(separaPontos[j]);
+                pontuacao = Integer.parseInt(stringPontos[j]);
                 j++;
             }
-            vetorPontos[i] = pontuacao;
+            vetorPontos.add(pontuacao);
         }
         return vetorPontos;
     }
@@ -310,6 +313,15 @@ public class Sistema{
         for (Regra r : regrasCadastradas){
             r.imprime();
         }
+    }
+    public boolean checaQuali(String quali){
+        Qualis qualis[] = Qualis.values();
+        for (Qualis q: qualis){
+            if(quali == q.toString()){
+                return true;
+            }
+        }
+        return false;
     }
 
     /* ************************* QUALIS ************************** */
@@ -331,6 +343,15 @@ public class Sistema{
             }
         } catch (IOException e){
             throw new IOException(e.getMessage());
+        }
+    }
+
+
+    /* ************************* SAIDAS ************************** */
+
+    public void calculaResultados(){
+        for (Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()) {
+            pair.getValue().calculaPontuacao();
         }
     }
 }
