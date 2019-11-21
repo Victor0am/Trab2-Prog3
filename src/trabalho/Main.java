@@ -57,20 +57,21 @@ public class Main {
             BufferedReader fpublicacoes = new BufferedReader(arq3);
             BufferedReader fregras = new BufferedReader(arq5);
             BufferedReader fqualis = new BufferedReader(arq4);
-            ppgi.carregaArquivoDocentes(fdocente);
-            ppgi.carregaArquivoVeiculos(fveiculo);
+            // ppgi.carregaArquivoDocentes(fdocente);
+            // ppgi.carregaArquivoVeiculos(fveiculo);
             ppgi.carregaArquivoRegras(fregras);
-            ppgi.carregaArquivoPublicacoes(fpublicacoes);
-            ppgi.carregaArquivoQualis(fqualis);
+            // ppgi.carregaArquivoPublicacoes(fpublicacoes);
+            // ppgi.carregaArquivoQualis(fqualis);
             // ppgi.imprimeDocentes();
             ppgi.imprimeVeiculos();
+            ppgi.imprimeRegras();
             // ppgi.imprimePublicacoes();
             // ppgi.imprimeRegras();
-            arq1.close();
-            arq2.close();
+            // arq1.close();
+            // arq2.close();
             arq3.close();
-            arq4.close();
-            arq5.close();
+            // arq4.close();
+            // arq5.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

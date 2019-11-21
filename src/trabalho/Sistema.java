@@ -267,7 +267,7 @@ public class Sistema{
                 String pontos[] = campos[3].split(",");
                 for (String quali:qualis) {
                     if(!checaQuali(quali)){
-                        throw new IOException("Qualis desconhecido para regras de" + dataInicio +": " + quali);
+                        throw new IOException("Qualis desconhecido para regras de " + campos[0] +": " + quali);
                     }
                 }
                 campos[4] = campos[4].replace(',', '.');
@@ -288,18 +288,14 @@ public class Sistema{
     }
 
     public ArrayList<Integer> designaPontosPorQuali(String stringQualis[], String stringPontos[]){
-        int [] vetorPosicao = new int[stringQualis.length];
+        ArrayList<Integer> vetorPosicao = new ArrayList<Integer>();
         ArrayList<Integer> vetorPontos = new ArrayList<Integer>();
         Qualis[] qualis = Qualis.values();
         for (int i = 0; i< stringQualis.length; i++) {
-            for (Qualis q: qualis){
-                if(stringQualis[i] == q.toString()){
-                    vetorPosicao[i] =  q.ordinal();
-                }
-            }
+            vetorPosicao.add(valorQuali(stringQualis[i]));
         }
         for(int i = 0, pontuacao = 0, j = 0; i<8; i++){
-            if(vetorPosicao[j] == i){
+            if(vetorPosicao.get(j) == i){
                 pontuacao = Integer.parseInt(stringPontos[j]);
                 j++;
             }
@@ -314,14 +310,42 @@ public class Sistema{
             r.imprime();
         }
     }
-    public boolean checaQuali(String quali){
-        Qualis qualis[] = Qualis.values();
-        for (Qualis q: qualis){
-            if(quali == q.toString()){
-                return true;
-            }
+    public int valorQuali(String quali){
+        switch(quali){
+            case "A1":
+                return 0;
+            case "A2":
+                return 1;
+            case "B1":
+                return 2;
+            case "B2":
+                return 3;
+            case "B3":
+                return 4;
+            case "B4":
+                return 5;
+            case "B5":
+                return 6;
+            case "C":
+                return 7;
+            default:
+                return 0;
         }
-        return false;
+    }
+    public boolean checaQuali(String quali){
+        switch(quali){
+            case "A1":
+            case "A2":
+            case "B1":
+            case "B2":
+            case "B3":
+            case "B4":
+            case "B5":
+            case "C":
+                return true;
+            default:
+                return false;
+        }
     }
 
     /* ************************* QUALIS ************************** */
