@@ -216,8 +216,24 @@ public class Sistema{
         }
     }
 
-    public void atribuiPublicacao(Publicacao p){
-        docentesCadastrados.get(p.getAutor()).getPublicacoes().add(p);
+    /**
+     * Atribui uma publicação a um determinado docente.
+     * @param p
+     * @throws IOException
+     */
+    public void atribuiPublicacao(Publicacao p) throws IOException {
+        try {
+            Docente docente = docentesCadastrados.get(p.getAutor());
+            if (docente == null){
+                throw new IOException("Código de docente não definido usado na "
+                + "publicação “" + p.getTitulo() + "”: " + p.getVeiculo() +".");
+            }
+            else{
+                docentesCadastrados.get(p.getAutor()).getPublicacoes().add(p);
+            }
+        }catch(IOException e){
+            throw new IOException(e.getMessage());
+        }
     }
 
     public void registraPublicacao(Publicacao p) throws IOException{
