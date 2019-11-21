@@ -183,7 +183,7 @@ public class Sistema{
                 // Long autores = Long.parseLong(campos[3]);
                 String autores = campos[3];
                 String[] autor = autores.split(",");
-                long[] autorLong = new long [autor.length];
+                ArrayList<Long> autorLong = new ArrayList<Long>();
                 int numero = Integer.parseInt(campos[4]);
                 int volume;
                 String local;
@@ -197,8 +197,8 @@ public class Sistema{
                 int pfinal = Integer.parseInt(campos[8]);
                 for (int i = 0; i < autor.length; i++){
                     autor[i] = autor[i].replaceAll(" ", "");
-                    autorLong[i] = Long.parseLong(autor[i]);
-                    publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong[i]);
+                    autorLong.add(Long.parseLong(autor[i]));
+                    publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong.get(i));
                     atribuiPublicacao(publicacao);
                     registraPublicacao(publicacao);
                 }
