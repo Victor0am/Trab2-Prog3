@@ -10,6 +10,7 @@ public class Veiculo{
     protected double fatorImpacto;
     protected int numero;
     protected ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
+    protected HashMap<Integer, String> qualis = new HashMap<Integer, String>();
 
     public String getSigla() {
         return sigla;
@@ -55,10 +56,17 @@ public class Veiculo{
         return publicacoes;
     }
 
+    public HashMap<Integer, String> getQualis(){
+        return qualis;
+    }
+
     public void imprimeVeiculo(){
         System.out.printf("<%s>\t%s\n", sigla, nome);
         System.out.printf("Tipo:\t%c\n", tipo);
         System.out.printf("Impacto:\t%.3f\n", fatorImpacto);
+        for (Map.Entry<Integer, String> pair : qualis.entrySet()) {
+            System.out.printf("Ano:\t%d\nQuali:\t%s\n",pair.getKey(),pair.getValue());
+        }
         for (Publicacao p: publicacoes){
             p.imprime();
         }
