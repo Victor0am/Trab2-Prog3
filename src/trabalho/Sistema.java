@@ -295,11 +295,10 @@ public class Sistema{
                 }
             }
         }
-        for(int i = 0; i<8; i++){
-            int j = 0;
-            int pontuacao = 0;
+        for(int i = 0, pontuacao = 0, j = 0; i<8; i++){
             if(vetorPosicao[j] == i){
                 pontuacao = Integer.parseInt(separaPontos[j]);
+                j++;
             }
             vetorPontos[i] = pontuacao;
         }
