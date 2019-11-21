@@ -8,7 +8,7 @@ public class Main {
     // public static ArrayList<Docente> docentesCadastrados = new ArrayList<Docente>();
     // public static ArrayList<Regra> regras = new ArrayList<Regra>();
     public static void main(String[] args) {
-        int anoDaRegra;
+        int anoDaRegra  = 0;
         FileReader arq1 = null;
         FileReader arq2 = null;
         FileReader arq3 = null;
@@ -50,28 +50,28 @@ public class Main {
             e.printStackTrace();
         }
         // Scanner leitor = new Scanner(System.in);
-        Sistema ppgi = new Sistema();
+         Sistema ppgi = new Sistema(anoDaRegra);
         try  {
-            BufferedReader fdocente = new BufferedReader(arq1);
-            BufferedReader fveiculo = new BufferedReader(arq2);
-            BufferedReader fpublicacoes = new BufferedReader(arq3);
-            BufferedReader fregras = new BufferedReader(arq5);
-            BufferedReader fqualis = new BufferedReader(arq4);
-            // ppgi.carregaArquivoDocentes(fdocente);
-            // ppgi.carregaArquivoVeiculos(fveiculo);
-            ppgi.carregaArquivoRegras(fregras);
-            // ppgi.carregaArquivoPublicacoes(fpublicacoes);
-            // ppgi.carregaArquivoQualis(fqualis);
-            // ppgi.imprimeDocentes();
-            ppgi.imprimeVeiculos();
-            ppgi.imprimeRegras();
+             BufferedReader fdocente = new BufferedReader(arq1);
+             BufferedReader fveiculo = new BufferedReader(arq2);
+             BufferedReader fpublicacoes = new BufferedReader(arq3);
+             BufferedReader fregras = new BufferedReader(arq5);
+             BufferedReader fqualis = new BufferedReader(arq4);
+             ppgi.carregaArquivoDocentes(fdocente);
+             ppgi.carregaArquivoVeiculos(fveiculo);
+             ppgi.carregaArquivoRegras(fregras);
+             ppgi.carregaArquivoPublicacoes(fpublicacoes);
+             ppgi.carregaArquivoQualis(fqualis);
+//             ppgi.imprimeDocentes();
+//             ppgi.imprimeVeiculos();
+//             ppgi.imprimeRegras();
             // ppgi.imprimePublicacoes();
             // ppgi.imprimeRegras();
-            // arq1.close();
-            // arq2.close();
-            arq3.close();
-            // arq4.close();
-            // arq5.close();
+             arq1.close();
+             arq2.close();
+             arq3.close();
+             arq4.close();
+             arq5.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

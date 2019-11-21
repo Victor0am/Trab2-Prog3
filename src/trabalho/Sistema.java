@@ -11,9 +11,11 @@ public class Sistema{
     private HashMap<String, Veiculo> veiculosCadastrados = new HashMap<String, Veiculo>();
     private ArrayList<Publicacao> publicacoesCadastradas = new ArrayList<Publicacao>();    
     private ArrayList<Regra> regrasCadastradas = new ArrayList<Regra>();
-
+    private int anoRecredenciamento;
     /* ************************* DOCENTES ************************** */
-
+    public Sistema(int ano){
+        this.anoRecredenciamento = ano;
+    }
     /**
      * Carrega dados de docentes no sistema.
      * @param arquivo
@@ -374,9 +376,13 @@ public class Sistema{
 
     /* ************************* SAIDAS ************************** */
 
-    public void calculaResultados(){
-        for (Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()) {
-            pair.getValue().calculaPontuacao();
-        }
-    }
+//    public void calculaResultados(){
+//
+//        for (Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()) {
+//            for (Publicacao p :pair.getValue().getPublicacoes()) {
+//                String quali = veiculosCadastrados.get(p.getVeiculo()).getQualis();
+//                char tipo = veiculosCadastrados.get(p.getVeiculo()).getTipo();
+//            }
+//        }
+//    }
 }
