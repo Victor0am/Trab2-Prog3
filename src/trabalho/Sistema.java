@@ -66,7 +66,8 @@ public class Sistema{
                 this.docentesCadastrados.put(d.getCodigo(), d);
             }
             else{
-                throw new IOException("Código repetido para " +d.getNome() + ": " + d.getCodigo() +".");
+                throw new IOException("Código repetido para " +d.getNome()
+                 + ": " + d.getCodigo() +".");
             }
         }catch(IOException e){
             throw new IOException(e.getMessage());
@@ -86,14 +87,19 @@ public class Sistema{
 
     /* ************************* VEICULOS ************************** */
 
-    public void carregaArquivoVeiculos(BufferedReader arquivo){
+    /**
+     * 
+     * @param arquivo
+     * @throws IOException
+     */
+    public void carregaArquivoVeiculos(BufferedReader arquivo) throws IOException {
         try{
             String linha = arquivo.readLine();
             linha = arquivo.readLine();
             while(linha != null){
                 String[] campos = linha.split(";");
-                String sigla = campos[0];
-                String nome = campos[1];
+                String sigla = campos[0].trim();
+                String nome = campos[1].trim();
                 char tipo = campos[2].charAt(0);
                 campos[3] = campos[3].replace(',', '.');
                 double impacto = Double.parseDouble(campos[3]);
@@ -115,16 +121,33 @@ public class Sistema{
                 linha = arquivo.readLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Erro: " + e.getMessage());
+            throw new IOException(e.getMessage());
         }
     }
 
-
-    public void insereVeiculo(Veiculo v){
-        this.veiculosCadastrados.put(v.getSigla(), v);
+    /**
+     * Adiciona um veiculo à Hash de veículos cadastrados.
+     * @param v
+     * @throws IOException
+     */
+    public void insereVeiculo(Veiculo v) throws IOException {
+        try{
+            if (verificaVeiculo(v)){
+                    this.veiculosCadastrados.put(v.getSigla(), v);
+                }
+            else{
+                throw new IOException("Código repetido para " + v.getNome()
+                + ": " + v.getSigla() +".");
+            }
+        }catch(IOException e){
+            throw new IOException(e.getMessage());
+        }
     }
 
+    public boolean verificaVeiculo(Veiculo v){
+        Veiculo veiculo = veiculosCadastrados.get(v.getSigla());
+        return (veiculo == null);
+    }
 
     public void imprimeVeiculos(){
         for (Map.Entry<String,Veiculo> pair : veiculosCadastrados.entrySet()) {
@@ -155,7 +178,7 @@ public class Sistema{
                 Publicacao publicacao = null;
                 String[] campos = linha.split(";");
                 int ano = Integer.parseInt(campos[0]);
-                String veiculo = campos[1];
+                String veiculo = campos[1].trim();
                 String titulo = campos[2];
                 // Long autores = Long.parseLong(campos[3]);
                 String autores = campos[3];
@@ -283,7 +306,7 @@ public class Sistema{
             while(linha != null){
                 String[] campos = linha.split(";");
                 int ano = Integer.parseInt(campos[0]);
-                String veiculo = campos[1];
+                String veiculo = campos[1].trim();
                 if (veiculosCadastrados.get(veiculo) == null){
                     throw new IOException("Sigla de veículo não definida usada na " 
                     + "qualificação do ano “" + ano + "”: "+ veiculo + ".");

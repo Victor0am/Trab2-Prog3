@@ -9,18 +9,18 @@ Ano;Veículo;Título;Autores;Número;Volume;Local;Página Inicial;Página Final
 2016;ISWC;Expressive Multi-Level Modeling for the Semantic Web;4332944687727590,5297252436860003;15;;Berlim;53;69
 2016;RCIS;How Software Changes the World: The Role of Assumptions;5297252436860003;10;;Grenoble;1;12
 2016;AI*IA;Relationships and Events: Towards a General Theory of Reification and Truthmaking;5297252436860003;15;;Genova;237;249
-2016;QMMQ;The Design of a Core Value Ontology using Ontology Patterns;5297252436860003;3;;Gifu;183;193
-2016;ONTOBRAS;Extending an Ontology Editor for Domain-related Ontology Patterns Reuse: An Application in the Collaboration Domain;5297252436860003,1688136556728644;5;;Curitiba;1;12
+2016;QMMQ ;The Design of a Core Value Ontology using Ontology Patterns;5297252436860003;3;;Gifu;183;193
+2016;ONTOBRAS ;Extending an Ontology Editor for Domain-related Ontology Patterns Reuse: An Application in the Collaboration Domain;5297252436860003,1688136556728644;5;;Curitiba;1;12
 2016;CAISE;Using a Well-Founded Multi-Level Theory to Support the Analysis and Representation of the Powertype Pattern in Conceptual Modeling;4332944687727590,5297252436860003;28;;Slovenia;309;324
 2016;EMMSAD;Representing Dynamic Invariants in Ontologically Well-Founded Conceptual Models;4332944687727590;21;;Slovenia;303;317
 2016;EDOCW;Service Commitments and Capabilities across the ArchiMate Architectural Layers;4332944687727590,9264617752964635;20;;Vienna;1;10
-2016;ONTOBRAS;An Ontological Analysis of Capability Modeling in Defense Enterprise Architecture Frameworks;4332944687727590,5297252436860003;5;;Curitiba;1;12
+2016;ONTOBRAS ;An Ontological Analysis of Capability Modeling in Defense Enterprise Architecture Frameworks;4332944687727590,5297252436860003;5;;Curitiba;1;12
 2016;SBQS;Integrating Tools to Support Software Measurement.;8826584877205264,9264617752964635;15;;Maceió;317;331
 2016;SBQS;An Ontology-Based Approach for Software Measurement Systems Integration;8826584877205264,9264617752964635;15;;Maceió;436;450
 2016;SBQS;Semantic Documentation in Project Management. In: XV Simpósio Brasileiro de Qualidade de Software;8826584877205264,9264617752964635;15;;Maceió;451;466
 2016;SBQS;Measures Suitable for SPC: A Systematic Mapping;8826584877205264;15;;Maceió;166;180
 2016;EKAW;SEON: A Software Engineering Ontology Network;9264617752964635,8826584877205264,5297252436860003;20;;Bologna;527;542
-2016;ONTOBRAS;Process Integration in Semantic Enterprise Application Integration: a Systematic Mapping;8826584877205264,9264617752964635 ;5;;Curitiba;1;12
+2016;ONTOBRAS ;Process Integration in Semantic Enterprise Application Integration: a Systematic Mapping;8826584877205264,9264617752964635 ;5;;Curitiba;1;12
 2016;SEAMS;Model predictive control for software systems with CobRA;2762374760685577;11;;Austin;35;46
 2016;Webmedia;A Framework-based Approach for the Integration of Web-based Information Systems on the Semantic Web;2762374760685577;22;;Teresina;231;238
 2015;CAISE;We need to Discuss the Relationship: Revisiting Relationships as Modeling Constructs;5297252436860003;27;;Estocolmo;279;294
@@ -32,8 +32,8 @@ Ano;Veículo;Título;Autores;Número;Volume;Local;Página Inicial;Página Final
 2015;EDOC;OntoUML Lightweight Editor: A Model-Based Environment to Build, Evaluate and Implement Reference Ontologies.;5297252436860003,4332944687727590;19;;Melbourne;144;147
 2015;FOFAI;Towards an Ontological Analysis of Powertypes;5297252436860003,4332944687727590;1;;Buenos Aires;1;8
 2015;ICAIL;Towards A Legal Core Ontology Based on Alexy?s Theory of Fundamental Rights;5297252436860003,4332944687727590;15;;San Diego;1;12
-2015;ONTOBRAS;A Systematic Mapping of the Literature on Legal Core Ontologies;5297252436860003,4332944687727590;4;;São Paulo;1;12
-2015;ONTOBRAS;An Empirical Study to validate the Use of Ontological Guidelines in the Creation of i* Models;5297252436860003,1688136556728644;4;;São Paulo;1;12
+2015;ONTOBRAS ;A Systematic Mapping of the Literature on Legal Core Ontologies;5297252436860003,4332944687727590;4;;São Paulo;1;12
+2015;ONTOBRAS ;An Empirical Study to validate the Use of Ontological Guidelines in the Creation of i* Models;5297252436860003,1688136556728644;4;;São Paulo;1;12
 2015;PoEM;Ontology-based Modeling of Cloud Services: Challenges and Perspectives;5297252436860003,8826584877205264,9264617752964635;8;;Valencia;61;70
 2015;ER;Extending the Foundations of Ontology-based Conceptual Modeling with a Multi-Level Theory;5297252436860003,4332944687727590;34;;Estocolmo;119;133
 2015;OXFORD; A commitment-based reference ontology for services.;5297252436860003,4332944687727590,9264617752964635;1;54;;263;288
@@ -44,13 +44,13 @@ Ano;Veículo;Título;Autores;Número;Volume;Local;Página Inicial;Página Final
 2015;CogSIMA;Assessing situation models with a lightweight formal method;4332944687727590;5;;Orlando;42;48
 2015;EDOC;Towards Capturing Strategic Planning in EA;4332944687727590;19;;Adelaide;159;133
 2015;EDOC;A Semantic Foundation for Organizational Structures: A Multi-level Approach.;4332944687727590;19;;Adelaide;50;10
-2015;QMMQ;Modeling Stories for Conceptual Model Assessment;4332944687727590;2;;Estocolmo;293;303
+2015;QMMQ ;Modeling Stories for Conceptual Model Assessment;4332944687727590;2;;Estocolmo;293;303
 2015;CAISE;Aligning Enterprise Architecture with Strategic Planning;4332944687727590;27;;Estocolmo;426;437
 2015;iSys;Tools Integration for Supporting Software Measurement: A Systematic Literature Review;8826584877205264,9264617752964635;4;8;;80;108
 2015;ICEIS;Metrics to Support IT Service Maturity Models: A Systematic Mapping;8826584877205264;17;;Barcelona;330;337
 2015;SEKE;Integration of Software Measurement Supporting Tools: A Mapping Study;8826584877205264,9264617752964635 ;27;;Pittsburgh;516;521
 2015;WTDQS;Um Método para Seleção de Indicadores de Serviços de TI;8826584877205264;13;;Manaus;1;10
-2015;ONTOBRAS;Exploring Ontologies for Semantic Documentation in Project Management;8826584877205264,9264617752964635 ;4;;São Paulo;1;12
+2015;ONTOBRAS ;Exploring Ontologies for Semantic Documentation in Project Management;8826584877205264,9264617752964635 ;4;;São Paulo;1;12
 2015;PROFES;SINIS: A Method to Select Indicators for IT Services;8826584877205264;16;;Bolzano;68;86
 2015;AO; An ontology of online user feedback in software engineering;1688136556728644;3;10;;297;330
 2015;ER;A Method to Align Goals and Business Processes;1688136556728644;34;;Estocolmo;79;83
