@@ -2,6 +2,7 @@ package trabalho;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.io.*;
 import java.text.ParseException;
@@ -442,10 +443,46 @@ public class Sistema{
 
     /* ************************* SAIDAS ************************** */
 
-    public void calculaResultados(){
+    public void calculaResultados() throws IOException {
         Regra regra = escolheRegra();
+        ArrayList<Docente> docentes = new ArrayList<Docente>();
         for(Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()){
             calculaPontuacao(regra, pair.getValue());
+            docentes.add(pair.getValue());
+        }
+        BufferedWriter writer = new BufferedWriter(new FileWriter("1-recredenciamento.csv"));
+        Collections.sort(docentes, new Comparator<Docente>() {
+            @Override
+            public int compare(Docente docente, Docente t1) {
+                return docente.getNome().compareTo(t1.getNome());
+            }
+        });
+        for (Docente d: docentes) {
+            String pontuacao = String.valueOf(d.getPontuacao());
+            writer.write(d.getNome());
+            writer.write(";");
+            writer.write(pontuacao);
+            writer.write(";");
+            if (d.isCoordenador()){
+                writer.write("Coordenador");
+            }else{
+                long anos = ChronoUnit.YEARS.between(d.getDataIngresso(), regra.getDataFim());
+                if(anos < 3){
+                    writer.write("PPJ");
+                }else{
+                    anos = ChronoUnit.YEARS.between(d.getDataNascimento(), regra.getDataFim());
+                    if(anos>60){
+                        writer.write("PPS");
+                    }else{
+                        if(d.getPontuacao()>regra.getPontuacaoMinima()){
+                            writer.write("Sim");
+                        }else{
+                            writer.write("Não");
+                        }
+                    }
+                }
+            }
+            writer.newLine();
         }
     }
 }
