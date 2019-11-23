@@ -456,12 +456,10 @@ public class Sistema{
 
     /* ************************* SAIDAS ************************** */
 
-    public void calculaResultados() throws IOException {
-
-    public void calculaResultados(){
+    public void calculaResultados () throws IOException {
         Regra regra = escolheRegra();
         ArrayList<Docente> docentes = new ArrayList<Docente>();
-        for(Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()){
+        for (Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()) {
             calculaPontuacao(regra, pair.getValue());
             docentes.add(pair.getValue());
         }
@@ -472,26 +470,26 @@ public class Sistema{
                 return docente.getNome().compareTo(t1.getNome());
             }
         });
-        for (Docente d: docentes) {
+        for (Docente d : docentes) {
             String pontuacao = String.valueOf(d.getPontuacao());
             writer.write(d.getNome());
             writer.write(";");
             writer.write(pontuacao);
             writer.write(";");
-            if (d.isCoordenador()){
+            if (d.isCoordenador()) {
                 writer.write("Coordenador");
-            }else{
+            } else {
                 long anos = ChronoUnit.YEARS.between(d.getDataIngresso(), regra.getDataFim());
-                if(anos < 3){
+                if (anos < 3) {
                     writer.write("PPJ");
-                }else{
+                } else {
                     anos = ChronoUnit.YEARS.between(d.getDataNascimento(), regra.getDataFim());
-                    if(anos>60){
+                    if (anos > 60) {
                         writer.write("PPS");
-                    }else{
-                        if(d.getPontuacao()>regra.getPontuacaoMinima()){
+                    } else {
+                        if (d.getPontuacao() > regra.getPontuacaoMinima()) {
                             writer.write("Sim");
-                        }else{
+                        } else {
                             writer.write("Não");
                         }
                     }
