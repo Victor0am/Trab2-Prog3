@@ -471,16 +471,17 @@ public class Sistema{
             String pontuacao = String.valueOf(d.getPontuacao());
             writer.append(d.getNome());
             writer.append(";");
+            pontuacao.replace(".", ",");
             writer.append(pontuacao);
             writer.append(";");
             if (d.isCoordenador()) {
                 writer.append("Coordenador");
             } else {
-                long anos = ChronoUnit.YEARS.between(d.getDataIngresso(), regra.getDataFim());
+                long anos = ChronoUnit.YEARS.between(d.getDataIngresso(), regra.getDataInicio());
                 if (anos < 3) {
                     writer.append("PPJ");
                 } else {
-                    anos = ChronoUnit.YEARS.between(d.getDataNascimento(), regra.getDataFim());
+                    anos = ChronoUnit.YEARS.between(d.getDataNascimento(), regra.getDataInicio());
                     if (anos > 60) {
                         writer.append("PPS");
                     } else {
@@ -496,4 +497,18 @@ public class Sistema{
         }
         writer.close();
     }
+
+
+//    public void calculaEstatísticas() throws IOException {
+//        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("3-recredenciamento.csv")));
+//        writer.write("Qualis;Qtd. Artigos;Média Artigos / Docente");
+//        writer.newLine();
+//        for (Map.Entry <String, Veiculo> par : veiculosCadastrados.entrySet()) {
+//
+//        }
+//        for(int i = 0; i < 8; i++){
+//
+//        }
+//
+//    }
 }
