@@ -66,9 +66,10 @@ public class Main {
             // ppgi.imprimeDocentes();
 //             ppgi.imprimeVeiculos();
 //             ppgi.imprimeRegras();
-            System.out.println("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
-            ppgi.imprimePublicacoes();
+//            System.out.println("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
+//            ppgi.imprimePublicacoes();
 //             ppgi.imprimeRegras();
+            ppgi.calculaResultados();
             arq1.close();
             arq2.close();
             arq3.close();

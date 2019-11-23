@@ -99,11 +99,9 @@ public class Sistema{
     }
 
     public void calculaPontuacao(Regra regra, Docente docente){
-        System.out.println("-------------------------------------------------------------------");
         double pontuacao = 0;
         for (Publicacao p :docente.getPublicacoes()) {
             Veiculo veiculo = veiculosCadastrados.get(p.getVeiculo());
-            System.out.println(veiculo.getSigla());
             Set<Integer> anosSet = veiculo.getQualis().keySet();
             Iterator <Integer> iterator= anosSet.iterator();
             ArrayList<Integer> chaves = new ArrayList<Integer>();
@@ -121,7 +119,6 @@ public class Sistema{
                         }else{
                             pontuacao += regra.getPontos().get(valorQuali(veiculo.getQualis().get(j)));
                         }
-                        System.out.println(pontuacao);
                         contador ++;
                     }
                     if(j>maiorChave){
@@ -136,10 +133,8 @@ public class Sistema{
                     pontuacao += regra.getPontos().get(valorQuali(veiculo.getQualis().get(maiorChave)));
                 }
             }
-            System.out.println(pontuacao);
         }
         docente.setPontuacao(pontuacao);
-        System.out.println(pontuacao);
     }
 
     /* ************************* VEICULOS ************************** */
@@ -463,7 +458,9 @@ public class Sistema{
             calculaPontuacao(regra, pair.getValue());
             docentes.add(pair.getValue());
         }
-        BufferedWriter writer = new BufferedWriter(new FileWriter("1-recredenciamento.csv"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("1-recredenciamento.csv")));
+        writer.write("Docente;Pontuação;Recredenciado?");
+        writer.newLine();
         Collections.sort(docentes, new Comparator<Docente>() {
             @Override
             public int compare(Docente docente, Docente t1) {
@@ -472,30 +469,31 @@ public class Sistema{
         });
         for (Docente d : docentes) {
             String pontuacao = String.valueOf(d.getPontuacao());
-            writer.write(d.getNome());
-            writer.write(";");
-            writer.write(pontuacao);
-            writer.write(";");
+            writer.append(d.getNome());
+            writer.append(";");
+            writer.append(pontuacao);
+            writer.append(";");
             if (d.isCoordenador()) {
-                writer.write("Coordenador");
+                writer.append("Coordenador");
             } else {
                 long anos = ChronoUnit.YEARS.between(d.getDataIngresso(), regra.getDataFim());
                 if (anos < 3) {
-                    writer.write("PPJ");
+                    writer.append("PPJ");
                 } else {
                     anos = ChronoUnit.YEARS.between(d.getDataNascimento(), regra.getDataFim());
                     if (anos > 60) {
-                        writer.write("PPS");
+                        writer.append("PPS");
                     } else {
                         if (d.getPontuacao() > regra.getPontuacaoMinima()) {
-                            writer.write("Sim");
+                            writer.append("Sim");
                         } else {
-                            writer.write("Não");
+                            writer.append("Não");
                         }
                     }
                 }
             }
             writer.newLine();
         }
+        writer.close();
     }
 }
