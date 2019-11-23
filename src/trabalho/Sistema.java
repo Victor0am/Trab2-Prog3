@@ -233,7 +233,7 @@ public class Sistema{
                 String[] campos = linha.split(";");
                 int ano = Integer.parseInt(campos[0]);
                 String veiculo = campos[1].trim();
-                String titulo = campos[2];
+                String titulo = campos[2].trim();
                 // Long autores = Long.parseLong(campos[3]);
                 String autores = campos[3];
                 String[] autor = autores.split(",");
@@ -535,6 +535,12 @@ public class Sistema{
         bw.write("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
         bw.newLine();
         String aux;
+        Collections.sort(publicacoesCadastradas, new Comparator<Publicacao>() {
+            @Override
+            public int compare(Publicacao p1, Publicacao p2) {
+                return p1.getTitulo().compareTo(p2.getTitulo());
+            }
+        });
         Collections.sort(publicacoesCadastradas, new Comparator<Publicacao>() {
             @Override
             public int compare(Publicacao p1, Publicacao p2) {
