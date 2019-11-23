@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.io.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 
 
@@ -533,13 +535,34 @@ public class Sistema{
         bw.write("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
         bw.newLine();
         String aux;
+        Collections.sort(publicacoesCadastradas, new Comparator<Publicacao>() {
+            @Override
+            public int compare(Publicacao p1, Publicacao p2) {
+                return p1.getVeiculo().compareTo(p2.getVeiculo());
+            }
+        });
+        Collections.sort(publicacoesCadastradas, new Comparator<Publicacao>() {
+            @Override
+            public int compare(Publicacao p1, Publicacao p2) {
+                return p1.getAno() > p2.getAno()? -1 : (p1.getAno() < p2.getAno()? 1 : 0);
+                // return p1.getAno().compareTo(p2.getAno());
+            }
+        });
+        Collections.sort(publicacoesCadastradas, new Comparator<Publicacao>() {
+            @Override
+            public int compare(Publicacao p1, Publicacao p2) {
+                return p1.getQuali().compareTo(p2.getQuali());
+            }
+        });
         for (Publicacao p : publicacoesCadastradas){
             aux = String.valueOf(p.getAno());
             bw.append(aux + ';');
             bw.append(p.getVeiculo() + ';');
             bw.append(veiculosCadastrados.get(p.getVeiculo()).getNome() + ';');
             bw.append(p.getQuali() + ';');
-            aux = String.valueOf(veiculosCadastrados.get(p.getVeiculo()).getFatorImpacto());
+            NumberFormat formatter = new DecimalFormat("#0.000"); 
+            aux = String.valueOf(formatter.format(veiculosCadastrados.get(p.getVeiculo()).getFatorImpacto()));
+            aux = aux.replace(".", ",");
             bw.append(aux + ';');
             bw.append(p.getTitulo() + ';');
             for (Long l: p.getAutores()){
