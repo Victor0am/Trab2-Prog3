@@ -10,6 +10,7 @@ public class Publicacao{
     private int paginaInicial;
     private int paginaFinal;
     private Long autor;
+    private ArrayList<Long> autor = new ArrayList<Long>;
 
     public int getAno() {
         return ano;

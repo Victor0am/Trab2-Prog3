@@ -323,6 +323,7 @@ public class Sistema{
             r.imprime();
         }
     }
+    
     public int valorQuali(String quali){
         switch(quali){
             case "A1":
@@ -344,6 +345,7 @@ public class Sistema{
                 return 7;
         }
     }
+
     public boolean checaQuali(String quali){
         switch(quali){
             case "A1":
@@ -359,6 +361,7 @@ public class Sistema{
                 return false;
         }
     }
+
     public Regra escolheRegra(){
         Regra r = null;
         for (Regra regra: regrasCadastradas) {
@@ -399,6 +402,7 @@ public class Sistema{
 
     /* ************************* SAIDAS ************************** */
 
+
     public void calculaResultados(){
         Regra regra = escolheRegra();
         for (Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()) {
@@ -416,4 +420,11 @@ public class Sistema{
             }
         }
     }
+
+    /* ========== Publicações ========== */
+
+    public void listaPublicacoes(){
+
+    }
+    
 }

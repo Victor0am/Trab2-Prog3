@@ -52,33 +52,34 @@ public class Main {
         // Scanner leitor = new Scanner(System.in);
          Sistema ppgi = new Sistema(anoDaRegra);
         try  {
-             BufferedReader fdocente = new BufferedReader(arq1);
-             BufferedReader fveiculo = new BufferedReader(arq2);
-             BufferedReader fpublicacoes = new BufferedReader(arq3);
-             BufferedReader fregras = new BufferedReader(arq5);
-             BufferedReader fqualis = new BufferedReader(arq4);
-             ppgi.carregaArquivoDocentes(fdocente);
-             ppgi.carregaArquivoVeiculos(fveiculo);
-             ppgi.carregaArquivoRegras(fregras);
-             ppgi.carregaArquivoPublicacoes(fpublicacoes);
-             ppgi.carregaArquivoQualis(fqualis);
+            BufferedReader fdocente = new BufferedReader(arq1);
+            BufferedReader fveiculo = new BufferedReader(arq2);
+            BufferedReader fpublicacoes = new BufferedReader(arq3);
+            BufferedReader fregras = new BufferedReader(arq5);
+            BufferedReader fqualis = new BufferedReader(arq4);
+            ppgi.carregaArquivoDocentes(fdocente);
+            ppgi.carregaArquivoVeiculos(fveiculo);
+            ppgi.carregaArquivoRegras(fregras);
+            ppgi.carregaArquivoPublicacoes(fpublicacoes);
+            ppgi.carregaArquivoQualis(fqualis);
 //             ppgi.imprimeDocentes();
 //             ppgi.imprimeVeiculos();
 //             ppgi.imprimeRegras();
-            // ppgi.imprimePublicacoes();
-            // ppgi.imprimeRegras();
-             arq1.close();
-             arq2.close();
-             arq3.close();
-             arq4.close();
-             arq5.close();
+        // ppgi.imprimePublicacoes();
+        // ppgi.imprimeRegras();
+        
+            arq1.close();
+            arq2.close();
+            arq3.close();
+            arq4.close();
+            arq5.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
         catch (IllegalArgumentException e){
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 

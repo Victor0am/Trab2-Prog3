@@ -64,7 +64,7 @@ public class Docente{
         this.coordenador = coordenador;
     }
 
-    public void imprimeDocente(){
+    public void imprime(){
         System.out.println("=============================");
         SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
         String data;
