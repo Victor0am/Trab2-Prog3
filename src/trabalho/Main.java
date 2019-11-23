@@ -60,12 +60,16 @@ public class Main {
             ppgi.carregaArquivoDocentes(fdocente);
             ppgi.carregaArquivoVeiculos(fveiculo);
             ppgi.carregaArquivoRegras(fregras);
-            ppgi.carregaArquivoPublicacoes(fpublicacoes);
             ppgi.carregaArquivoQualis(fqualis);
+            ppgi.carregaArquivoPublicacoes(fpublicacoes);
             // ppgi.calculaResultados();
             // ppgi.imprimeDocentes();
 //             ppgi.imprimeVeiculos();
 //             ppgi.imprimeRegras();
+            // System.out.println("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File("2-publicacoes.csv")));
+            ppgi.listaPublicacoes(bw);
+            // ppgi.imprimePublicacoes();
 //            System.out.println("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
 //            ppgi.imprimePublicacoes();
 //             ppgi.imprimeRegras();
