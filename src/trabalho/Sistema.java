@@ -263,19 +263,18 @@ public class Sistema{
                 try{
                     int i = v.getQualis().size();
                     for (Map.Entry<Integer,String> pair : v.getQualis().entrySet()) {
-                        if (pair.getKey() > anoRecredenciamento){
+                        if (pair.getKey() > ano){
                             i--;
                             continue;
                         }
                         if (!trava){
                             menorano = pair.getKey();
-                            menor = anoRecredenciamento - pair.getKey();
+                            menor = ano - pair.getKey();
                             trava = true;
-                            continue;
                         }else{
-                            if (anoRecredenciamento - pair.getKey() < menor){
+                            if (ano - pair.getKey() < menor){
                                 menorano = pair.getKey();
-                                menor = anoRecredenciamento - pair.getKey();
+                                menor = ano - pair.getKey();
                             }
                         }
                     }
@@ -286,13 +285,6 @@ public class Sistema{
                     e.printStackTrace();
                 }
                 publicacao.setQuali(v.getQualis().get(menorano));
-                // for (int i = 0; i < autor.length; i++){
-                //     autor[i] = autor[i].replaceAll(" ", "");
-                //     autorLong.add(Long.parseLong(autor[i]));
-                //     publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong.get(i));
-                //     atribuiPublicacao(publicacao);
-                //     registraPublicacao(publicacao);
-                // }
                 publicacoesCadastradas.add(publicacao);
                 linha = arquivo.readLine();
             }
@@ -578,16 +570,16 @@ public class Sistema{
     }
 
 
-//    public void calculaEstatísticas() throws IOException {
-//        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("3-recredenciamento.csv")));
-//        writer.write("Qualis;Qtd. Artigos;Média Artigos / Docente");
-//        writer.newLine();
-//        for (Map.Entry <String, Veiculo> par : veiculosCadastrados.entrySet()) {
-//
-//        }
-//        for(int i = 0; i < 8; i++){
-//
-//        }
-//
-//    }
+    public void calculaEstatísticas() throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("3-recredenciamento.csv")));
+        writer.write("Qualis;Qtd. Artigos;Média Artigos / Docente");
+        writer.newLine();
+        for (Map.Entry <String, Veiculo> par : veiculosCadastrados.entrySet()) {
+
+        }
+        for(int i = 0; i < 8; i++){
+
+        }
+
+    }
 }
