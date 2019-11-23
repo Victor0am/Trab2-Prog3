@@ -62,11 +62,12 @@ public class Main {
             ppgi.carregaArquivoRegras(fregras);
             ppgi.carregaArquivoPublicacoes(fpublicacoes);
             ppgi.carregaArquivoQualis(fqualis);
-            ppgi.calculaResultados();
-            ppgi.imprimeDocentes();
+            // ppgi.calculaResultados();
+            // ppgi.imprimeDocentes();
 //             ppgi.imprimeVeiculos();
 //             ppgi.imprimeRegras();
-//             ppgi.imprimePublicacoes();
+            System.out.println("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
+            ppgi.imprimePublicacoes();
 //             ppgi.imprimeRegras();
             arq1.close();
             arq2.close();

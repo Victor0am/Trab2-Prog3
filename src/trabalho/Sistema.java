@@ -64,7 +64,7 @@ public class Sistema{
 
     public void imprimeDocentes(){
         for (Map.Entry<Long,Docente> pair : docentesCadastrados.entrySet()) {
-            pair.getValue().imprimeDocente();
+            pair.getValue().imprime();
         }
     }
 
@@ -239,7 +239,8 @@ public class Sistema{
                 // Long autores = Long.parseLong(campos[3]);
                 String autores = campos[3];
                 String[] autor = autores.split(",");
-                long[] autorLong = new long [autor.length];
+                ArrayList<Long> autorLong = new ArrayList<Long>();
+                // long[] autorLong = new long [autor.length];
                 int numero = Integer.parseInt(campos[4]);
                 int volume;
                 String local;
@@ -252,12 +253,18 @@ public class Sistema{
                 }
                 int pfinal = Integer.parseInt(campos[8]);
                 for (int i = 0; i < autor.length; i++){
-                    autor[i] = autor[i].replaceAll(" ", "");
-                    autorLong[i] = Long.parseLong(autor[i]);
-                    publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong[i]);
-                    atribuiPublicacao(publicacao);
-                    registraPublicacao(publicacao);
+                    autorLong.add(Long.parseLong(autor[i].trim()));
                 }
+                publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong);
+                atribuiPublicacao(publicacao);
+                registraPublicacao(publicacao);
+                // for (int i = 0; i < autor.length; i++){
+                //     autor[i] = autor[i].replaceAll(" ", "");
+                //     autorLong.add(Long.parseLong(autor[i]));
+                //     publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong.get(i));
+                //     atribuiPublicacao(publicacao);
+                //     registraPublicacao(publicacao);
+                // }
                 publicacoesCadastradas.add(publicacao);
                 linha = arquivo.readLine();
             }
@@ -268,7 +275,7 @@ public class Sistema{
 
     public void imprimePublicacoes(){
         for (Publicacao p : publicacoesCadastradas){
-            p.imprime();
+            p.imprime(docentesCadastrados, veiculosCadastrados);
         }
     }
 
@@ -279,13 +286,16 @@ public class Sistema{
      */
     public void atribuiPublicacao(Publicacao p) throws IOException {
         try {
-            Docente docente = docentesCadastrados.get(p.getAutor());
-            if (docente == null){
-                throw new IOException("Código de docente não definido usado na "
-                + "publicação “" + p.getTitulo() + "”: " + p.getVeiculo() +".");
-            }
-            else{
-                docentesCadastrados.get(p.getAutor()).getPublicacoes().add(p);
+            for (Long l: p.getAutores()){
+                Docente docente = docentesCadastrados.get(l);
+                // Docente docente = docentesCadastrados.get(p.getAutor());
+                if (docente == null){
+                    throw new IOException("Código de docente não definido usado na "
+                    + "publicação “" + p.getTitulo() + "”: " + p.getVeiculo() +".");
+                }
+                else{
+                    docente.getPublicacoes().add(p);
+                }
             }
         }catch(IOException e){
             throw new IOException(e.getMessage());
