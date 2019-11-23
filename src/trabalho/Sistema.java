@@ -263,19 +263,18 @@ public class Sistema{
                 try{
                     int i = v.getQualis().size();
                     for (Map.Entry<Integer,String> pair : v.getQualis().entrySet()) {
-                        if (pair.getKey() > anoRecredenciamento){
+                        if (pair.getKey() > ano){
                             i--;
                             continue;
                         }
                         if (!trava){
                             menorano = pair.getKey();
-                            menor = anoRecredenciamento - pair.getKey();
+                            menor = ano - pair.getKey();
                             trava = true;
-                            continue;
                         }else{
-                            if (anoRecredenciamento - pair.getKey() < menor){
+                            if (ano - pair.getKey() < menor){
                                 menorano = pair.getKey();
-                                menor = anoRecredenciamento - pair.getKey();
+                                menor = ano - pair.getKey();
                             }
                         }
                     }
@@ -286,13 +285,6 @@ public class Sistema{
                     e.printStackTrace();
                 }
                 publicacao.setQuali(v.getQualis().get(menorano));
-                // for (int i = 0; i < autor.length; i++){
-                //     autor[i] = autor[i].replaceAll(" ", "");
-                //     autorLong.add(Long.parseLong(autor[i]));
-                //     publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong.get(i));
-                //     atribuiPublicacao(publicacao);
-                //     registraPublicacao(publicacao);
-                // }
                 publicacoesCadastradas.add(publicacao);
                 linha = arquivo.readLine();
             }
@@ -503,16 +495,17 @@ public class Sistema{
             String pontuacao = String.valueOf(d.getPontuacao());
             writer.append(d.getNome());
             writer.append(";");
+            pontuacao.replace(".", ",");
             writer.append(pontuacao);
             writer.append(";");
             if (d.isCoordenador()) {
                 writer.append("Coordenador");
             } else {
-                long anos = ChronoUnit.YEARS.between(d.getDataIngresso(), regra.getDataFim());
+                long anos = ChronoUnit.YEARS.between(d.getDataIngresso(), regra.getDataInicio());
                 if (anos < 3) {
                     writer.append("PPJ");
                 } else {
-                    anos = ChronoUnit.YEARS.between(d.getDataNascimento(), regra.getDataFim());
+                    anos = ChronoUnit.YEARS.between(d.getDataNascimento(), regra.getDataInicio());
                     if (anos > 60) {
                         writer.append("PPS");
                     } else {
@@ -566,7 +559,7 @@ public class Sistema{
             bw.append(p.getVeiculo() + ';');
             bw.append(veiculosCadastrados.get(p.getVeiculo()).getNome() + ';');
             bw.append(p.getQuali() + ';');
-            NumberFormat formatter = new DecimalFormat("#0.000"); 
+            NumberFormat formatter = new DecimalFormat("#0.000");
             aux = String.valueOf(formatter.format(veiculosCadastrados.get(p.getVeiculo()).getFatorImpacto()));
             aux = aux.replace(".", ",");
             bw.append(aux + ';');
@@ -580,5 +573,19 @@ public class Sistema{
             bw.newLine();
         }
         bw.close();
+    }
+
+
+    public void calculaEstatísticas() throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("3-recredenciamento.csv")));
+        writer.write("Qualis;Qtd. Artigos;Média Artigos / Docente");
+        writer.newLine();
+        for (Map.Entry <String, Veiculo> par : veiculosCadastrados.entrySet()) {
+
+        }
+        for(int i = 0; i < 8; i++){
+
+        }
+
     }
 }
