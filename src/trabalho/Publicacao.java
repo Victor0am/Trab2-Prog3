@@ -10,6 +10,8 @@ public class Publicacao{
     private int paginaInicial;
     private int paginaFinal;
     private Long autor;
+    private String quali;
+    private ArrayList<Long> autores = new ArrayList<Long>();
 
     public int getAno() {
         return ano;
@@ -21,6 +23,10 @@ public class Publicacao{
 
     public Long getAutor() {
         return autor;
+    }
+
+    public ArrayList<Long> getAutores() {
+        return autores;
     }
 
     public void setAutor(Long autor) {
@@ -59,20 +65,37 @@ public class Publicacao{
         this.paginaFinal = paginaFinal;
     }
 
-    public Publicacao(int ano, String veiculo, String titulo, int paginaInicial, int paginaFinal, Long autor) {
+    public Publicacao(int ano, String veiculo, String titulo, int paginaInicial, int paginaFinal, ArrayList<Long> autores) {
         this.ano = ano;
         this.veiculo = veiculo;
         this.titulo = titulo;
         this.paginaInicial = paginaInicial;
         this.paginaFinal = paginaFinal;
-        this.autor = autor;
+        this.autores = autores;
     }
 
-    public void imprime(){
-        System.out.printf("\tTitulo:\t\t%s\n", titulo);
-        System.out.printf("\tVeículo:\t\t%s\n", veiculo);
-        System.out.printf("\tAno:\t\t%d\n", ano);
-        System.out.printf("\tPágina inicial:\t%d\n", paginaInicial);
-        System.out.printf("\tPágina final:\t%d\n", paginaFinal);
+    // public Publicacao(int ano, String veiculo, String titulo, int paginaInicial, int paginaFinal, Long autor) {
+    //     this.ano = ano;
+    //     this.veiculo = veiculo;
+    //     this.titulo = titulo;
+    //     this.paginaInicial = paginaInicial;
+    //     this.paginaFinal = paginaFinal;
+    //     this.autor = autor;
+    // }
+
+    public void imprime(HashMap<Long,Docente> docentesCadastrados, HashMap<String,Veiculo> veiculosCadastrados){
+        System.out.printf("%d;%s;%s;%.3f;%s;", ano, veiculo, 
+            veiculosCadastrados.get(veiculo).getNome(),
+            veiculosCadastrados.get(veiculo).getFatorImpacto(),
+            titulo);
+        // System.out.printf("\tVeículo:\t\t%s\n", veiculo);
+        // System.out.printf("\tTitulo:\t\t%s\n", titulo);
+        for (Long l: autores){
+            System.out.printf("%s", docentesCadastrados.get(l).getNome());
+            if (l != autores.get(autores.size() - 1)){
+                System.out.print(",");
+            }
+        }
+        System.out.println();
     }
 }

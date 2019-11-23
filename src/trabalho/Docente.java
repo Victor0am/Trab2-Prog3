@@ -74,7 +74,7 @@ public class Docente{
         this.coordenador = coordenador;
     }
 
-    public void imprimeDocente(){
+    public void imprime(){
         System.out.println("=============================");
         DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String data;
@@ -87,15 +87,15 @@ public class Docente{
         System.out.println("Coordenador: " + 
         ((coordenador == true)? "Sim" : "Não" ));
         System.out.println("Publicações:");
-        if (publicacoes.isEmpty()){
-            System.out.println("\tDocente não possui publicações registradas");
-        }
-        else{
-            for (Publicacao p : publicacoes){
-                System.out.println("\t-----------------------------");
-                p.imprime();
-            }
-        }
+        // if (publicacoes.isEmpty()){
+        //     System.out.println("\tDocente não possui publicações registradas");
+        // }
+        // else{
+        //     for (Publicacao p : publicacoes){
+        //         System.out.println("\t-----------------------------");
+        //         p.imprime();
+        //     }
+        // }
         System.out.println("Pontuação:\t");
         System.out.println(pontuacao);
     }

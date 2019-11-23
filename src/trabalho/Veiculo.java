@@ -67,9 +67,9 @@ public class Veiculo{
         for (Map.Entry<Integer, String> pair : qualis.entrySet()) {
             System.out.printf("Ano:\t%d\nQuali:\t%s\n",pair.getKey(),pair.getValue());
         }
-        for (Publicacao p: publicacoes){
-            p.imprime();
-        }
+        // for (Publicacao p: publicacoes){
+        //     p.imprime();
+        // }
     }
 
     public Veiculo(String sigla, String nome, char tipo, double fatorImpacto) {
