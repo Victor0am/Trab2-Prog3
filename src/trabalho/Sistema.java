@@ -50,7 +50,7 @@ public class Sistema{
                 boolean coordenador = false;
                 // System.out.println(linha);
                 if (campos.length == 5) {
-                    if (campos[4] == "X") {
+                    if (campos[4].equals("X")) {
                         coordenador = true;
                     }
                 }
@@ -104,35 +104,11 @@ public class Sistema{
         double pontuacao = 0;
         for (Publicacao p :docente.getPublicacoes()) {
             Veiculo veiculo = veiculosCadastrados.get(p.getVeiculo());
-            Set<Integer> anosSet = veiculo.getQualis().keySet();
-            Iterator <Integer> iterator= anosSet.iterator();
-            ArrayList<Integer> chaves = new ArrayList<Integer>();
-            int contador = 0;
-            while (iterator.hasNext()){
-                Integer elemento = iterator.next();
-                chaves.add(elemento);
-            }
-            int maiorChave = chaves.get(0);
-            for (int i = anoRecredenciamento - regra.getAnosVigencia(); i<anoRecredenciamento; i++){
-                for(int j : chaves){
-                    if(j == i){
-                        if (veiculo.getTipo() == 'P') {
-                            pontuacao += regra.getMultiplicador()*regra.getPontos().get(valorQuali(veiculo.getQualis().get(j)));
-                        }else{
-                            pontuacao += regra.getPontos().get(valorQuali(veiculo.getQualis().get(j)));
-                        }
-                        contador ++;
-                    }
-                    if(j>maiorChave){
-                        maiorChave = j;
-                    }
-                }
-            }
-            if(contador==0){
+            if(p.getAno() < anoRecredenciamento){
                 if (veiculo.getTipo() == 'P') {
-                    pontuacao += regra.getMultiplicador()*regra.getPontos().get(valorQuali(veiculo.getQualis().get(maiorChave)));
+                    pontuacao += regra.getMultiplicador()*regra.getPontos().get(valorQuali(p.getQuali()));
                 }else{
-                    pontuacao += regra.getPontos().get(valorQuali(veiculo.getQualis().get(maiorChave)));
+                    pontuacao += regra.getPontos().get(valorQuali(p.getQuali()));
                 }
             }
         }
@@ -254,7 +230,7 @@ public class Sistema{
                     autorLong.add(Long.parseLong(autor[i].trim()));
                 }
                 publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong);
-                atribuiPublicacao(publicacao);
+
                 registraPublicacao(publicacao);
                 Veiculo v = veiculosCadastrados.get(veiculo);
                 int menor = 0;
@@ -286,6 +262,7 @@ public class Sistema{
                 }
                 publicacao.setQuali(v.getQualis().get(menorano));
                 publicacoesCadastradas.add(publicacao);
+                atribuiPublicacao(publicacao);
                 linha = arquivo.readLine();
             }
         } catch (IOException e) {
@@ -315,6 +292,9 @@ public class Sistema{
                 }
                 else{
                     docente.getPublicacoes().add(p);
+                    if(!docente.getQualisObtidos().get(valorQuali(p.getQuali()))){
+                        docente.getQualisObtidos().set(valorQuali(p.getQuali()), true);
+                    }
                 }
             }
         }catch(IOException e){
@@ -435,6 +415,28 @@ public class Sistema{
         }
     }
 
+    public String retornaQuali(int numero){
+        switch (numero){
+            case 0:
+                return "A1";
+            case 1:
+                return "A2";
+            case 2:
+                return "B1";
+            case 3:
+                return "B2";
+            case 4:
+                return "B3";
+            case 5:
+                return "B4";
+            case 6:
+                return "B5";
+            case 7:
+            default:
+                return "C";
+        }
+    }
+
     public Regra escolheRegra(){
         Regra r = null;
         for (Regra regra: regrasCadastradas) {
@@ -495,7 +497,7 @@ public class Sistema{
             String pontuacao = String.valueOf(d.getPontuacao());
             writer.append(d.getNome());
             writer.append(";");
-            pontuacao.replace(".", ",");
+            pontuacao = pontuacao.replace(".", ",");
             writer.append(pontuacao);
             writer.append(";");
             if (d.isCoordenador()) {
@@ -506,7 +508,7 @@ public class Sistema{
                     writer.append("PPJ");
                 } else {
                     anos = ChronoUnit.YEARS.between(d.getDataNascimento(), regra.getDataInicio());
-                    if (anos > 60) {
+                    if (anos >= 60) {
                         writer.append("PPS");
                     } else {
                         if (d.getPontuacao() > regra.getPontuacaoMinima()) {
@@ -570,16 +572,32 @@ public class Sistema{
     }
 
 
-    public void calculaEstatísticas() throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("3-recredenciamento.csv")));
+    public void calculaEstatisticas() throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("3-estatisticas.csv")));
         writer.write("Qualis;Qtd. Artigos;Média Artigos / Docente");
         writer.newLine();
-        for (Map.Entry <String, Veiculo> par : veiculosCadastrados.entrySet()) {
-
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        ArrayList<Integer> qtdArtigos = new ArrayList<Integer>();
+        ArrayList<Double> artPorDoc = new ArrayList<Double>();
+        for(int i = 0; i< 8; i++){
+            qtdArtigos.add(0);
+            artPorDoc.add(0.0);
         }
-        for(int i = 0; i < 8; i++){
-
+        for(Publicacao p: publicacoesCadastradas){
+            int ajudante = qtdArtigos.get(valorQuali(p.getQuali()));
+            ajudante++;
+            qtdArtigos.set(valorQuali(p.getQuali()), ajudante);
+            double ajudante2 = artPorDoc.get(valorQuali(p.getQuali()));
+            ajudante2+= (1.0/p.getAutores().size());
+            artPorDoc.set(valorQuali(p.getQuali()), ajudante2);
         }
 
+        for (int i = 0; i<8; i++){
+            String aux = String.valueOf(formatter.format(artPorDoc.get(i)));
+            aux = aux.replace(".", ",");
+            writer.append(retornaQuali(i)+";"+qtdArtigos.get(i)+";"+aux);
+            writer.newLine();
+        }
+        writer.close();
     }
 }

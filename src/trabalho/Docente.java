@@ -13,6 +13,7 @@ public class Docente{
     private boolean coordenador;
     private ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
     private double pontuacao;
+    private ArrayList<Boolean> qualisObtidos = new ArrayList<Boolean>();
 
     public long getCodigo() {
         return codigo;
@@ -66,12 +67,19 @@ public class Docente{
         this.pontuacao = pontuacao;
     }
 
+    public ArrayList<Boolean> getQualisObtidos() {
+        return qualisObtidos;
+    }
+
     public Docente(long codigo, String nome, LocalDate nascimento, LocalDate ingresso, boolean coordenador){
         this.codigo = codigo;
         this.nome = nome;
         this.dataIngresso = ingresso;
         this.dataNascimento = nascimento;
         this.coordenador = coordenador;
+        for(int i = 0; i< 8; i++){
+            qualisObtidos.add(false);
+        }
     }
 
     public void imprime(){

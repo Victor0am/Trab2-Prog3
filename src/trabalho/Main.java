@@ -74,6 +74,7 @@ public class Main {
 //            ppgi.imprimePublicacoes();
 //             ppgi.imprimeRegras();
             ppgi.calculaResultados();
+            ppgi.calculaEstatisticas();
             arq1.close();
             arq2.close();
             arq3.close();
