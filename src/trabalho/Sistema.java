@@ -1,6 +1,7 @@
 package trabalho;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.io.*;
 import java.text.ParseException;
@@ -12,10 +13,17 @@ public class Sistema{
     private ArrayList<Publicacao> publicacoesCadastradas = new ArrayList<Publicacao>();    
     private ArrayList<Regra> regrasCadastradas = new ArrayList<Regra>();
     private int anoRecredenciamento;
-    /* ************************* DOCENTES ************************** */
+
     public Sistema(int ano){
         this.anoRecredenciamento = ano;
     }
+
+    public int getAnoRecredenciamento() {
+        return anoRecredenciamento;
+    }
+
+    /* ************************* DOCENTES ************************** */
+
     /**
      * Carrega dados de docentes no sistema.
      * @param arquivo
@@ -29,8 +37,13 @@ public class Sistema{
                 String[] campos = linha.split(";");
                 long codigo = Long.parseLong(campos[0]);
                 String nome = campos[1];
-                Date nascimento = new SimpleDateFormat("dd/MM/yyyy").parse(campos[2]);
-                Date ingresso = new SimpleDateFormat("dd/MM/yyyy").parse(campos[3]);
+                String data [] = campos[2].split("/");
+                int dia;
+                int mes;
+                int ano;
+                LocalDate nascimento =  LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
+                data  = campos[3].split("/");
+                LocalDate ingresso =   LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
                 boolean coordenador = false;
                 // System.out.println(linha);
                 if (campos.length == 5) {
@@ -44,10 +57,8 @@ public class Sistema{
             }
         } catch (IOException e) {
             throw new IOException(e.getMessage());
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
-        
+
     }
 
 
@@ -263,8 +274,11 @@ public class Sistema{
             linha = arquivo.readLine();
             while(linha != null){
                 String[] campos = linha.split(";");
-                Date dataInicio = new SimpleDateFormat("dd/MM/yyyy").parse(campos[0]);
-                Date dataFim = new SimpleDateFormat("dd/MM/yyyy").parse(campos[1]);
+                String data [] = campos[0].split("/");
+
+                LocalDate dataInicio = LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
+                data = campos[1].split("/");
+                LocalDate dataFim = LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
                 String qualis[] = campos[2].split(",");
                 String pontos[] = campos[3].split(",");
                 for (String quali:qualis) {
@@ -281,9 +295,6 @@ public class Sistema{
                 linha = arquivo.readLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Erro: " + e.getMessage());
-        } catch (ParseException e){
             e.printStackTrace();
             System.out.println("Erro: " + e.getMessage());
         }
@@ -329,9 +340,8 @@ public class Sistema{
             case "B5":
                 return 6;
             case "C":
-                return 7;
             default:
-                return 0;
+                return 7;
         }
     }
     public boolean checaQuali(String quali){
@@ -348,6 +358,19 @@ public class Sistema{
             default:
                 return false;
         }
+    }
+    public Regra escolheRegra(){
+        Regra r = null;
+        for (Regra regra: regrasCadastradas) {
+            if(regra.getDataInicio().getYear()==anoRecredenciamento){
+                return regra;
+            }else{
+                if(r == null || (r.getDataInicio().getYear()<regra.getDataInicio().getYear())&& r.getDataInicio().getYear()<anoRecredenciamento){
+                    r = regra;
+                }
+            }
+        }
+        return r;
     }
 
     /* ************************* QUALIS ************************** */
@@ -376,13 +399,21 @@ public class Sistema{
 
     /* ************************* SAIDAS ************************** */
 
-//    public void calculaResultados(){
-//
-//        for (Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()) {
-//            for (Publicacao p :pair.getValue().getPublicacoes()) {
-//                String quali = veiculosCadastrados.get(p.getVeiculo()).getQualis();
-//                char tipo = veiculosCadastrados.get(p.getVeiculo()).getTipo();
-//            }
-//        }
-//    }
+    public void calculaResultados(){
+        Regra regra = escolheRegra();
+        for (Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()) {
+            int pontuacao = 0;
+            for (Publicacao p :pair.getValue().getPublicacoes()) {
+                Veiculo veiculo = veiculosCadastrados.get(p.getVeiculo());
+                ArrayList<Integer>  chaves= (ArrayList<Integer>) veiculo.getQualis().keySet();
+                for (int i = anoRecredenciamento - regra.getAnosVigencia(); i<anoRecredenciamento; i++){
+                    for(int j : chaves){
+                        if(j == i){
+                            pontuacao += regra.getPontos().get(valorQuali(veiculo.getQualis().get(j)));
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
