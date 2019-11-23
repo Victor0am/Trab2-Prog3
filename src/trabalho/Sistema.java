@@ -97,6 +97,49 @@ public class Sistema{
         return (docente == null);
     }
 
+    public void calculaPontuacao(Regra regra, Docente docente){
+        System.out.println("-------------------------------------------------------------------");
+        double pontuacao = 0;
+        for (Publicacao p :docente.getPublicacoes()) {
+            Veiculo veiculo = veiculosCadastrados.get(p.getVeiculo());
+            System.out.println(veiculo.getSigla());
+            Set<Integer> anosSet = veiculo.getQualis().keySet();
+            Iterator <Integer> iterator= anosSet.iterator();
+            ArrayList<Integer> chaves = new ArrayList<Integer>();
+            int contador = 0;
+            while (iterator.hasNext()){
+                Integer elemento = iterator.next();
+                chaves.add(elemento);
+            }
+            int maiorChave = chaves.get(0);
+            for (int i = anoRecredenciamento - regra.getAnosVigencia(); i<anoRecredenciamento; i++){
+                for(int j : chaves){
+                    if(j == i){
+                        if (veiculo.getTipo() == 'P') {
+                            pontuacao += regra.getMultiplicador()*regra.getPontos().get(valorQuali(veiculo.getQualis().get(j)));
+                        }else{
+                            pontuacao += regra.getPontos().get(valorQuali(veiculo.getQualis().get(j)));
+                        }
+                        System.out.println(pontuacao);
+                        contador ++;
+                    }
+                    if(j>maiorChave){
+                        maiorChave = j;
+                    }
+                }
+            }
+            if(contador==0){
+                if (veiculo.getTipo() == 'P') {
+                    pontuacao += regra.getMultiplicador()*regra.getPontos().get(valorQuali(veiculo.getQualis().get(maiorChave)));
+                }else{
+                    pontuacao += regra.getPontos().get(valorQuali(veiculo.getQualis().get(maiorChave)));
+                }
+            }
+            System.out.println(pontuacao);
+        }
+        docente.setPontuacao(pontuacao);
+        System.out.println(pontuacao);
+    }
 
     /* ************************* VEICULOS ************************** */
 
@@ -401,19 +444,8 @@ public class Sistema{
 
     public void calculaResultados(){
         Regra regra = escolheRegra();
-        for (Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()) {
-            int pontuacao = 0;
-            for (Publicacao p :pair.getValue().getPublicacoes()) {
-                Veiculo veiculo = veiculosCadastrados.get(p.getVeiculo());
-                ArrayList<Integer>  chaves= (ArrayList<Integer>) veiculo.getQualis().keySet();
-                for (int i = anoRecredenciamento - regra.getAnosVigencia(); i<anoRecredenciamento; i++){
-                    for(int j : chaves){
-                        if(j == i){
-                            pontuacao += regra.getPontos().get(valorQuali(veiculo.getQualis().get(j)));
-                        }
-                    }
-                }
-            }
+        for(Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()){
+            calculaPontuacao(regra, pair.getValue());
         }
     }
 }
