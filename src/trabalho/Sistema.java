@@ -2,6 +2,7 @@ package trabalho;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.io.*;
 import java.text.ParseException;
@@ -98,11 +99,9 @@ public class Sistema{
     }
 
     public void calculaPontuacao(Regra regra, Docente docente){
-        System.out.println("-------------------------------------------------------------------");
         double pontuacao = 0;
         for (Publicacao p :docente.getPublicacoes()) {
             Veiculo veiculo = veiculosCadastrados.get(p.getVeiculo());
-            System.out.println(veiculo.getSigla());
             Set<Integer> anosSet = veiculo.getQualis().keySet();
             Iterator <Integer> iterator= anosSet.iterator();
             ArrayList<Integer> chaves = new ArrayList<Integer>();
@@ -120,7 +119,6 @@ public class Sistema{
                         }else{
                             pontuacao += regra.getPontos().get(valorQuali(veiculo.getQualis().get(j)));
                         }
-                        System.out.println(pontuacao);
                         contador ++;
                     }
                     if(j>maiorChave){
@@ -135,10 +133,8 @@ public class Sistema{
                     pontuacao += regra.getPontos().get(valorQuali(veiculo.getQualis().get(maiorChave)));
                 }
             }
-            System.out.println(pontuacao);
         }
         docente.setPontuacao(pontuacao);
-        System.out.println(pontuacao);
     }
 
     /* ************************* VEICULOS ************************** */
@@ -376,7 +372,7 @@ public class Sistema{
             r.imprime();
         }
     }
-    
+
     public int valorQuali(String quali){
         switch(quali){
             case "A1":
@@ -455,12 +451,50 @@ public class Sistema{
 
     /* ************************* SAIDAS ************************** */
 
-
-    public void calculaResultados(){
+    public void calculaResultados () throws IOException {
         Regra regra = escolheRegra();
-        for(Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()){
+        ArrayList<Docente> docentes = new ArrayList<Docente>();
+        for (Map.Entry<Long, Docente> pair : docentesCadastrados.entrySet()) {
             calculaPontuacao(regra, pair.getValue());
+            docentes.add(pair.getValue());
         }
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("1-recredenciamento.csv")));
+        writer.write("Docente;Pontuação;Recredenciado?");
+        writer.newLine();
+        Collections.sort(docentes, new Comparator<Docente>() {
+            @Override
+            public int compare(Docente docente, Docente t1) {
+                return docente.getNome().compareTo(t1.getNome());
+            }
+        });
+        for (Docente d : docentes) {
+            String pontuacao = String.valueOf(d.getPontuacao());
+            writer.append(d.getNome());
+            writer.append(";");
+            writer.append(pontuacao);
+            writer.append(";");
+            if (d.isCoordenador()) {
+                writer.append("Coordenador");
+            } else {
+                long anos = ChronoUnit.YEARS.between(d.getDataIngresso(), regra.getDataFim());
+                if (anos < 3) {
+                    writer.append("PPJ");
+                } else {
+                    anos = ChronoUnit.YEARS.between(d.getDataNascimento(), regra.getDataFim());
+                    if (anos > 60) {
+                        writer.append("PPS");
+                    } else {
+                        if (d.getPontuacao() > regra.getPontuacaoMinima()) {
+                            writer.append("Sim");
+                        } else {
+                            writer.append("Não");
+                        }
+                    }
+                }
+            }
+            writer.newLine();
+        }
+        writer.close();
     }
 
     /* ========== Publicações ========== */
@@ -469,7 +503,7 @@ public class Sistema{
         bw.write("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
         bw.newLine();
         for (Publicacao p : publicacoesCadastradas){
-            bw.append(p.imprime(docentesCadastrados, veiculosCadastrados));
+            bw.append(p.getAno());
         }
     }
 }

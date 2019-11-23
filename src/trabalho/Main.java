@@ -70,7 +70,10 @@ public class Main {
             BufferedWriter bw = new BufferedWriter(new FileWriter(new File("2-publicacoes.csv")));
             ppgi.listaPublicacoes(bw);
             // ppgi.imprimePublicacoes();
+//            System.out.println("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
+//            ppgi.imprimePublicacoes();
 //             ppgi.imprimeRegras();
+            ppgi.calculaResultados();
             arq1.close();
             arq2.close();
             arq3.close();
