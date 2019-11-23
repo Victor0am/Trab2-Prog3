@@ -465,8 +465,11 @@ public class Sistema{
 
     /* ========== Publicações ========== */
 
-    public void listaPublicacoes(){
-
+    public void listaPublicacoes(BufferedWriter bw) throws IOException {
+        bw.write("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
+        bw.newLine();
+        for (Publicacao p : publicacoesCadastradas){
+            bw.append(p.imprime(docentesCadastrados, veiculosCadastrados));
+        }
     }
-    
 }
