@@ -60,8 +60,8 @@ public class Main {
             ppgi.carregaArquivoDocentes(fdocente);
             ppgi.carregaArquivoVeiculos(fveiculo);
             ppgi.carregaArquivoRegras(fregras);
-            ppgi.carregaArquivoPublicacoes(fpublicacoes);
             ppgi.carregaArquivoQualis(fqualis);
+            ppgi.carregaArquivoPublicacoes(fpublicacoes);
             // ppgi.calculaResultados();
             // ppgi.imprimeDocentes();
 //             ppgi.imprimeVeiculos();

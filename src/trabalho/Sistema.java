@@ -254,6 +254,36 @@ public class Sistema{
                 publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong);
                 atribuiPublicacao(publicacao);
                 registraPublicacao(publicacao);
+                Veiculo v = veiculosCadastrados.get(veiculo);
+                int menor = 0;
+                int menorano = anoRecredenciamento;
+                boolean trava = false;
+                try{
+                    int i = v.getQualis().size();
+                    for (Map.Entry<Integer,String> pair : v.getQualis().entrySet()) {
+                        if (pair.getKey() > anoRecredenciamento){
+                            i--;
+                            continue;
+                        }
+                        if (!trava){
+                            menorano = pair.getKey();
+                            menor = anoRecredenciamento - pair.getKey();
+                            trava = true;
+                            continue;
+                        }else{
+                            if (anoRecredenciamento - pair.getKey() < menor){
+                                menorano = pair.getKey();
+                                menor = anoRecredenciamento - pair.getKey();
+                            }
+                        }
+                    }
+                    if (i == 0){
+                        throw new IllegalArgumentException();
+                    }
+                }catch(IllegalArgumentException e){
+                    e.printStackTrace();
+                }
+                publicacao.setQuali(v.getQualis().get(menorano));
                 // for (int i = 0; i < autor.length; i++){
                 //     autor[i] = autor[i].replaceAll(" ", "");
                 //     autorLong.add(Long.parseLong(autor[i]));
@@ -502,8 +532,24 @@ public class Sistema{
     public void listaPublicacoes(BufferedWriter bw) throws IOException {
         bw.write("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
         bw.newLine();
+        String aux;
         for (Publicacao p : publicacoesCadastradas){
-            bw.append(p.getAno());
+            aux = String.valueOf(p.getAno());
+            bw.append(aux + ';');
+            bw.append(p.getVeiculo() + ';');
+            bw.append(veiculosCadastrados.get(p.getVeiculo()).getNome() + ';');
+            bw.append(p.getQuali() + ';');
+            aux = String.valueOf(veiculosCadastrados.get(p.getVeiculo()).getFatorImpacto());
+            bw.append(aux + ';');
+            bw.append(p.getTitulo() + ';');
+            for (Long l: p.getAutores()){
+                bw.append(docentesCadastrados.get(l).getNome());
+                if (l != p.getAutores().get(p.getAutores().size() - 1)){
+                    bw.append(",");
+                }
+            }
+            bw.newLine();
         }
+        bw.close();
     }
 }

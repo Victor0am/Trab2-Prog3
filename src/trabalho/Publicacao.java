@@ -65,6 +65,14 @@ public class Publicacao{
         this.paginaFinal = paginaFinal;
     }
 
+    public String getQuali(){
+        return quali;
+    }
+
+    public void setQuali(String quali){
+        this.quali = quali;
+    }
+
     public Publicacao(int ano, String veiculo, String titulo, int paginaInicial, int paginaFinal, ArrayList<Long> autores) {
         this.ano = ano;
         this.veiculo = veiculo;
