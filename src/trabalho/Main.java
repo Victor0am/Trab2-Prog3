@@ -50,7 +50,7 @@ public class Main {
             e.printStackTrace();
         }
         // Scanner leitor = new Scanner(System.in);
-         Sistema ppgi = new Sistema(anoDaRegra);
+        Sistema ppgi = new Sistema(anoDaRegra);
         try  {
             BufferedReader fdocente = new BufferedReader(arq1);
             BufferedReader fveiculo = new BufferedReader(arq2);
@@ -62,12 +62,12 @@ public class Main {
             ppgi.carregaArquivoRegras(fregras);
             ppgi.carregaArquivoPublicacoes(fpublicacoes);
             ppgi.carregaArquivoQualis(fqualis);
-//             ppgi.imprimeDocentes();
+            ppgi.calculaResultados();
+            ppgi.imprimeDocentes();
 //             ppgi.imprimeVeiculos();
 //             ppgi.imprimeRegras();
-        // ppgi.imprimePublicacoes();
-        // ppgi.imprimeRegras();
-        
+//             ppgi.imprimePublicacoes();
+//             ppgi.imprimeRegras();
             arq1.close();
             arq2.close();
             arq3.close();

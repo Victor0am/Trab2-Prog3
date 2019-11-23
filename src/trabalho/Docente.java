@@ -1,16 +1,18 @@
 package trabalho;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
 public class Docente{
     private long codigo;
     private String nome;
-    private Date dataNascimento;
-    private Date dataIngresso;
+    private LocalDate dataNascimento;
+    private LocalDate dataIngresso;
     private boolean coordenador;
     private ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
-    private int pontuacao;
+    private double pontuacao;
 
     public long getCodigo() {
         return codigo;
@@ -28,19 +30,19 @@ public class Docente{
         this.nome = nome;
     }
 
-    public Date getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
-    public Date getDataIngresso() {
+    public LocalDate getDataIngresso() {
         return dataIngresso;
     }
 
-    public void setData_ingresso(Date dataIngresso) {
+    public void setData_ingresso(LocalDate dataIngresso) {
         this.dataIngresso = dataIngresso;
     }
 
@@ -56,7 +58,15 @@ public class Docente{
         return publicacoes;
     }
 
-    public Docente(long codigo, String nome, Date nascimento, Date ingresso, boolean coordenador){
+    public double getPontuacao() {
+        return pontuacao;
+    }
+
+    public void setPontuacao(double pontuacao) {
+        this.pontuacao = pontuacao;
+    }
+
+    public Docente(long codigo, String nome, LocalDate nascimento, LocalDate ingresso, boolean coordenador){
         this.codigo = codigo;
         this.nome = nome;
         this.dataIngresso = ingresso;
@@ -66,7 +76,7 @@ public class Docente{
 
     public void imprime(){
         System.out.println("=============================");
-        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+        DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String data;
         System.out.printf("Codigo:\t%d\n", codigo);
         System.out.printf("Nome:\t%s\n", nome);
@@ -86,6 +96,8 @@ public class Docente{
                 p.imprime();
             }
         }
+        System.out.println("Pontuação:\t");
+        System.out.println(pontuacao);
     }
 
 
