@@ -82,7 +82,7 @@ public class Sistema{
                 this.docentesCadastrados.put(d.getCodigo(), d);
             }
             else{
-                throw new IOException("Código repetido para " +d.getNome()
+                throw new IOException("Código repetido para docente" 
                  + ": " + d.getCodigo() +".");
             }
         }catch(IOException e){
@@ -104,7 +104,7 @@ public class Sistema{
         double pontuacao = 0;
         for (Publicacao p :docente.getPublicacoes()) {
             Veiculo veiculo = veiculosCadastrados.get(p.getVeiculo());
-            if(p.getAno() < anoRecredenciamento){
+            if(p.getAno() < anoRecredenciamento && anoRecredenciamento - p.getAno() <= regra.getAnosVigencia()){
                 if (veiculo.getTipo() == 'P') {
                     pontuacao += regra.getMultiplicador()*regra.getPontos().get(valorQuali(p.getQuali()));
                 }else{
@@ -288,7 +288,7 @@ public class Sistema{
                 // Docente docente = docentesCadastrados.get(p.getAutor());
                 if (docente == null){
                     throw new IOException("Código de docente não definido usado na "
-                    + "publicação “" + p.getTitulo() + "”: " + p.getVeiculo() +".");
+                    + "publicação \"" + p.getTitulo() + "\": " + p.getVeiculo() +".");
                 }
                 else{
                     docente.getPublicacoes().add(p);
@@ -311,7 +311,7 @@ public class Sistema{
             }
             else{
                 throw new IOException("Sigla de veículo não definida usada na" +
-                " publicação “" + p.getTitulo() + "”: " + p.getVeiculo() + ".");
+                " publicação \"" + p.getTitulo() + "\": " + p.getVeiculo() + ".");
             }
         }catch(IOException e){
             throw new IOException(e.getMessage());
@@ -361,9 +361,15 @@ public class Sistema{
             vetorPosicao.add(valorQuali(stringQualis[i]));
         }
         for(int i = 0, pontuacao = 0, j = 0; i<8; i++){
-            if(vetorPosicao.get(j) == i){
-                pontuacao = Integer.parseInt(stringPontos[j]);
-                j++;
+            // System.out.println("===["+j+"]==");
+            // System.out.println("==="+i+"==");
+            if (j < vetorPosicao.size()){
+                if(vetorPosicao.get(j) == i ){
+                    // System.out.println("===K==");
+                    pontuacao = Integer.parseInt(stringPontos[j]);
+                    j++;
+                    // System.out.println("===F==");
+                }
             }
             vetorPontos.add(pontuacao);
         }

@@ -72,7 +72,7 @@ public class Main {
             // ppgi.imprimePublicacoes();
 //            System.out.println("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
 //            ppgi.imprimePublicacoes();
-//             ppgi.imprimeRegras();
+            // ppgi.imprimeRegras();
             ppgi.calculaResultados();
             ppgi.calculaEstatisticas();
             arq1.close();
