@@ -3,10 +3,11 @@ package trabalho;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
 
-public class Regra{
+public class Regra implements Serializable{
     private LocalDate dataInicio;
     private LocalDate dataFim;
     private double multiplicador;

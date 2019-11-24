@@ -1,9 +1,10 @@
 package trabalho;
 
+import java.io.Serializable;
 import java.util.*;
 
 
-public class Publicacao{
+public class Publicacao implements Serializable{
     private int ano;
     private String veiculo;
     private String titulo;

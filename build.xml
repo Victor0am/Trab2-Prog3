@@ -3,7 +3,7 @@
     <!-- Propriedades do build. -->
     <property name="src" location="src" />
     <property name="bin" location="bin" />
-    <property name="mainClass" value="trabalho.Main" />
+    <property name="mainClass" value="Main" />
     <!-- Inicialização. -->
     <target name="init" description="Inicializa as estruturas necessárias.">
         <tstamp/>

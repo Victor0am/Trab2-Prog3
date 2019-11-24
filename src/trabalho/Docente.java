@@ -3,9 +3,10 @@ package trabalho;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
-public class Docente{
+public class Docente implements Serializable{
     private long codigo;
     private String nome;
     private LocalDate dataNascimento;

@@ -1,16 +1,14 @@
 package trabalho;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 
 
-public class Sistema{
+public class Sistema implements Serializable{
     private HashMap<Long,Docente> docentesCadastrados = new HashMap<Long,Docente>();
     private HashMap<String, Veiculo> veiculosCadastrados = new HashMap<String, Veiculo>();
     private ArrayList<Publicacao> publicacoesCadastradas = new ArrayList<Publicacao>();    
@@ -36,7 +34,7 @@ public class Sistema{
         try{
             String linha = arquivo.readLine();
             linha = arquivo.readLine();
-            while(linha != null){
+            while (linha != null) {
                 String[] campos = linha.split(";");
                 long codigo = Long.parseLong(campos[0]);
                 String nome = campos[1];
@@ -200,6 +198,12 @@ public class Sistema{
 
     /* ************************* PUBLICAÇÕES ************************** */
 
+
+    /**
+     * Carrega as publicações do arquivo de entrada no sistema.
+     * @param arquivo
+     * @throws IOException
+     */
     public void carregaArquivoPublicacoes(BufferedReader arquivo) throws IOException{
         try{
             String linha = arquivo.readLine();
@@ -210,11 +214,9 @@ public class Sistema{
                 int ano = Integer.parseInt(campos[0]);
                 String veiculo = campos[1].trim();
                 String titulo = campos[2].trim();
-                // Long autores = Long.parseLong(campos[3]);
                 String autores = campos[3];
                 String[] autor = autores.split(",");
                 ArrayList<Long> autorLong = new ArrayList<Long>();
-                // long[] autorLong = new long [autor.length];
                 int numero = Integer.parseInt(campos[4]);
                 int volume;
                 String local;
@@ -329,9 +331,13 @@ public class Sistema{
                 String[] campos = linha.split(";");
                 String data [] = campos[0].split("/");
 
-                LocalDate dataInicio = LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
+                LocalDate dataInicio = LocalDate.of(Integer.parseInt(data[2]),
+                                                    Integer.parseInt(data[1]),
+                                                    Integer.parseInt(data[0]));
                 data = campos[1].split("/");
-                LocalDate dataFim = LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
+                LocalDate dataFim = LocalDate.of(Integer.parseInt(data[2]),
+                                                Integer.parseInt(data[1]),
+                                                Integer.parseInt(data[0]));
                 String qualis[] = campos[2].split(",");
                 String pontos[] = campos[3].split(",");
                 for (String quali:qualis) {
@@ -343,7 +349,9 @@ public class Sistema{
                 double multiplicador = Double.parseDouble(campos[4]);
                 int anos = Integer.parseInt(campos[5]);
                 int pontuacao = Integer.parseInt(campos[6]);
-                Regra regra = new Regra(dataInicio, dataFim, multiplicador, anos, pontuacao, designaPontosPorQuali(qualis, pontos));
+                Regra regra = new Regra(dataInicio, dataFim, 
+                                        multiplicador, anos, pontuacao,
+                                        designaPontosPorQuali(qualis, pontos));
                 regrasCadastradas.add(regra);
                 linha = arquivo.readLine();
             }
@@ -361,14 +369,10 @@ public class Sistema{
             vetorPosicao.add(valorQuali(stringQualis[i]));
         }
         for(int i = 0, pontuacao = 0, j = 0; i<8; i++){
-            // System.out.println("===["+j+"]==");
-            // System.out.println("==="+i+"==");
             if (j < vetorPosicao.size()){
                 if(vetorPosicao.get(j) == i ){
-                    // System.out.println("===K==");
                     pontuacao = Integer.parseInt(stringPontos[j]);
                     j++;
-                    // System.out.println("===F==");
                 }
             }
             vetorPontos.add(pontuacao);
@@ -459,6 +463,11 @@ public class Sistema{
 
     /* ************************* QUALIS ************************** */
 
+    /**
+     * Carrega o arquivo com as qualis de cada veiculo no sistema.
+     * @param arquivo
+     * @throws IOException
+     */
     public void carregaArquivoQualis(BufferedReader arquivo) throws IOException{
         try{
             String linha = arquivo.readLine();
@@ -532,7 +541,8 @@ public class Sistema{
 
     /* ========== Publicações ========== */
 
-    public void listaPublicacoes(BufferedWriter bw) throws IOException {
+    public void listaPublicacoes() throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(new File("2-publicacoes.csv")));
         bw.write("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
         bw.newLine();
         String aux;

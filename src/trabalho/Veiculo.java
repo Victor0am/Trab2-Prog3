@@ -1,9 +1,10 @@
 package trabalho;
 
+import java.io.Serializable;
 import java.util.*;
 
 
-public class Veiculo{
+public class Veiculo implements Serializable{
     protected String sigla;
     protected String nome;
     protected char tipo;
