@@ -18,15 +18,15 @@
     principal, em modo normal.">
         <java classname="${mainClass}">
             <arg value="-d" />
-            <arg value="docentes.csv" />
+            <arg value="entradas/docentes.csv" />
             <arg value="-v" />
-            <arg value="veiculos.csv" />
+            <arg value="entradas/veiculos.csv" />
             <arg value="-p" />
-            <arg value="publicacoes.csv" />
+            <arg value="entradas/publicacoes.csv" />
             <arg value="-q" />
-            <arg value="qualis.csv" />
+            <arg value="entradas/qualis.csv" />
             <arg value="-r" />
-            <arg value="regras.csv" />
+            <arg value="entradas/regras.csv" />
             <arg value="-a" />
             <arg value="2017" />
             <classpath>
@@ -39,15 +39,15 @@
     programa principal, em modo somente leitura.">
         <java classname="${mainClass}">
             <arg value="-d" />
-            <arg value="docentes.csv" />
+            <arg value="entradas/docentes.csv" />
             <arg value="-v" />
-            <arg value="veiculos.csv" />
+            <arg value="entradas/veiculos.csv" />
             <arg value="-p" />
-            <arg value="publicacoes.csv" />
+            <arg value="entradas/publicacoes.csv" />
             <arg value="-q" />
-            <arg value="qualis.csv" />
+            <arg value="entradas/qualis.csv" />
             <arg value="-r" />
-            <arg value="regras.csv" />
+            <arg value="entradas/regras.csv" />
             <arg value="-a" />
             <arg value="2017" />
             <arg value="--read-only" />
@@ -72,6 +72,7 @@
         <delete dir="${bin}"/>
         <delete><fileset dir="." includes="*.txt"/></delete>
         <delete><fileset dir="." includes="*.csv"/></delete>
+        <delete><fileset dir="entradas" includes="*.csv"/></delete>
         <delete><fileset dir="." includes="*.dat"/></delete>
     </target>
 </project>

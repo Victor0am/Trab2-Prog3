@@ -198,6 +198,11 @@ public class Sistema implements Serializable{
         }
     }
 
+    /**
+     * Verifica se um veiculo é periódico
+     * @param veiculo
+     * @return
+     */
     public boolean isPeriodico(String veiculo){
             // System.out.println(veiculo);
             veiculosCadastrados.get(veiculo);
@@ -518,7 +523,7 @@ public class Sistema implements Serializable{
             calculaPontuacao(regra, pair.getValue());
             docentes.add(pair.getValue());
         }
-        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("1-recredenciamento.csv")));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("saidas/1-recredenciamento.csv")));
         writer.write("Docente;Pontuação;Recredenciado?");
         writer.newLine();
         Collections.sort(docentes, new Comparator<Docente>() {
@@ -570,7 +575,7 @@ public class Sistema implements Serializable{
      * @throws IOException 
      */
     public void listaPublicacoes() throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(new File("2-publicacoes.csv")));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(new File("saidas/2-publicacoes.csv")));
         bw.write("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
         bw.newLine();
         String aux;
@@ -590,7 +595,6 @@ public class Sistema implements Serializable{
             @Override
             public int compare(Publicacao p1, Publicacao p2) {
                 return p1.getAno() > p2.getAno()? -1 : (p1.getAno() < p2.getAno()? 1 : 0);
-                // return p1.getAno().compareTo(p2.getAno());
             }
         });
         Collections.sort(publicacoesCadastradas, new Comparator<Publicacao>() {
@@ -623,7 +627,7 @@ public class Sistema implements Serializable{
 
 
     public void calculaEstatisticas() throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("3-estatisticas.csv")));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("saidas/3-estatisticas.csv")));
         writer.write("Qualis;Qtd. Artigos;Média Artigos / Docente");
         writer.newLine();
         NumberFormat formatter = new DecimalFormat("#0.00");

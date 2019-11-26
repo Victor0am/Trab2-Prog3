@@ -1,9 +1,6 @@
 
 import trabalho.*;
-import java.text.ParseException;
-import java.util.*;
 import java.io.*;
-import java.text.SimpleDateFormat;
 public class Main {
     public static void main(String[] args) {
         int anoDaRegra  = 0;
@@ -91,6 +88,7 @@ public class Main {
                 ppgi.listaPublicacoes();
                 ppgi.calculaResultados();
                 ppgi.calculaEstatisticas();
+                in.close();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

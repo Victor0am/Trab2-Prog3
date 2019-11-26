@@ -3,11 +3,13 @@
 ant clean
 echo "Done!"
 
-cp testes/01/in/*.csv .
+cp testes/01/in/*.csv entradas
 
 ant compile
 
-ant run-read-only
+ant run
 
-ant run-write-only
+# ant run-read-only
+
+# ant run-write-only
 
