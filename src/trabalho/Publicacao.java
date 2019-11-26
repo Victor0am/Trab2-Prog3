@@ -83,22 +83,11 @@ public class Publicacao implements Serializable{
         this.autores = autores;
     }
 
-    // public Publicacao(int ano, String veiculo, String titulo, int paginaInicial, int paginaFinal, Long autor) {
-    //     this.ano = ano;
-    //     this.veiculo = veiculo;
-    //     this.titulo = titulo;
-    //     this.paginaInicial = paginaInicial;
-    //     this.paginaFinal = paginaFinal;
-    //     this.autor = autor;
-    // }
-
     public void imprime(HashMap<Long,Docente> docentesCadastrados, HashMap<String,Veiculo> veiculosCadastrados){
         System.out.printf("%d;%s;%s;%.3f;%s;", ano, veiculo, 
             veiculosCadastrados.get(veiculo).getNome(),
             veiculosCadastrados.get(veiculo).getFatorImpacto(),
             titulo);
-        // System.out.printf("\tVeículo:\t\t%s\n", veiculo);
-        // System.out.printf("\tTitulo:\t\t%s\n", titulo);
         for (Long l: autores){
             System.out.printf("%s", docentesCadastrados.get(l).getNome());
             if (l != autores.get(autores.size() - 1)){

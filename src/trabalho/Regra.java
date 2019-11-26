@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 
 
 public class Regra implements Serializable{

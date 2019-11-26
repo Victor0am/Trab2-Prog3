@@ -18,6 +18,27 @@
     principal, em modo normal.">
         <java classname="${mainClass}">
             <arg value="-d" />
+            <arg value="docentes.csv" />
+            <arg value="-v" />
+            <arg value="veiculos.csv" />
+            <arg value="-p" />
+            <arg value="publicacoes.csv" />
+            <arg value="-q" />
+            <arg value="qualis.csv" />
+            <arg value="-r" />
+            <arg value="regras.csv" />
+            <arg value="-a" />
+            <arg value="2017" />
+            <classpath>
+                <pathelement path="${bin}" />
+            </classpath>
+        </java>
+    </target>
+    <!-- Execução com entradas da pasta entradas. -->
+    <target name="run_entradas" depends="compile" description="Executa o programa
+    principal, em modo normal.">
+        <java classname="${mainClass}">
+            <arg value="-d" />
             <arg value="entradas/docentes.csv" />
             <arg value="-v" />
             <arg value="entradas/veiculos.csv" />
@@ -39,15 +60,15 @@
     programa principal, em modo somente leitura.">
         <java classname="${mainClass}">
             <arg value="-d" />
-            <arg value="entradas/docentes.csv" />
+            <arg value="docentes.csv" />
             <arg value="-v" />
-            <arg value="entradas/veiculos.csv" />
+            <arg value="veiculos.csv" />
             <arg value="-p" />
-            <arg value="entradas/publicacoes.csv" />
+            <arg value="publicacoes.csv" />
             <arg value="-q" />
-            <arg value="entradas/qualis.csv" />
+            <arg value="qualis.csv" />
             <arg value="-r" />
-            <arg value="entradas/regras.csv" />
+            <arg value="regras.csv" />
             <arg value="-a" />
             <arg value="2017" />
             <arg value="--read-only" />

@@ -102,7 +102,7 @@ public class Sistema implements Serializable{
 
     /**
      * Calcula a pontuação do docente baseada na ultima regra registrada.
-     * @param regra é uma instancia da Classe regra.
+     * @param regra é uma instancia da Classe Regra.
      * @param docente é uma instancia da Classe Docente.
      */
     public void calculaPontuacao(Regra regra, Docente docente){
@@ -181,10 +181,10 @@ public class Sistema implements Serializable{
     }
 
     /**
-     * Retorna true se existir um Veiculo com aquele codigo na Hash
+     * Verifica se o veiculo se o veiculo ja foi cadastrado.
+     * @param v Instância da Classe Veiculo.
+     * @return Retorna true se existir um Veiculo com aquele codigo na Hash
      * de veiculos cadastrados e false caso contrário.
-     * @param v
-     * @return
      */
     public boolean verificaVeiculo(Veiculo v){
         Veiculo veiculo = veiculosCadastrados.get(v.getSigla());
@@ -199,12 +199,13 @@ public class Sistema implements Serializable{
     }
 
     /**
-     * Verifica se um veiculo é periódico
-     * @param veiculo
-     * @return
+     * Dada uma sigla de veículo, verifica se o veiculo cadastrado
+     * é do tipo Periodico.
+     * @param veiculo é uma sigla de um veículo 
+     * @return Retorna true se o veiculo for de fato um periódico,
+     * false caso contrário.
      */
     public boolean isPeriodico(String veiculo){
-            // System.out.println(veiculo);
             veiculosCadastrados.get(veiculo);
             if (veiculosCadastrados.get(veiculo) == null){
                 return false;
@@ -320,6 +321,14 @@ public class Sistema implements Serializable{
         }
     }
 
+    /**
+     * Adiciona uma publicação a lista de publicações com base no sigla
+     * do veiculo da publicação de entrada.
+     * @param p Instância da Classe Publicação.
+     * @throws IOException Sigla de veículo especificada para uma
+    publicação não foi definida na planilha de
+    veículos.
+     */
     public void registraPublicacao(Publicacao p) throws IOException{
         Veiculo veiculos = null;
         veiculos = veiculosCadastrados.get(p.getVeiculo());
@@ -523,7 +532,7 @@ public class Sistema implements Serializable{
             calculaPontuacao(regra, pair.getValue());
             docentes.add(pair.getValue());
         }
-        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("saidas/1-recredenciamento.csv")));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("1-recredenciamento.csv")));
         writer.write("Docente;Pontuação;Recredenciado?");
         writer.newLine();
         Collections.sort(docentes, new Comparator<Docente>() {
@@ -575,7 +584,7 @@ public class Sistema implements Serializable{
      * @throws IOException 
      */
     public void listaPublicacoes() throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(new File("saidas/2-publicacoes.csv")));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(new File("2-publicacoes.csv")));
         bw.write("Ano;Sigla Veículo;Veículo;Qualis;Fator de Impacto;Título;Docentes");
         bw.newLine();
         String aux;
@@ -627,7 +636,7 @@ public class Sistema implements Serializable{
 
 
     public void calculaEstatisticas() throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("saidas/3-estatisticas.csv")));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("3-estatisticas.csv")));
         writer.write("Qualis;Qtd. Artigos;Média Artigos / Docente");
         writer.newLine();
         NumberFormat formatter = new DecimalFormat("#0.00");

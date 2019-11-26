@@ -7,7 +7,10 @@ cp testes/01/in/*.csv entradas
 
 ant compile
 
-ant run
+ant run_entradas
+
+mv *.csv saidas
+
 
 # ant run-read-only
 

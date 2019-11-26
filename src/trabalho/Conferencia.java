@@ -1,8 +1,5 @@
 package trabalho;
 
-//import Veiculo.java;
-import java.util.*;
-
 
 public class Conferencia extends Veiculo{
     private String local;
