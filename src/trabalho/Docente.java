@@ -1,15 +1,20 @@
 package trabalho;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
-public class Docente{
+public class Docente implements Serializable{
     private long codigo;
     private String nome;
-    private Date dataNascimento;
-    private Date dataIngresso;
+    private LocalDate dataNascimento;
+    private LocalDate dataIngresso;
     private boolean coordenador;
     private ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
+    private double pontuacao;
+    private ArrayList<Boolean> qualisObtidos = new ArrayList<Boolean>();
 
     public long getCodigo() {
         return codigo;
@@ -27,19 +32,19 @@ public class Docente{
         this.nome = nome;
     }
 
-    public Date getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
-    public Date getDataIngresso() {
+    public LocalDate getDataIngresso() {
         return dataIngresso;
     }
 
-    public void setData_ingresso(Date dataIngresso) {
+    public void setData_ingresso(LocalDate dataIngresso) {
         this.dataIngresso = dataIngresso;
     }
 
@@ -55,17 +60,32 @@ public class Docente{
         return publicacoes;
     }
 
-    public Docente(long codigo, String nome, Date nascimento, Date ingresso, boolean coordenador){
+    public double getPontuacao() {
+        return pontuacao;
+    }
+
+    public void setPontuacao(double pontuacao) {
+        this.pontuacao = pontuacao;
+    }
+
+    public ArrayList<Boolean> getQualisObtidos() {
+        return qualisObtidos;
+    }
+
+    public Docente(long codigo, String nome, LocalDate nascimento, LocalDate ingresso, boolean coordenador){
         this.codigo = codigo;
         this.nome = nome;
         this.dataIngresso = ingresso;
         this.dataNascimento = nascimento;
         this.coordenador = coordenador;
+        for(int i = 0; i< 8; i++){
+            qualisObtidos.add(false);
+        }
     }
 
-    public void imprimeDocente(){
+    public void imprime(){
         System.out.println("=============================");
-        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+        DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String data;
         System.out.printf("Codigo:\t%d\n", codigo);
         System.out.printf("Nome:\t%s\n", nome);
@@ -76,15 +96,18 @@ public class Docente{
         System.out.println("Coordenador: " + 
         ((coordenador == true)? "Sim" : "Não" ));
         System.out.println("Publicações:");
-        if (publicacoes.isEmpty()){
-            System.out.println("\tDocente não possui publicações registradas");
-        }
-        else{
-            for (Publicacao p : publicacoes){
-                System.out.println("\t-----------------------------");
-                p.imprime();
-            }
-        }
+        // if (publicacoes.isEmpty()){
+        //     System.out.println("\tDocente não possui publicações registradas");
+        // }
+        // else{
+        //     for (Publicacao p : publicacoes){
+        //         System.out.println("\t-----------------------------");
+        //         p.imprime();
+        //     }
+        // }
+        System.out.println("Pontuação:\t");
+        System.out.println(pontuacao);
     }
+
 
 }
