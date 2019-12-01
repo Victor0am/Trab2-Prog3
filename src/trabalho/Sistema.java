@@ -163,7 +163,7 @@ public class Sistema implements Serializable{
     /**
      * Adiciona um veiculo à Hash de veículos cadastrados.
      * @param v Instância da Classe Veiculo.
-     * @throws IOExceptionO mesmo código foi usado para dois 
+     * @throws IOException mesmo código foi usado para dois
      * dveículos diferentes.
      */
     public void insereVeiculo(Veiculo v) throws IOException {
@@ -390,6 +390,14 @@ public class Sistema implements Serializable{
         }
     }
 
+    /**
+     * Interpreta as informações de ponstos por qualis das regras
+     * @param stringQualis é a lista dos qualis onde tem mudança de pontuação nas regras.
+     * @param stringPontos é a lista da pontuação dos qualis que tem mudança de pontuação.
+     * @return Retorna um vetor(ArrayList) de 8 posições (1 posição por quali), onde cada posição indica a pontuação de um qualis
+     * Qualis de cada posição:
+     * A1 = 0, A2 = 1, B1 = 2, B2 = 3, B3 = 4, B4 = 5, B5 = 6, C = 7
+     */
     public ArrayList<Integer> designaPontosPorQuali(String stringQualis[], String stringPontos[]){
         ArrayList<Integer> vetorPosicao = new ArrayList<Integer>();
         ArrayList<Integer> vetorPontos = new ArrayList<Integer>();
@@ -416,6 +424,12 @@ public class Sistema implements Serializable{
         }
     }
 
+
+    /**
+     * Retorna a posição de uma qualis no vetor de regras
+     * @param quali é uma string que contem uma sigla do quali
+     * @return Retorna um inteiro correspondente à posição do quali no vetor de pontuação da regra
+     */
     public int valorQuali(String quali){
         switch(quali){
             case "A1":
@@ -438,6 +452,11 @@ public class Sistema implements Serializable{
         }
     }
 
+    /**
+     * Checa se um qualis é um dos permitidos pelo sistema
+     * @param quali é uma string com a sigla qualis
+     * @return Retorna true se a string for uma das 8 siglas de qualis do programa e false se não for
+     */
     public boolean checaQuali(String quali){
         switch(quali){
             case "A1":
@@ -454,6 +473,11 @@ public class Sistema implements Serializable{
         }
     }
 
+    /**
+     * Retorna o qualis da posição desejada
+     * @param numero é o numero da posição do vetor do qualis
+     * @return Retorna o qualis da posição indicada
+     */
     public String retornaQuali(int numero){
         switch (numero){
             case 0:
@@ -475,7 +499,11 @@ public class Sistema implements Serializable{
                 return "C";
         }
     }
-
+    /**
+     * Escolhe a regra vigente com base no ano de recredenciamento
+     * @return  Retorna a Regra do ano de recredenciamento ou a regra mais próxima ao ano de recredenciamento de forma coerente
+     * por exemplo: se o recredenciamento escolhido for 2018 e existirem 2 regras cadastradas, mas nenhuma delas é de 2018,
+     * uma é de 2014 e a outra é de 2019, a função vai escolher a regra de 2014*/
     public Regra escolheRegra(){
         Regra r = null;
         for (Regra regra: regrasCadastradas) {
@@ -522,7 +550,14 @@ public class Sistema implements Serializable{
     /* ************************* SAIDAS ************************** */
 
     /**
-     * 
+     * Cria e escreve o arquivo de saída 1-recredenciamento.csv
+     * Nesse arquivo são listados os docentes, seus pontos e se foram recredenciados em ordem alfabética
+     * As opções de recredenciamento envolvem:
+     * 1)se é coordenador, recredenciado automaticamente
+     * 2)se tem menos de 3 anos credenciado, recredenciado automaticamente
+     * 3)se tem 60 anos ou mais, recredenciamento automático
+     * 4)se tem pontuação maior que a pontuação mínima da regra vigente, é recredenciado
+     * 5)se não possui nenhum dos critérios acima, não é recredenciado
      * @throws IOException
      */
     public void calculaResultados() throws IOException {
@@ -634,7 +669,13 @@ public class Sistema implements Serializable{
         bw.close();
     }
 
-
+    /**
+     * Cria e escreve o arquivo 3-estatisticas.csv
+     * Nesse arquivo são lsitados os qualis, a quantidade de publicações por qualis e a média de artigos por docente
+     * se para calcular a quantidade de publicações é necessário somar 1 a cada publicação com o quali selecionado,
+     * essa média é dada por ao invés de somar 1, somar 1/(número de docentes que participaram da publicação)
+     * @throws IOException
+     * */
     public void calculaEstatisticas() throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File("3-estatisticas.csv")));
         writer.write("Qualis;Qtd. Artigos;Média Artigos / Docente");
