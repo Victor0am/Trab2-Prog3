@@ -6,6 +6,7 @@ import java.util.*;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 
 
 public class Sistema implements Serializable{
@@ -30,36 +31,27 @@ public class Sistema implements Serializable{
      * @param arquivo Arquivo que contém dados sobre docentes.
      * @throws IOException
      */
-    public void carregaArquivoDocentes(BufferedReader arquivo) throws IOException {
-        try{
-            String linha = arquivo.readLine();
-            linha = arquivo.readLine();
-            while (linha != null) {
-                String[] campos = linha.split(";");
-                long codigo = Long.parseLong(campos[0]);
-                String nome = campos[1];
-                String data [] = campos[2].split("/");
-                int dia;
-                int mes;
-                int ano;
-                LocalDate nascimento =  LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
-                data  = campos[3].split("/");
-                LocalDate ingresso =   LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
-                boolean coordenador = false;
-                // System.out.println(linha);
-                if (campos.length == 5) {
-                    if (campos[4].equals("X")) {
-                        coordenador = true;
-                    }
+    public void carregaArquivoDocentes(BufferedReader arquivo) throws IOException, NumberFormatException {
+        String linha = arquivo.readLine();
+        linha = arquivo.readLine();
+        while (linha != null) {
+            String[] campos = linha.split(";");
+            long codigo = Long.parseLong(campos[0]);
+            String nome = campos[1];
+            String data [] = campos[2].split("/");
+            LocalDate nascimento =  LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
+            data  = campos[3].split("/");
+            LocalDate ingresso =   LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
+            boolean coordenador = false;
+            if (campos.length == 5) {
+                if (campos[4].equals("X")) {
+                    coordenador = true;
                 }
-                Docente docente = new Docente(codigo, nome, nascimento, ingresso, coordenador);
-                insereDocente(docente);
-                linha = arquivo.readLine();
             }
-        } catch (IOException e) {
-            throw new IOException(e.getMessage());
+            Docente docente = new Docente(codigo, nome, nascimento, ingresso, coordenador);
+            insereDocente(docente);
+            linha = arquivo.readLine();
         }
-
     }
 
 
@@ -76,16 +68,12 @@ public class Sistema implements Serializable{
      * docentes ou veículos diferentes.
      */
     public void insereDocente(Docente d) throws IOException {
-        try{
-            if (!verificaDocente(d)){
-                this.docentesCadastrados.put(d.getCodigo(), d);
-            }
-            else{
-                throw new IOException("Código repetido para docente" + 
-                ": " + d.getCodigo() + ".");
-            }
-        }catch(IOException e){
-            throw new IOException(e.getMessage());
+        if (!verificaDocente(d)){
+            this.docentesCadastrados.put(d.getCodigo(), d);
+        }
+        else{
+            throw new IOException("Código repetido para docente" + 
+            ": " + d.getCodigo() + ".");
         }
     }
 
@@ -128,35 +116,31 @@ public class Sistema implements Serializable{
      * @throws IOException Tipo de um veículo não é nem ‘C’ nem ‘P’.
      */
     public void carregaArquivoVeiculos(BufferedReader arquivo) throws IOException {
-        try{
-            String linha = arquivo.readLine();
-            linha = arquivo.readLine();
-            while(linha != null){
-                String[] campos = linha.split(";");
-                String sigla = campos[0].trim();            /* limpa espaços antes e depois da String */
-                String nome = campos[1].trim();
-                char tipo = campos[2].charAt(0);
-                campos[3] = campos[3].replace(',', '.');
-                double impacto = Double.parseDouble(campos[3]);
-                Veiculo veiculo = null;
-                switch (tipo){
-                case 'C':
-                    veiculo = new Conferencia(sigla, nome, tipo, impacto);
-                    insereVeiculo(veiculo);
-                    break;
-                case 'P':
-                    String issn = campos[4];
-                    veiculo = new Periodico(sigla, nome, tipo, impacto, issn);
-                    insereVeiculo(veiculo);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Tipo de veículo desconhecido " +
-                    "para veículo " + sigla + ": " + tipo +".");
-                }
-                linha = arquivo.readLine();
+        String linha = arquivo.readLine();
+        linha = arquivo.readLine();
+        while(linha != null){
+            String[] campos = linha.split(";");
+            String sigla = campos[0].trim();            /* limpa espaços antes e depois da String */
+            String nome = campos[1].trim();
+            char tipo = campos[2].charAt(0);
+            campos[3] = campos[3].replace(',', '.');
+            double impacto = Double.parseDouble(campos[3]);
+            Veiculo veiculo = null;
+            switch (tipo){
+            case 'C':
+                veiculo = new Conferencia(sigla, nome, tipo, impacto);
+                insereVeiculo(veiculo);
+                break;
+            case 'P':
+                String issn = campos[4];
+                veiculo = new Periodico(sigla, nome, tipo, impacto, issn);
+                insereVeiculo(veiculo);
+                break;
+            default:
+                throw new IllegalArgumentException("Tipo de veículo desconhecido " +
+                "para veículo " + sigla + ": " + tipo +".");
             }
-        } catch (IOException e) {
-            throw new IOException(e.getMessage());
+            linha = arquivo.readLine();
         }
     }
 
@@ -167,16 +151,12 @@ public class Sistema implements Serializable{
      * dveículos diferentes.
      */
     public void insereVeiculo(Veiculo v) throws IOException {
-        try{
-            if (!verificaVeiculo(v)){
-                    this.veiculosCadastrados.put(v.getSigla(), v);
-                }
-            else{
-                throw new IOException("Código repetido para " + v.getNome()
-                + ": " + v.getSigla() +".");
+        if (!verificaVeiculo(v)){
+                this.veiculosCadastrados.put(v.getSigla(), v);
             }
-        }catch(IOException e){
-            throw new IOException(e.getMessage());
+        else{
+            throw new IOException("Código repetido para " + v.getNome()
+            + ": " + v.getSigla() +".");
         }
     }
 
@@ -225,70 +205,66 @@ public class Sistema implements Serializable{
      * @throws IOException
      */
     public void carregaArquivoPublicacoes(BufferedReader arquivo) throws IOException{
-        try{
-            String linha = arquivo.readLine();
-            linha = arquivo.readLine();
-            while(linha != null){
-                Publicacao publicacao = null;
-                String[] campos = linha.split(";");
-                int ano = Integer.parseInt(campos[0]);
-                String veiculo = campos[1].trim();
-                String titulo = campos[2].trim();
-                String autores = campos[3];
-                String[] autor = autores.split(",");
-                ArrayList<Long> autorLong = new ArrayList<Long>();
-                int numero = Integer.parseInt(campos[4]);
-                int volume;
-                String local;
-                int pinicial = Integer.parseInt(campos[7]);
-                if (isPeriodico(veiculo)){
-                    volume = Integer.parseInt(campos[5]);
-                }
-                else{
-                    local = campos[6];
-                }
-                int pfinal = Integer.parseInt(campos[8]);
-                for (int i = 0; i < autor.length; i++){
-                    autorLong.add(Long.parseLong(autor[i].trim()));
-                }
-                publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong);
+        String linha = arquivo.readLine();
+        linha = arquivo.readLine();
+        while(linha != null){
+            Publicacao publicacao = null;
+            String[] campos = linha.split(";");
+            int ano = Integer.parseInt(campos[0]);
+            String veiculo = campos[1].trim();
+            String titulo = campos[2].trim();
+            String autores = campos[3];
+            String[] autor = autores.split(",");
+            ArrayList<Long> autorLong = new ArrayList<Long>();
+            int numero = Integer.parseInt(campos[4]);
+            int volume;
+            String local;
+            int pinicial = Integer.parseInt(campos[7]);
+            if (isPeriodico(veiculo)){
+                volume = Integer.parseInt(campos[5]);
+            }
+            else{
+                local = campos[6];
+            }
+            int pfinal = Integer.parseInt(campos[8]);
+            for (int i = 0; i < autor.length; i++){
+                autorLong.add(Long.parseLong(autor[i].trim()));
+            }
+            publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong);
 
-                registraPublicacao(publicacao);
-                Veiculo v = veiculosCadastrados.get(veiculo);
-                int menor = 0;
-                int menorano = anoRecredenciamento;
-                boolean trava = false;
-                try{
-                    int i = v.getQualis().size();
-                    for (Map.Entry<Integer,String> pair : v.getQualis().entrySet()) {
-                        if (pair.getKey() > ano){
-                            i--;
-                            continue;
-                        }
-                        if (!trava){
+            registraPublicacao(publicacao);
+            Veiculo v = veiculosCadastrados.get(veiculo);
+            int menor = 0;
+            int menorano = anoRecredenciamento;
+            boolean trava = false;
+            try{
+                int i = v.getQualis().size();
+                for (Map.Entry<Integer,String> pair : v.getQualis().entrySet()) {
+                    if (pair.getKey() > ano){
+                        i--;
+                        continue;
+                    }
+                    if (!trava){
+                        menorano = pair.getKey();
+                        menor = ano - pair.getKey();
+                        trava = true;
+                    }else{
+                        if (ano - pair.getKey() < menor){
                             menorano = pair.getKey();
                             menor = ano - pair.getKey();
-                            trava = true;
-                        }else{
-                            if (ano - pair.getKey() < menor){
-                                menorano = pair.getKey();
-                                menor = ano - pair.getKey();
-                            }
                         }
                     }
-                    if (i == 0){
-                        throw new IllegalArgumentException();
-                    }
-                }catch(IllegalArgumentException e){
-                    e.printStackTrace();
                 }
-                publicacao.setQuali(v.getQualis().get(menorano));
-                publicacoesCadastradas.add(publicacao);
-                atribuiPublicacao(publicacao);
-                linha = arquivo.readLine();
+                if (i == 0){
+                    throw new IllegalArgumentException();
+                }
+            }catch(IllegalArgumentException e){
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            throw new IOException(e.getMessage());
+            publicacao.setQuali(v.getQualis().get(menorano));
+            publicacoesCadastradas.add(publicacao);
+            atribuiPublicacao(publicacao);
+            linha = arquivo.readLine();
         }
     }
 
@@ -507,7 +483,7 @@ public class Sistema implements Serializable{
     public Regra escolheRegra(){
         Regra r = null;
         for (Regra regra: regrasCadastradas) {
-            if(regra.getDataInicio().getYear()==anoRecredenciamento){
+            if(regra.getDataInicio().getYear() == anoRecredenciamento){
                 return regra;
             }else{
                 if(r == null || (r.getDataInicio().getYear()<regra.getDataInicio().getYear())&& r.getDataInicio().getYear()<anoRecredenciamento){
@@ -522,8 +498,12 @@ public class Sistema implements Serializable{
 
     /**
      * Carrega o arquivo com as qualis de cada veiculo no sistema.
-     * @param arquivo
-     * @throws IOException
+     * @param arquivo Arquivo que contém as informações das qualificações.
+     * @throws IOException Qualis desconhecido para qualificação do
+     * veículo <sigla> no ano <ano>: <qualis> ou
+     * Qualis especificado para uma regra de pontuação
+     * não é nenhuma das categorias existentes: 
+     * A1, A2, B1, B2, B3, B4, B5 ou C.
      */
     public void carregaArquivoQualis(BufferedReader arquivo) throws IOException{
         try{
@@ -535,10 +515,16 @@ public class Sistema implements Serializable{
                 String veiculo = campos[1].trim();
                 if (veiculosCadastrados.get(veiculo) == null){
                     throw new IOException("Sigla de veículo não definida usada na " 
-                    + "qualificação do ano “" + ano + "”: "+ veiculo + ".");
+                    + "qualificação do ano \"" + ano + "\": "+ veiculo + ".");
                 }
                 String classificacao = campos[2];
-                veiculosCadastrados.get(veiculo).qualis.put(ano, classificacao);
+                if (checaQuali(classificacao)){
+                    veiculosCadastrados.get(veiculo).qualis.put(ano, classificacao);
+                }
+                else{
+                    throw new IOException("Qualis desconhecido para qualificação do" +
+                    " veículo " + veiculo + " no ano " + ano + ": " + classificacao + ".");
+                }
                 linha = arquivo.readLine();
             }
         } catch (IOException e){
@@ -594,7 +580,7 @@ public class Sistema implements Serializable{
                     if (anos >= 60) {
                         writer.append("PPS");
                     } else {
-                        if (d.getPontuacao() > regra.getPontuacaoMinima()) {
+                        if (d.getPontuacao() >= regra.getPontuacaoMinima()) {
                             writer.append("Sim");
                         } else {
                             writer.append("Não");
@@ -638,7 +624,7 @@ public class Sistema implements Serializable{
         Collections.sort(publicacoesCadastradas, new Comparator<Publicacao>() {
             @Override
             public int compare(Publicacao p1, Publicacao p2) {
-                return p1.getAno() > p2.getAno()? -1 : (p1.getAno() < p2.getAno()? 1 : 0);
+                return p1.getAno() > p2.getAno() ? -1 : (p1.getAno() < p2.getAno() ? 1 : 0);
             }
         });
         Collections.sort(publicacoesCadastradas, new Comparator<Publicacao>() {
@@ -653,7 +639,7 @@ public class Sistema implements Serializable{
             bw.append(p.getVeiculo() + ';');
             bw.append(veiculosCadastrados.get(p.getVeiculo()).getNome() + ';');
             bw.append(p.getQuali() + ';');
-            NumberFormat formatter = new DecimalFormat("#0.000");
+            NumberFormat formatter = new DecimalFormat("#0.000"); // Formatar para 3 digitos decimais
             aux = String.valueOf(formatter.format(veiculosCadastrados.get(p.getVeiculo()).getFatorImpacto()));
             aux = aux.replace(".", ",");
             bw.append(aux + ';');
@@ -699,7 +685,7 @@ public class Sistema implements Serializable{
         for (int i = 0; i<8; i++){
             String aux = String.valueOf(formatter.format(artPorDoc.get(i)));
             aux = aux.replace(".", ",");
-            writer.append(retornaQuali(i)+";"+qtdArtigos.get(i)+";"+aux);
+            writer.append(retornaQuali(i) + ";" + qtdArtigos.get(i) + ";" + aux);
             writer.newLine();
         }
         writer.close();
