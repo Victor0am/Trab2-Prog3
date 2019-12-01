@@ -6,6 +6,7 @@ import java.util.*;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 
 
 public class Sistema implements Serializable{
@@ -30,7 +31,7 @@ public class Sistema implements Serializable{
      * @param arquivo Arquivo que contém dados sobre docentes.
      * @throws IOException
      */
-    public void carregaArquivoDocentes(BufferedReader arquivo) throws IOException {
+    public void carregaArquivoDocentes(BufferedReader arquivo) throws IOException, NumberFormatException {
         String linha = arquivo.readLine();
         linha = arquivo.readLine();
         while (linha != null) {
@@ -454,7 +455,7 @@ public class Sistema implements Serializable{
     public Regra escolheRegra(){
         Regra r = null;
         for (Regra regra: regrasCadastradas) {
-            if(regra.getDataInicio().getYear()==anoRecredenciamento){
+            if(regra.getDataInicio().getYear() == anoRecredenciamento){
                 return regra;
             }else{
                 if(r == null || (r.getDataInicio().getYear()<regra.getDataInicio().getYear())&& r.getDataInicio().getYear()<anoRecredenciamento){
@@ -469,8 +470,12 @@ public class Sistema implements Serializable{
 
     /**
      * Carrega o arquivo com as qualis de cada veiculo no sistema.
-     * @param arquivo
-     * @throws IOException
+     * @param arquivo Arquivo que contém as informações das qualificações.
+     * @throws IOException Qualis desconhecido para qualificação do
+     * veículo <sigla> no ano <ano>: <qualis> ou
+     * Qualis especificado para uma regra de pontuação
+     * não é nenhuma das categorias existentes: 
+     * A1, A2, B1, B2, B3, B4, B5 ou C.
      */
     public void carregaArquivoQualis(BufferedReader arquivo) throws IOException{
         try{
@@ -482,10 +487,16 @@ public class Sistema implements Serializable{
                 String veiculo = campos[1].trim();
                 if (veiculosCadastrados.get(veiculo) == null){
                     throw new IOException("Sigla de veículo não definida usada na " 
-                    + "qualificação do ano “" + ano + "”: "+ veiculo + ".");
+                    + "qualificação do ano \"" + ano + "\": "+ veiculo + ".");
                 }
                 String classificacao = campos[2];
-                veiculosCadastrados.get(veiculo).qualis.put(ano, classificacao);
+                if (checaQuali(classificacao)){
+                    veiculosCadastrados.get(veiculo).qualis.put(ano, classificacao);
+                }
+                else{
+                    throw new IOException("Qualis desconhecido para qualificação do" +
+                    " veículo " + veiculo + " no ano " + ano + ": " + classificacao + ".");
+                }
                 linha = arquivo.readLine();
             }
         } catch (IOException e){
@@ -534,7 +545,7 @@ public class Sistema implements Serializable{
                     if (anos >= 60) {
                         writer.append("PPS");
                     } else {
-                        if (d.getPontuacao() > regra.getPontuacaoMinima()) {
+                        if (d.getPontuacao() >= regra.getPontuacaoMinima()) {
                             writer.append("Sim");
                         } else {
                             writer.append("Não");
@@ -578,7 +589,7 @@ public class Sistema implements Serializable{
         Collections.sort(publicacoesCadastradas, new Comparator<Publicacao>() {
             @Override
             public int compare(Publicacao p1, Publicacao p2) {
-                return p1.getAno() > p2.getAno()? -1 : (p1.getAno() < p2.getAno()? 1 : 0);
+                return p1.getAno() > p2.getAno() ? -1 : (p1.getAno() < p2.getAno() ? 1 : 0);
             }
         });
         Collections.sort(publicacoesCadastradas, new Comparator<Publicacao>() {
@@ -593,7 +604,7 @@ public class Sistema implements Serializable{
             bw.append(p.getVeiculo() + ';');
             bw.append(veiculosCadastrados.get(p.getVeiculo()).getNome() + ';');
             bw.append(p.getQuali() + ';');
-            NumberFormat formatter = new DecimalFormat("#0.000");
+            NumberFormat formatter = new DecimalFormat("#0.000"); // Formatar para 3 digitos decimais
             aux = String.valueOf(formatter.format(veiculosCadastrados.get(p.getVeiculo()).getFatorImpacto()));
             aux = aux.replace(".", ",");
             bw.append(aux + ';');
@@ -633,7 +644,7 @@ public class Sistema implements Serializable{
         for (int i = 0; i<8; i++){
             String aux = String.valueOf(formatter.format(artPorDoc.get(i)));
             aux = aux.replace(".", ",");
-            writer.append(retornaQuali(i)+";"+qtdArtigos.get(i)+";"+aux);
+            writer.append(retornaQuali(i) + ";" + qtdArtigos.get(i) + ";" + aux);
             writer.newLine();
         }
         writer.close();

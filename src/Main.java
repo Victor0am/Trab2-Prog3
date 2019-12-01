@@ -1,6 +1,7 @@
 
 import trabalho.*;
 import java.io.*;
+import java.text.ParseException;
 public class Main {
     public static void main(String[] args) {
         int anoDaRegra  = 0;
@@ -91,12 +92,21 @@ public class Main {
                 in.close();
             }
         } catch (FileNotFoundException e) {
+            System.err.println("Erro de I/O");
             e.printStackTrace();
         } catch (IOException e) {
             System.err.println(e.getMessage());
+            System.err.println("a");
+            e.printStackTrace();
+        }
+        catch (NumberFormatException e) {
+            System.err.println("Erro de formatação");
+            e.printStackTrace();
         }
         catch (IllegalArgumentException e){
             System.err.println(e.getMessage());
+            System.err.println("b");
+            e.printStackTrace();
         }
         catch (ClassNotFoundException e) {
             e.printStackTrace();
