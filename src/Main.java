@@ -51,7 +51,7 @@ public class Main {
                 }
             }
         }catch(FileNotFoundException e){
-            System.err.println(e.getMessage());
+            System.err.println("Erro de I/O");
             e.printStackTrace();
         }
         try  {
@@ -93,20 +93,20 @@ public class Main {
             }
         } catch (FileNotFoundException e) {
             System.err.println("Erro de I/O");
-            e.printStackTrace();
+            // e.printStackTrace();
         } catch (IOException e) {
             System.err.println(e.getMessage());
-            System.err.println("a");
-            e.printStackTrace();
+            // System.err.println("a");
+            // e.printStackTrace();
         }
         catch (NumberFormatException e) {
             System.err.println("Erro de formatação");
-            e.printStackTrace();
+            // e.printStackTrace();
         }
         catch (IllegalArgumentException e){
             System.err.println(e.getMessage());
-            System.err.println("b");
-            e.printStackTrace();
+            // System.err.println("b");
+            // e.printStackTrace();
         }
         catch (ClassNotFoundException e) {
             e.printStackTrace();

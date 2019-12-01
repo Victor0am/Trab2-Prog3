@@ -81,32 +81,3 @@ public class Docente implements Serializable{
             qualisObtidos.add(false);
         }
     }
-
-    public void imprime(){
-        System.out.println("=============================");
-        DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String data;
-        System.out.printf("Codigo:\t%d\n", codigo);
-        System.out.printf("Nome:\t%s\n", nome);
-        data = DATE_FORMAT.format(dataNascimento);
-        System.out.println("Data de Nascimento:\t" + data);
-        data = DATE_FORMAT.format(dataIngresso);
-        System.out.println("Data de Ingresso:\t" + data);
-        System.out.println("Coordenador: " + 
-        ((coordenador == true)? "Sim" : "Não" ));
-        System.out.println("Publicações:");
-        // if (publicacoes.isEmpty()){
-        //     System.out.println("\tDocente não possui publicações registradas");
-        // }
-        // else{
-        //     for (Publicacao p : publicacoes){
-        //         System.out.println("\t-----------------------------");
-        //         p.imprime();
-        //     }
-        // }
-        System.out.println("Pontuação:\t");
-        System.out.println(pontuacao);
-    }
-
-
-}

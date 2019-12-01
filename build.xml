@@ -39,27 +39,6 @@
             </classpath>
         </java>
     </target>
-    <!-- Execução com entradas da pasta entradas. -->
-    <target name="run_entradas" depends="compile" description="Executa o programa
-    principal, em modo normal.">
-        <java classname="${mainClass}">
-            <arg value="-d" />
-            <arg value="entradas/docentes.csv" />
-            <arg value="-v" />
-            <arg value="entradas/veiculos.csv" />
-            <arg value="-p" />
-            <arg value="entradas/publicacoes.csv" />
-            <arg value="-q" />
-            <arg value="entradas/qualis.csv" />
-            <arg value="-r" />
-            <arg value="entradas/regras.csv" />
-            <arg value="-a" />
-            <arg value="2017" />
-            <classpath>
-                <pathelement path="${bin}" />
-            </classpath>
-        </java>
-    </target>
     <!-- Execução somente leitura. -->
     <target name="run-read-only" depends="compile" description="Executa o
     programa principal, em modo somente leitura.">
@@ -98,7 +77,6 @@
         <delete dir="${bin}"/>
         <delete><fileset dir="." includes="*.txt"/></delete>
         <delete><fileset dir="." includes="*.csv"/></delete>
-        <delete><fileset dir="entradas" includes="*.csv"/></delete>
         <delete><fileset dir="." includes="*.dat"/></delete>
     </target>
 </project>
