@@ -3,6 +3,7 @@
 # Constant definitions.
 TEMP_DIR=/tmp
 TEST_DIR=testes2
+
 TEST_SCRIPT=test.sh
 BASE_DIR=$TEMP_DIR/prog3-2016-1-tests-$(whoami)
 SUBDIR_INPUT=in
