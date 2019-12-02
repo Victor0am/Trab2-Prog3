@@ -81,3 +81,4 @@ public class Docente implements Serializable{
             qualisObtidos.add(false);
         }
     }
+}

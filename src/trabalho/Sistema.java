@@ -66,13 +66,6 @@ public class Sistema implements Serializable{
         }
     }
 
-
-//    public void imprimeDocentes(){
-//        for (Map.Entry<Long,Docente> pair : docentesCadastrados.entrySet()) {
-//            pair.getValue().imprime();
-//        }
-//    }
-
     /**
      * Insere um docente na Hash de docentes cadastrados.
      * @param d é uma instancia da Classe Docente.
@@ -138,15 +131,16 @@ public class Sistema implements Serializable{
                 throw new NumberFormatException("nome numérico");
             }
             char tipo = campos[2].charAt(0);
+            String stipo = campos[2];
             campos[3] = campos[3].replace(',', '.');
             double impacto = Double.parseDouble(campos[3]);
             Veiculo veiculo = null;
-            switch (tipo){
-            case 'C':
+            switch (stipo){
+            case "C":
                 veiculo = new Conferencia(sigla, nome, tipo, impacto);
                 insereVeiculo(veiculo);
                 break;
-            case 'P':
+            case "P":
                 String issn = campos[4];
                 if(issn.length()!=9 ||issn.charAt(4)!='-'){
                     throw new NumberFormatException("erro de formatação de issn");
@@ -156,7 +150,7 @@ public class Sistema implements Serializable{
                 break;
             default:
                 throw new IllegalArgumentException("Tipo de veículo desconhecido " +
-                "para veículo " + sigla + ": " + tipo +".");
+                "para veículo " + sigla + ": " + stipo +".");
             }
             linha = arquivo.readLine();
         }
@@ -236,7 +230,8 @@ public class Sistema implements Serializable{
     /**
      * Carrega as publicações do arquivo de entrada no sistema.
      * @param arquivo Arquivo de entrada que contém as informações das publicações
-     * @throws IOException
+     * @throws IOException O mesmo código foi usado para dois
+     * docentes ou veículos diferentes.
      */
     public void carregaArquivoPublicacoes(BufferedReader arquivo) throws IOException{
         String linha = arquivo.readLine();
@@ -323,7 +318,7 @@ public class Sistema implements Serializable{
 
     /**
      * Atribui uma publicação a um determinado docente.
-     * @param p instancia da Classe publicação
+     * @param p instancia da Classe publicação.
      * @throws IOException O mesmo código foi usado para dois
      * docentes ou veículos diferentes.
      */
@@ -349,8 +344,7 @@ public class Sistema implements Serializable{
      * do veiculo da publicação de entrada.
      * @param p Instância da Classe Publicação.
      * @throws IOException Sigla de veículo especificada para uma
-    publicação não foi definida na planilha de
-    veículos.
+     * publicação não foi definida na planilha de veículos.
      */
     public void registraPublicacao(Publicacao p) throws IOException{
         Veiculo veiculos = null;
@@ -373,8 +367,16 @@ public class Sistema implements Serializable{
 
     /**
      * Carrega as regras do arquivo de entrada no sistema.
+     *
      * @param arquivo Contém as informações das regras.
+     * @throws IOException
      */
+    public void carregaArquivoRegras(BufferedReader arquivo) throws IOException {
+        String linha = arquivo.readLine();
+        linha = arquivo.readLine();
+        while(linha != null){
+            String[] campos = linha.split(";");
+            String data [] = campos[0].split("/");
     public void carregaArquivoRegras(BufferedReader arquivo){
         try{
             String linha = arquivo.readLine();
@@ -390,33 +392,29 @@ public class Sistema implements Serializable{
                 }
                 String data [] = campos[0].split("/");
 
-                LocalDate dataInicio = LocalDate.of(Integer.parseInt(data[2]),
-                                                    Integer.parseInt(data[1]),
-                                                    Integer.parseInt(data[0]));
-                data = campos[1].split("/");
-                LocalDate dataFim = LocalDate.of(Integer.parseInt(data[2]),
+            LocalDate dataInicio = LocalDate.of(Integer.parseInt(data[2]),
                                                 Integer.parseInt(data[1]),
                                                 Integer.parseInt(data[0]));
-                String qualis[] = campos[2].split(",");
-                String pontos[] = campos[3].split(",");
-                for (String quali:qualis) {
-                    if(!checaQuali(quali)){
-                        throw new IOException("Qualis desconhecido para regras de " + campos[0] +": " + quali);
-                    }
+            data = campos[1].split("/");
+            LocalDate dataFim = LocalDate.of(Integer.parseInt(data[2]),
+                                            Integer.parseInt(data[1]),
+                                            Integer.parseInt(data[0]));
+            String qualis[] = campos[2].split(",");
+            String pontos[] = campos[3].split(",");
+            for (String quali:qualis) {
+                if(!checaQuali(quali)){
+                    throw new IOException("Qualis desconhecido para regras de " + campos[0] +": " + quali);
                 }
-                campos[4] = campos[4].replace(',', '.');
-                double multiplicador = Double.parseDouble(campos[4]);
-                int anos = Integer.parseInt(campos[5]);
-                int pontuacao = Integer.parseInt(campos[6]);
-                Regra regra = new Regra(dataInicio, dataFim, 
-                                        multiplicador, anos, pontuacao,
-                                        designaPontosPorQuali(qualis, pontos));
-                regrasCadastradas.add(regra);
-                linha = arquivo.readLine();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Erro: " + e.getMessage());
+            campos[4] = campos[4].replace(',', '.');
+            double multiplicador = Double.parseDouble(campos[4]);
+            int anos = Integer.parseInt(campos[5]);
+            int pontuacao = Integer.parseInt(campos[6]);
+            Regra regra = new Regra(dataInicio, dataFim,
+                                    multiplicador, anos, pontuacao,
+                                    designaPontosPorQuali(qualis, pontos));
+            regrasCadastradas.add(regra);
+            linha = arquivo.readLine();
         }
     }
 
@@ -590,14 +588,14 @@ public class Sistema implements Serializable{
     /* ************************* SAIDAS ************************** */
 
     /**
-     * Cria e escreve o arquivo de saída 1-recredenciamento.csv
-     * Nesse arquivo são listados os docentes, seus pontos e se foram recredenciados em ordem alfabética
+     * Cria e escreve o arquivo de saída 1-recredenciamento.csv.
+     * Nesse arquivo são listados os docentes, seus pontos e se foram recredenciados em ordem alfabética.
      * As opções de recredenciamento envolvem:
-     * 1)se é coordenador, recredenciado automaticamente
-     * 2)se tem menos de 3 anos credenciado, recredenciado automaticamente
-     * 3)se tem 60 anos ou mais, recredenciamento automático
-     * 4)se tem pontuação maior que a pontuação mínima da regra vigente, é recredenciado
-     * 5)se não possui nenhum dos critérios acima, não é recredenciado
+     * 1)se é coordenador, recredenciado automaticamente.
+     * 2)se tem menos de 3 anos credenciado, recredenciado automaticamente.
+     * 3)se tem 60 anos ou mais, recredenciamento automático.
+     * 4)se tem pontuação maior que a pontuação mínima da regra vigente, é recredenciado.
+     * 5)se não possui nenhum dos critérios acima, não é recredenciado.
      * @throws IOException
      */
     public void calculaResultados() throws IOException {
@@ -713,8 +711,8 @@ public class Sistema implements Serializable{
      * Cria e escreve o arquivo 3-estatisticas.csv
      * Nesse arquivo são lsitados os qualis, a quantidade de publicações por qualis e a média de artigos por docente
      * se para calcular a quantidade de publicações é necessário somar 1 a cada publicação com o quali selecionado,
-     * essa média é dada por ao invés de somar 1, somar 1/(número de docentes que participaram da publicação)
-     * @throws IOException
+     * essa média é dada por ao invés de somar 1, somar 1/(número de docentes que participaram da publicação).
+     * @throws IOException Exceção que ocorrerá se o arquivo não tiver permissao para ser escrito.
      * */
     public void calculaEstatisticas() throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File("3-estatisticas.csv")));
