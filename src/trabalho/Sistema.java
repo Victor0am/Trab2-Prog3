@@ -381,44 +381,42 @@ public class Sistema implements Serializable {
      */
 
     public void carregaArquivoRegras(BufferedReader arquivo) throws IOException {
-        try {
-            String linha = arquivo.readLine();
-            linha = arquivo.readLine();
-            while (linha != null) {
-                String[] campos = linha.split(";");
-                if (campos[0].length() != 10 || campos[1].length() != 10) {
-                    throw new NumberFormatException("data com fomato errado");
-                } else {
-                    if (campos[0].charAt(2) != '/' || campos[0].charAt(5) != '/' || campos[1].charAt(2) != '/' || campos[1].charAt(5) != '/') {
-                        throw new NumberFormatException("data com fomato errado");
-                    }
-                }
-                String data[] = campos[0].split("/");
+        String linha = arquivo.readLine();
+        linha = arquivo.readLine();
+        while (linha != null) {
+            String[] campos = linha.split(";");
+//            if (campos[0].length() != 10 || campos[1].length() != 10) {
+//                throw new NumberFormatException("data com fomato errado");
+//            } else {
+//                if (campos[0].charAt(2) != '/' || campos[0].charAt(5) != '/' || campos[1].charAt(2) != '/' || campos[1].charAt(5) != '/') {
+//                    throw new NumberFormatException("data com fomato errado");
+//                }
+//            }
+            String data[] = campos[0].split("/");
 
-                LocalDate dataInicio = LocalDate.of(Integer.parseInt(data[2]),
-                        Integer.parseInt(data[1]),
-                        Integer.parseInt(data[0]));
-                data = campos[1].split("/");
-                LocalDate dataFim = LocalDate.of(Integer.parseInt(data[2]),
-                        Integer.parseInt(data[1]),
-                        Integer.parseInt(data[0]));
-                String qualis[] = campos[2].split(",");
-                String pontos[] = campos[3].split(",");
-                for (String quali : qualis) {
-                    if (!checaQuali(quali)) {
-                        throw new IOException("Qualis desconhecido para regras de " + campos[0] + ": " + quali);
-                    }
+            LocalDate dataInicio = LocalDate.of(Integer.parseInt(data[2]),
+                    Integer.parseInt(data[1]),
+                    Integer.parseInt(data[0]));
+            data = campos[1].split("/");
+            LocalDate dataFim = LocalDate.of(Integer.parseInt(data[2]),
+                    Integer.parseInt(data[1]),
+                    Integer.parseInt(data[0]));
+            String qualis[] = campos[2].split(",");
+            String pontos[] = campos[3].split(",");
+            for (String quali : qualis) {
+                if (!checaQuali(quali)) {
+                    throw new IOException("Qualis desconhecido para regras de " + campos[0] + ": " + quali);
                 }
-                campos[4] = campos[4].replace(',', '.');
-                double multiplicador = Double.parseDouble(campos[4]);
-                int anos = Integer.parseInt(campos[5]);
-                int pontuacao = Integer.parseInt(campos[6]);
-                Regra regra = new Regra(dataInicio, dataFim,
-                        multiplicador, anos, pontuacao,
-                        designaPontosPorQuali(qualis, pontos));
-                regrasCadastradas.add(regra);
-                linha = arquivo.readLine();
             }
+            campos[4] = campos[4].replace(',', '.');
+            double multiplicador = Double.parseDouble(campos[4]);
+            int anos = Integer.parseInt(campos[5]);
+            int pontuacao = Integer.parseInt(campos[6]);
+            Regra regra = new Regra(dataInicio, dataFim,
+                    multiplicador, anos, pontuacao,
+                    designaPontosPorQuali(qualis, pontos));
+            regrasCadastradas.add(regra);
+            linha = arquivo.readLine();
         }
     }
 

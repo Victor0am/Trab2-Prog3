@@ -101,7 +101,7 @@ public class Main {
         }
         catch (NumberFormatException e) {
             System.err.println("Erro de formatação");
-            // e.printStackTrace();
+             e.printStackTrace();
         }
         catch (IllegalArgumentException e){
             System.err.println(e.getMessage());
