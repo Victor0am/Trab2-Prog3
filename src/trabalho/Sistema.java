@@ -38,6 +38,18 @@ public class Sistema implements Serializable{
             String[] campos = linha.split(";");
             long codigo = Long.parseLong(campos[0]);
             String nome = campos[1];
+            for (int i = 0; i < nome.length(); i++) {
+                if(nome.charAt(i)>='0' && nome.charAt(i)<='9'){
+                    throw new NumberFormatException("nome que possui um numero");
+                }
+            }
+            if(campos[2].length() != 10 || campos[3].length()!= 10) {
+                throw new NumberFormatException("data com fomato errado");
+            }else{
+                if(campos[2].charAt(2) != '/' ||campos[2].charAt(5) != '/' ||campos[3].charAt(2) != '/' ||campos[3].charAt(5) != '/'){
+                    throw new NumberFormatException("data com fomato errado");
+                }
+            }
             String data [] = campos[2].split("/");
             LocalDate nascimento =  LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
             data  = campos[3].split("/");
@@ -55,11 +67,11 @@ public class Sistema implements Serializable{
     }
 
 
-    public void imprimeDocentes(){
-        for (Map.Entry<Long,Docente> pair : docentesCadastrados.entrySet()) {
-            pair.getValue().imprime();
-        }
-    }
+//    public void imprimeDocentes(){
+//        for (Map.Entry<Long,Docente> pair : docentesCadastrados.entrySet()) {
+//            pair.getValue().imprime();
+//        }
+//    }
 
     /**
      * Insere um docente na Hash de docentes cadastrados.
@@ -122,6 +134,9 @@ public class Sistema implements Serializable{
             String[] campos = linha.split(";");
             String sigla = campos[0].trim();            /* limpa espaços antes e depois da String */
             String nome = campos[1].trim();
+            if(isNumeric(nome)){
+                throw new NumberFormatException("nome numérico");
+            }
             char tipo = campos[2].charAt(0);
             campos[3] = campos[3].replace(',', '.');
             double impacto = Double.parseDouble(campos[3]);
@@ -133,6 +148,9 @@ public class Sistema implements Serializable{
                 break;
             case 'P':
                 String issn = campos[4];
+                if(issn.length()!=9 ||issn.charAt(4)!='-'){
+                    throw new NumberFormatException("erro de formatação de issn");
+                }
                 veiculo = new Periodico(sigla, nome, tipo, impacto, issn);
                 insereVeiculo(veiculo);
                 break;
@@ -142,6 +160,22 @@ public class Sistema implements Serializable{
             }
             linha = arquivo.readLine();
         }
+    }
+
+    /**
+     * Verifica se a string é puramente numérica
+     * @param strNum é a string que será verificada
+     * @return Retorna um booleano correspondente a ele ser ou não numérico*/
+    public boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -213,6 +247,14 @@ public class Sistema implements Serializable{
             int ano = Integer.parseInt(campos[0]);
             String veiculo = campos[1].trim();
             String titulo = campos[2].trim();
+            if(isNumeric(titulo)){
+                throw new NumberFormatException("Titulo é numerico");
+            }
+//            for (int i = 0; i < titulo.length(); i++) {
+//                if(titulo.charAt(i)>='0' && titulo.charAt(i)<='9'){
+//                    throw new NumberFormatException("nome que possui um numero");
+//                }
+//            }
             String autores = campos[3];
             String[] autor = autores.split(",");
             ArrayList<Long> autorLong = new ArrayList<Long>();
@@ -225,6 +267,11 @@ public class Sistema implements Serializable{
             }
             else{
                 local = campos[6];
+                for (int i = 0; i < local.length(); i++) {
+                    if(local.charAt(i)>='0' && local.charAt(i)<='9'){
+                        throw new NumberFormatException("número no local");
+                    }
+                }
             }
             int pfinal = Integer.parseInt(campos[8]);
             for (int i = 0; i < autor.length; i++){
@@ -334,6 +381,13 @@ public class Sistema implements Serializable{
             linha = arquivo.readLine();
             while(linha != null){
                 String[] campos = linha.split(";");
+                if(campos[0].length() != 10 || campos[1].length()!= 10) {
+                    throw new NumberFormatException("data com fomato errado");
+                }else{
+                    if(campos[0].charAt(2) != '/' ||campos[0].charAt(5) != '/' ||campos[1].charAt(2) != '/' ||campos[1].charAt(5) != '/'){
+                        throw new NumberFormatException("data com fomato errado");
+                    }
+                }
                 String data [] = campos[0].split("/");
 
                 LocalDate dataInicio = LocalDate.of(Integer.parseInt(data[2]),
