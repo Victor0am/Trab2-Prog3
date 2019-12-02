@@ -9,14 +9,14 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 
 
-public class Sistema implements Serializable{
-    private HashMap<Long,Docente> docentesCadastrados = new HashMap<Long,Docente>();
+public class Sistema implements Serializable {
+    private HashMap<Long, Docente> docentesCadastrados = new HashMap<Long, Docente>();
     private HashMap<String, Veiculo> veiculosCadastrados = new HashMap<String, Veiculo>();
-    private ArrayList<Publicacao> publicacoesCadastradas = new ArrayList<Publicacao>();    
+    private ArrayList<Publicacao> publicacoesCadastradas = new ArrayList<Publicacao>();
     private ArrayList<Regra> regrasCadastradas = new ArrayList<Regra>();
     private int anoRecredenciamento;
 
-    public Sistema(int ano){
+    public Sistema(int ano) {
         this.anoRecredenciamento = ano;
     }
 
@@ -28,6 +28,7 @@ public class Sistema implements Serializable{
 
     /**
      * Carrega dados de docentes dados no arquivo de entrada no sistema.
+     *
      * @param arquivo Arquivo que contém dados sobre docentes.
      * @throws IOException
      */
@@ -39,21 +40,21 @@ public class Sistema implements Serializable{
             long codigo = Long.parseLong(campos[0]);
             String nome = campos[1];
             for (int i = 0; i < nome.length(); i++) {
-                if(nome.charAt(i)>='0' && nome.charAt(i)<='9'){
+                if (nome.charAt(i) >= '0' && nome.charAt(i) <= '9') {
                     throw new NumberFormatException("nome que possui um numero");
                 }
             }
-            if(campos[2].length() != 10 || campos[3].length()!= 10) {
+            if (campos[2].length() != 10 || campos[3].length() != 10) {
                 throw new NumberFormatException("data com fomato errado");
-            }else{
-                if(campos[2].charAt(2) != '/' ||campos[2].charAt(5) != '/' ||campos[3].charAt(2) != '/' ||campos[3].charAt(5) != '/'){
+            } else {
+                if (campos[2].charAt(2) != '/' || campos[2].charAt(5) != '/' || campos[3].charAt(2) != '/' || campos[3].charAt(5) != '/') {
                     throw new NumberFormatException("data com fomato errado");
                 }
             }
-            String data [] = campos[2].split("/");
-            LocalDate nascimento =  LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
-            data  = campos[3].split("/");
-            LocalDate ingresso =   LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
+            String data[] = campos[2].split("/");
+            LocalDate nascimento = LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
+            data = campos[3].split("/");
+            LocalDate ingresso = LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
             boolean coordenador = false;
             if (campos.length == 5) {
                 if (campos[4].equals("X")) {
@@ -68,44 +69,46 @@ public class Sistema implements Serializable{
 
     /**
      * Insere um docente na Hash de docentes cadastrados.
+     *
      * @param d é uma instancia da Classe Docente.
-     * @throws IOException O mesmo código foi usado para dois 
-     * docentes ou veículos diferentes.
+     * @throws IOException O mesmo código foi usado para dois
+     *                     docentes ou veículos diferentes.
      */
     public void insereDocente(Docente d) throws IOException {
-        if (!verificaDocente(d)){
+        if (!verificaDocente(d)) {
             this.docentesCadastrados.put(d.getCodigo(), d);
-        }
-        else{
-            throw new IOException("Código repetido para docente" + 
-            ": " + d.getCodigo() + ".");
+        } else {
+            throw new IOException("Código repetido para docente" +
+                    ": " + d.getCodigo() + ".");
         }
     }
 
     /**
      * Verifica se já existe algum docente cadastrado com aquele código.
+     *
      * @param d Instância da Classe Docente.
      * @return retorna true se existir um docente com aquele codigo na Hash
      * de docentes cadastrados e false caso contrário.
      */
-    public boolean verificaDocente(Docente d){
+    public boolean verificaDocente(Docente d) {
         Docente docente = docentesCadastrados.get(d.getCodigo());
         return (docente != null);
     }
 
     /**
      * Calcula a pontuação do docente baseada na ultima regra registrada.
-     * @param regra é uma instancia da Classe Regra.
+     *
+     * @param regra   é uma instancia da Classe Regra.
      * @param docente é uma instancia da Classe Docente.
      */
-    public void calculaPontuacao(Regra regra, Docente docente){
+    public void calculaPontuacao(Regra regra, Docente docente) {
         double pontuacao = 0;
-        for (Publicacao p :docente.getPublicacoes()) {
+        for (Publicacao p : docente.getPublicacoes()) {
             Veiculo veiculo = veiculosCadastrados.get(p.getVeiculo());
-            if(p.getAno() < anoRecredenciamento && anoRecredenciamento - p.getAno() <= regra.getAnosVigencia()){
+            if (p.getAno() < anoRecredenciamento && anoRecredenciamento - p.getAno() <= regra.getAnosVigencia()) {
                 if (veiculo.getTipo() == 'P') {
-                    pontuacao += regra.getMultiplicador()*regra.getPontos().get(valorQuali(p.getQuali()));
-                }else{
+                    pontuacao += regra.getMultiplicador() * regra.getPontos().get(valorQuali(p.getQuali()));
+                } else {
                     pontuacao += regra.getPontos().get(valorQuali(p.getQuali()));
                 }
             }
@@ -117,17 +120,18 @@ public class Sistema implements Serializable{
 
     /**
      * Carrega os veículos do arquivo de entrada no sistema.
+     *
      * @param arquivo Arquivo de entrada que contém as informações dos veículos.
      * @throws IOException Tipo de um veículo não é nem ‘C’ nem ‘P’.
      */
     public void carregaArquivoVeiculos(BufferedReader arquivo) throws IOException {
         String linha = arquivo.readLine();
         linha = arquivo.readLine();
-        while(linha != null){
+        while (linha != null) {
             String[] campos = linha.split(";");
             String sigla = campos[0].trim();            /* limpa espaços antes e depois da String */
             String nome = campos[1].trim();
-            if(isNumeric(nome)){
+            if (isNumeric(nome)) {
                 throw new NumberFormatException("nome numérico");
             }
             char tipo = campos[2].charAt(0);
@@ -135,22 +139,22 @@ public class Sistema implements Serializable{
             campos[3] = campos[3].replace(',', '.');
             double impacto = Double.parseDouble(campos[3]);
             Veiculo veiculo = null;
-            switch (stipo){
-            case "C":
-                veiculo = new Conferencia(sigla, nome, tipo, impacto);
-                insereVeiculo(veiculo);
-                break;
-            case "P":
-                String issn = campos[4];
-                if(issn.length()!=9 ||issn.charAt(4)!='-'){
-                    throw new NumberFormatException("erro de formatação de issn");
-                }
-                veiculo = new Periodico(sigla, nome, tipo, impacto, issn);
-                insereVeiculo(veiculo);
-                break;
-            default:
-                throw new IllegalArgumentException("Tipo de veículo desconhecido " +
-                "para veículo " + sigla + ": " + stipo +".");
+            switch (stipo) {
+                case "C":
+                    veiculo = new Conferencia(sigla, nome, tipo, impacto);
+                    insereVeiculo(veiculo);
+                    break;
+                case "P":
+                    String issn = campos[4];
+                    if (issn.length() != 9 || issn.charAt(4) != '-') {
+                        throw new NumberFormatException("erro de formatação de issn");
+                    }
+                    veiculo = new Periodico(sigla, nome, tipo, impacto, issn);
+                    insereVeiculo(veiculo);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Tipo de veículo desconhecido " +
+                            "para veículo " + sigla + ": " + stipo + ".");
             }
             linha = arquivo.readLine();
         }
@@ -158,8 +162,10 @@ public class Sistema implements Serializable{
 
     /**
      * Verifica se a string é puramente numérica
+     *
      * @param strNum é a string que será verificada
-     * @return Retorna um booleano correspondente a ele ser ou não numérico*/
+     * @return Retorna um booleano correspondente a ele ser ou não numérico
+     */
     public boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
@@ -174,33 +180,34 @@ public class Sistema implements Serializable{
 
     /**
      * Adiciona um veiculo à Hash de veículos cadastrados.
+     *
      * @param v Instância da Classe Veiculo.
      * @throws IOException mesmo código foi usado para dois
-     * dveículos diferentes.
+     *                     dveículos diferentes.
      */
     public void insereVeiculo(Veiculo v) throws IOException {
-        if (!verificaVeiculo(v)){
-                this.veiculosCadastrados.put(v.getSigla(), v);
-            }
-        else{
+        if (!verificaVeiculo(v)) {
+            this.veiculosCadastrados.put(v.getSigla(), v);
+        } else {
             throw new IOException("Código repetido para " + v.getNome()
-            + ": " + v.getSigla() +".");
+                    + ": " + v.getSigla() + ".");
         }
     }
 
     /**
      * Verifica se o veiculo se o veiculo ja foi cadastrado.
+     *
      * @param v Instância da Classe Veiculo.
      * @return Retorna true se existir um Veiculo com aquele codigo na Hash
      * de veiculos cadastrados e false caso contrário.
      */
-    public boolean verificaVeiculo(Veiculo v){
+    public boolean verificaVeiculo(Veiculo v) {
         Veiculo veiculo = veiculosCadastrados.get(v.getSigla());
         return (veiculo != null);
     }
 
-    public void imprimeVeiculos(){
-        for (Map.Entry<String,Veiculo> pair : veiculosCadastrados.entrySet()) {
+    public void imprimeVeiculos() {
+        for (Map.Entry<String, Veiculo> pair : veiculosCadastrados.entrySet()) {
             pair.getValue().imprimeVeiculo();
             System.out.println();
         }
@@ -209,19 +216,20 @@ public class Sistema implements Serializable{
     /**
      * Dada uma sigla de veículo, verifica se o veiculo cadastrado
      * é do tipo Periodico.
-     * @param veiculo é uma sigla de um veículo 
+     *
+     * @param veiculo é uma sigla de um veículo
      * @return Retorna true se o veiculo for de fato um periódico,
      * false caso contrário.
      */
-    public boolean isPeriodico(String veiculo){
-            veiculosCadastrados.get(veiculo);
-            if (veiculosCadastrados.get(veiculo) == null){
-                return false;
-            }
-            if (veiculosCadastrados.get(veiculo).getTipo() == 'P'){
-                return true;
-            }
+    public boolean isPeriodico(String veiculo) {
+        veiculosCadastrados.get(veiculo);
+        if (veiculosCadastrados.get(veiculo) == null) {
             return false;
+        }
+        if (veiculosCadastrados.get(veiculo).getTipo() == 'P') {
+            return true;
+        }
+        return false;
     }
 
     /* ************************* PUBLICAÇÕES ************************** */
@@ -229,20 +237,21 @@ public class Sistema implements Serializable{
 
     /**
      * Carrega as publicações do arquivo de entrada no sistema.
+     *
      * @param arquivo Arquivo de entrada que contém as informações das publicações
      * @throws IOException O mesmo código foi usado para dois
-     * docentes ou veículos diferentes.
+     *                     docentes ou veículos diferentes.
      */
-    public void carregaArquivoPublicacoes(BufferedReader arquivo) throws IOException{
+    public void carregaArquivoPublicacoes(BufferedReader arquivo) throws IOException {
         String linha = arquivo.readLine();
         linha = arquivo.readLine();
-        while(linha != null){
+        while (linha != null) {
             Publicacao publicacao = null;
             String[] campos = linha.split(";");
             int ano = Integer.parseInt(campos[0]);
             String veiculo = campos[1].trim();
             String titulo = campos[2].trim();
-            if(isNumeric(titulo)){
+            if (isNumeric(titulo)) {
                 throw new NumberFormatException("Titulo é numerico");
             }
 //            for (int i = 0; i < titulo.length(); i++) {
@@ -257,19 +266,18 @@ public class Sistema implements Serializable{
             int volume;
             String local;
             int pinicial = Integer.parseInt(campos[7]);
-            if (isPeriodico(veiculo)){
+            if (isPeriodico(veiculo)) {
                 volume = Integer.parseInt(campos[5]);
-            }
-            else{
+            } else {
                 local = campos[6];
                 for (int i = 0; i < local.length(); i++) {
-                    if(local.charAt(i)>='0' && local.charAt(i)<='9'){
+                    if (local.charAt(i) >= '0' && local.charAt(i) <= '9') {
                         throw new NumberFormatException("número no local");
                     }
                 }
             }
             int pfinal = Integer.parseInt(campos[8]);
-            for (int i = 0; i < autor.length; i++){
+            for (int i = 0; i < autor.length; i++) {
                 autorLong.add(Long.parseLong(autor[i].trim()));
             }
             publicacao = new Publicacao(ano, veiculo, titulo, pinicial, pfinal, autorLong);
@@ -279,28 +287,28 @@ public class Sistema implements Serializable{
             int menor = 0;
             int menorano = anoRecredenciamento;
             boolean trava = false;
-            try{
+            try {
                 int i = v.getQualis().size();
-                for (Map.Entry<Integer,String> pair : v.getQualis().entrySet()) {
-                    if (pair.getKey() > ano){
+                for (Map.Entry<Integer, String> pair : v.getQualis().entrySet()) {
+                    if (pair.getKey() > ano) {
                         i--;
                         continue;
                     }
-                    if (!trava){
+                    if (!trava) {
                         menorano = pair.getKey();
                         menor = ano - pair.getKey();
                         trava = true;
-                    }else{
-                        if (ano - pair.getKey() < menor){
+                    } else {
+                        if (ano - pair.getKey() < menor) {
                             menorano = pair.getKey();
                             menor = ano - pair.getKey();
                         }
                     }
                 }
-                if (i == 0){
+                if (i == 0) {
                     throw new IllegalArgumentException();
                 }
-            }catch(IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
             publicacao.setQuali(v.getQualis().get(menorano));
@@ -310,29 +318,29 @@ public class Sistema implements Serializable{
         }
     }
 
-    public void imprimePublicacoes(){
-        for (Publicacao p : publicacoesCadastradas){
+    public void imprimePublicacoes() {
+        for (Publicacao p : publicacoesCadastradas) {
             p.imprime(docentesCadastrados, veiculosCadastrados);
         }
     }
 
     /**
      * Atribui uma publicação a um determinado docente.
+     *
      * @param p instancia da Classe publicação.
      * @throws IOException O mesmo código foi usado para dois
-     * docentes ou veículos diferentes.
+     *                     docentes ou veículos diferentes.
      */
     public void atribuiPublicacao(Publicacao p) throws IOException {
-        for (Long l: p.getAutores()){
+        for (Long l : p.getAutores()) {
             Docente docente = docentesCadastrados.get(l);
             // Docente docente = docentesCadastrados.get(p.getAutor());
-            if (docente == null){
+            if (docente == null) {
                 throw new IOException("Código de docente não definido usado na "
-                + "publicação \"" + p.getTitulo() + "\": " + l +".");
-            }
-            else{
+                        + "publicação \"" + p.getTitulo() + "\": " + l + ".");
+            } else {
                 docente.getPublicacoes().add(p);
-                if(!docente.getQualisObtidos().get(valorQuali(p.getQuali()))){
+                if (!docente.getQualisObtidos().get(valorQuali(p.getQuali()))) {
                     docente.getQualisObtidos().set(valorQuali(p.getQuali()), true);
                 }
             }
@@ -342,22 +350,22 @@ public class Sistema implements Serializable{
     /**
      * Adiciona uma publicação a lista de publicações com base no sigla
      * do veiculo da publicação de entrada.
+     *
      * @param p Instância da Classe Publicação.
      * @throws IOException Sigla de veículo especificada para uma
-     * publicação não foi definida na planilha de veículos.
+     *                     publicação não foi definida na planilha de veículos.
      */
-    public void registraPublicacao(Publicacao p) throws IOException{
+    public void registraPublicacao(Publicacao p) throws IOException {
         Veiculo veiculos = null;
         veiculos = veiculosCadastrados.get(p.getVeiculo());
-        try{
-            if (veiculos != null){
+        try {
+            if (veiculos != null) {
                 veiculos.getPublicacoes().add(p);
-            }
-            else{
+            } else {
                 throw new IOException("Sigla de veículo não definida usada na" +
-                " publicação \"" + p.getTitulo() + "\": " + p.getVeiculo() + ".");
+                        " publicação \"" + p.getTitulo() + "\": " + p.getVeiculo() + ".");
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             throw new IOException(e.getMessage());
         }
     }
@@ -371,71 +379,68 @@ public class Sistema implements Serializable{
      * @param arquivo Contém as informações das regras.
      * @throws IOException
      */
+
     public void carregaArquivoRegras(BufferedReader arquivo) throws IOException {
-        String linha = arquivo.readLine();
-        linha = arquivo.readLine();
-        while(linha != null){
-            String[] campos = linha.split(";");
-            String data [] = campos[0].split("/");
-    public void carregaArquivoRegras(BufferedReader arquivo){
-        try{
+        try {
             String linha = arquivo.readLine();
             linha = arquivo.readLine();
-            while(linha != null){
+            while (linha != null) {
                 String[] campos = linha.split(";");
-                if(campos[0].length() != 10 || campos[1].length()!= 10) {
+                if (campos[0].length() != 10 || campos[1].length() != 10) {
                     throw new NumberFormatException("data com fomato errado");
-                }else{
-                    if(campos[0].charAt(2) != '/' ||campos[0].charAt(5) != '/' ||campos[1].charAt(2) != '/' ||campos[1].charAt(5) != '/'){
+                } else {
+                    if (campos[0].charAt(2) != '/' || campos[0].charAt(5) != '/' || campos[1].charAt(2) != '/' || campos[1].charAt(5) != '/') {
                         throw new NumberFormatException("data com fomato errado");
                     }
                 }
-                String data [] = campos[0].split("/");
+                String data[] = campos[0].split("/");
 
-            LocalDate dataInicio = LocalDate.of(Integer.parseInt(data[2]),
-                                                Integer.parseInt(data[1]),
-                                                Integer.parseInt(data[0]));
-            data = campos[1].split("/");
-            LocalDate dataFim = LocalDate.of(Integer.parseInt(data[2]),
-                                            Integer.parseInt(data[1]),
-                                            Integer.parseInt(data[0]));
-            String qualis[] = campos[2].split(",");
-            String pontos[] = campos[3].split(",");
-            for (String quali:qualis) {
-                if(!checaQuali(quali)){
-                    throw new IOException("Qualis desconhecido para regras de " + campos[0] +": " + quali);
+                LocalDate dataInicio = LocalDate.of(Integer.parseInt(data[2]),
+                        Integer.parseInt(data[1]),
+                        Integer.parseInt(data[0]));
+                data = campos[1].split("/");
+                LocalDate dataFim = LocalDate.of(Integer.parseInt(data[2]),
+                        Integer.parseInt(data[1]),
+                        Integer.parseInt(data[0]));
+                String qualis[] = campos[2].split(",");
+                String pontos[] = campos[3].split(",");
+                for (String quali : qualis) {
+                    if (!checaQuali(quali)) {
+                        throw new IOException("Qualis desconhecido para regras de " + campos[0] + ": " + quali);
+                    }
                 }
+                campos[4] = campos[4].replace(',', '.');
+                double multiplicador = Double.parseDouble(campos[4]);
+                int anos = Integer.parseInt(campos[5]);
+                int pontuacao = Integer.parseInt(campos[6]);
+                Regra regra = new Regra(dataInicio, dataFim,
+                        multiplicador, anos, pontuacao,
+                        designaPontosPorQuali(qualis, pontos));
+                regrasCadastradas.add(regra);
+                linha = arquivo.readLine();
             }
-            campos[4] = campos[4].replace(',', '.');
-            double multiplicador = Double.parseDouble(campos[4]);
-            int anos = Integer.parseInt(campos[5]);
-            int pontuacao = Integer.parseInt(campos[6]);
-            Regra regra = new Regra(dataInicio, dataFim,
-                                    multiplicador, anos, pontuacao,
-                                    designaPontosPorQuali(qualis, pontos));
-            regrasCadastradas.add(regra);
-            linha = arquivo.readLine();
         }
     }
 
     /**
      * Interpreta as informações de ponstos por qualis das regras
+     *
      * @param stringQualis é a lista dos qualis onde tem mudança de pontuação nas regras.
      * @param stringPontos é a lista da pontuação dos qualis que tem mudança de pontuação.
      * @return Retorna um vetor(ArrayList) de 8 posições (1 posição por quali), onde cada posição indica a pontuação de um qualis
      * Qualis de cada posição:
      * A1 = 0, A2 = 1, B1 = 2, B2 = 3, B3 = 4, B4 = 5, B5 = 6, C = 7
      */
-    public ArrayList<Integer> designaPontosPorQuali(String stringQualis[], String stringPontos[]){
+    public ArrayList<Integer> designaPontosPorQuali(String stringQualis[], String stringPontos[]) {
         ArrayList<Integer> vetorPosicao = new ArrayList<Integer>();
         ArrayList<Integer> vetorPontos = new ArrayList<Integer>();
         Qualis[] qualis = Qualis.values();
-        for (int i = 0; i< stringQualis.length; i++) {
+        for (int i = 0; i < stringQualis.length; i++) {
             vetorPosicao.add(valorQuali(stringQualis[i]));
         }
-        for(int i = 0, pontuacao = 0, j = 0; i<8; i++){
-            if (j < vetorPosicao.size()){
-                if(vetorPosicao.get(j) == i ){
+        for (int i = 0, pontuacao = 0, j = 0; i < 8; i++) {
+            if (j < vetorPosicao.size()) {
+                if (vetorPosicao.get(j) == i) {
                     pontuacao = Integer.parseInt(stringPontos[j]);
                     j++;
                 }
@@ -446,8 +451,8 @@ public class Sistema implements Serializable{
     }
 
 
-    public void imprimeRegras(){
-        for (Regra r : regrasCadastradas){
+    public void imprimeRegras() {
+        for (Regra r : regrasCadastradas) {
             r.imprime();
         }
     }
@@ -455,11 +460,12 @@ public class Sistema implements Serializable{
 
     /**
      * Retorna a posição de uma qualis no vetor de regras
+     *
      * @param quali é uma string que contem uma sigla do quali
      * @return Retorna um inteiro correspondente à posição do quali no vetor de pontuação da regra
      */
-    public int valorQuali(String quali){
-        switch(quali){
+    public int valorQuali(String quali) {
+        switch (quali) {
             case "A1":
                 return 0;
             case "A2":
@@ -482,11 +488,12 @@ public class Sistema implements Serializable{
 
     /**
      * Checa se um qualis é um dos permitidos pelo sistema
+     *
      * @param quali é uma string com a sigla qualis
      * @return Retorna true se a string for uma das 8 siglas de qualis do programa e false se não for
      */
-    public boolean checaQuali(String quali){
-        switch(quali){
+    public boolean checaQuali(String quali) {
+        switch (quali) {
             case "A1":
             case "A2":
             case "B1":
@@ -503,11 +510,12 @@ public class Sistema implements Serializable{
 
     /**
      * Retorna o qualis da posição desejada
+     *
      * @param numero é o numero da posição do vetor do qualis
      * @return Retorna o qualis da posição indicada
      */
-    public String retornaQuali(int numero){
-        switch (numero){
+    public String retornaQuali(int numero) {
+        switch (numero) {
             case 0:
                 return "A1";
             case 1:
@@ -527,18 +535,21 @@ public class Sistema implements Serializable{
                 return "C";
         }
     }
+
     /**
      * Escolhe a regra vigente com base no ano de recredenciamento
-     * @return  Retorna a Regra do ano de recredenciamento ou a regra mais próxima ao ano de recredenciamento de forma coerente
+     *
+     * @return Retorna a Regra do ano de recredenciamento ou a regra mais próxima ao ano de recredenciamento de forma coerente
      * por exemplo: se o recredenciamento escolhido for 2018 e existirem 2 regras cadastradas, mas nenhuma delas é de 2018,
-     * uma é de 2014 e a outra é de 2019, a função vai escolher a regra de 2014*/
-    public Regra escolheRegra(){
+     * uma é de 2014 e a outra é de 2019, a função vai escolher a regra de 2014
+     */
+    public Regra escolheRegra() {
         Regra r = null;
-        for (Regra regra: regrasCadastradas) {
-            if(regra.getDataInicio().getYear() == anoRecredenciamento){
+        for (Regra regra : regrasCadastradas) {
+            if (regra.getDataInicio().getYear() == anoRecredenciamento) {
                 return regra;
-            }else{
-                if(r == null || (r.getDataInicio().getYear()<regra.getDataInicio().getYear())&& r.getDataInicio().getYear()<anoRecredenciamento){
+            } else {
+                if (r == null || (r.getDataInicio().getYear() < regra.getDataInicio().getYear()) && r.getDataInicio().getYear() < anoRecredenciamento) {
                     r = regra;
                 }
             }
@@ -550,36 +561,36 @@ public class Sistema implements Serializable{
 
     /**
      * Carrega o arquivo com as qualis de cada veiculo no sistema.
+     *
      * @param arquivo Arquivo que contém as informações das qualificações.
      * @throws IOException Qualis desconhecido para qualificação do
-     * veículo <sigla> no ano <ano>: <qualis> ou
-     * Qualis especificado para uma regra de pontuação
-     * não é nenhuma das categorias existentes: 
-     * A1, A2, B1, B2, B3, B4, B5 ou C.
+     *                     veículo <sigla> no ano <ano>: <qualis> ou
+     *                     Qualis especificado para uma regra de pontuação
+     *                     não é nenhuma das categorias existentes:
+     *                     A1, A2, B1, B2, B3, B4, B5 ou C.
      */
-    public void carregaArquivoQualis(BufferedReader arquivo) throws IOException{
-        try{
+    public void carregaArquivoQualis(BufferedReader arquivo) throws IOException {
+        try {
             String linha = arquivo.readLine();
             linha = arquivo.readLine();
-            while(linha != null){
+            while (linha != null) {
                 String[] campos = linha.split(";");
                 int ano = Integer.parseInt(campos[0]);
                 String veiculo = campos[1].trim();
-                if (veiculosCadastrados.get(veiculo) == null){
-                    throw new IOException("Sigla de veículo não definida usada na " 
-                    + "qualificação do ano \"" + ano + "\": "+ veiculo + ".");
+                if (veiculosCadastrados.get(veiculo) == null) {
+                    throw new IOException("Sigla de veículo não definida usada na "
+                            + "qualificação do ano \"" + ano + "\": " + veiculo + ".");
                 }
                 String classificacao = campos[2];
-                if (checaQuali(classificacao)){
+                if (checaQuali(classificacao)) {
                     veiculosCadastrados.get(veiculo).qualis.put(ano, classificacao);
-                }
-                else{
+                } else {
                     throw new IOException("Qualis desconhecido para qualificação do" +
-                    " veículo " + veiculo + " no ano " + ano + ": " + classificacao + ".");
+                            " veículo " + veiculo + " no ano " + ano + ": " + classificacao + ".");
                 }
                 linha = arquivo.readLine();
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new IOException(e.getMessage());
         }
     }
@@ -596,6 +607,7 @@ public class Sistema implements Serializable{
      * 3)se tem 60 anos ou mais, recredenciamento automático.
      * 4)se tem pontuação maior que a pontuação mínima da regra vigente, é recredenciado.
      * 5)se não possui nenhum dos critérios acima, não é recredenciado.
+     *
      * @throws IOException
      */
     public void calculaResultados() throws IOException {
@@ -649,12 +661,13 @@ public class Sistema implements Serializable{
 
     /**
      * Produz o arquivo de saida com as informações sobre as publicações cadastradas,
-     * são ordenadas usando critério da seguinte forma: 
+     * são ordenadas usando critério da seguinte forma:
      * quali decrescente,
      * ano decrescente,
      * sigla do véiculo crescente,
      * titulo de publicação crescente.
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     public void listaPublicacoes() throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(new File("2-publicacoes.csv")));
@@ -685,7 +698,7 @@ public class Sistema implements Serializable{
                 return p1.getQuali().compareTo(p2.getQuali());
             }
         });
-        for (Publicacao p : publicacoesCadastradas){
+        for (Publicacao p : publicacoesCadastradas) {
             aux = String.valueOf(p.getAno());
             bw.append(aux + ';');
             bw.append(p.getVeiculo() + ';');
@@ -696,9 +709,9 @@ public class Sistema implements Serializable{
             aux = aux.replace(".", ",");
             bw.append(aux + ';');
             bw.append(p.getTitulo() + ';');
-            for (Long l: p.getAutores()){
+            for (Long l : p.getAutores()) {
                 bw.append(docentesCadastrados.get(l).getNome());
-                if (l != p.getAutores().get(p.getAutores().size() - 1)){
+                if (l != p.getAutores().get(p.getAutores().size() - 1)) {
                     bw.append(",");
                 }
             }
@@ -712,8 +725,9 @@ public class Sistema implements Serializable{
      * Nesse arquivo são lsitados os qualis, a quantidade de publicações por qualis e a média de artigos por docente
      * se para calcular a quantidade de publicações é necessário somar 1 a cada publicação com o quali selecionado,
      * essa média é dada por ao invés de somar 1, somar 1/(número de docentes que participaram da publicação).
+     *
      * @throws IOException Exceção que ocorrerá se o arquivo não tiver permissao para ser escrito.
-     * */
+     */
     public void calculaEstatisticas() throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File("3-estatisticas.csv")));
         writer.write("Qualis;Qtd. Artigos;Média Artigos / Docente");
@@ -721,20 +735,20 @@ public class Sistema implements Serializable{
         NumberFormat formatter = new DecimalFormat("#0.00");
         ArrayList<Integer> qtdArtigos = new ArrayList<Integer>();
         ArrayList<Double> artPorDoc = new ArrayList<Double>();
-        for(int i = 0; i< 8; i++){
+        for (int i = 0; i < 8; i++) {
             qtdArtigos.add(0);
             artPorDoc.add(0.0);
         }
-        for(Publicacao p: publicacoesCadastradas){
+        for (Publicacao p : publicacoesCadastradas) {
             int ajudante = qtdArtigos.get(valorQuali(p.getQuali()));
             ajudante++;
             qtdArtigos.set(valorQuali(p.getQuali()), ajudante);
             double ajudante2 = artPorDoc.get(valorQuali(p.getQuali()));
-            ajudante2+= (1.0/p.getAutores().size());
+            ajudante2 += (1.0 / p.getAutores().size());
             artPorDoc.set(valorQuali(p.getQuali()), ajudante2);
         }
 
-        for (int i = 0; i<8; i++){
+        for (int i = 0; i < 8; i++) {
             String aux = String.valueOf(formatter.format(artPorDoc.get(i)));
             aux = aux.replace(".", ",");
             writer.append(retornaQuali(i) + ";" + qtdArtigos.get(i) + ";" + aux);
