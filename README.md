@@ -4,6 +4,6 @@ O trabalho consiste em criar um sistema que produz relatórios com base nos dado
 
 ## Checklist
 
-- [] Otimizando o README
-- [] Fase de testes de tratamento de erros finalizada
+- [ ] Otimizando o README
+- [ ] Fase de testes de tratamento de erros finalizada
 
