@@ -13,7 +13,6 @@ public class Regra implements Serializable{
     private int anosVigencia;
     private int pontuacaoMinima;
     private ArrayList<Integer> pontos;
-//    private vector<Integer> pontos;
 
     public LocalDate getDataInicio() {
         return dataInicio;

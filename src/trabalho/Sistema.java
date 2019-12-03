@@ -254,11 +254,6 @@ public class Sistema implements Serializable {
             if (isNumeric(titulo)) {
                 throw new NumberFormatException("Titulo é numerico");
             }
-//            for (int i = 0; i < titulo.length(); i++) {
-//                if(titulo.charAt(i)>='0' && titulo.charAt(i)<='9'){
-//                    throw new NumberFormatException("nome que possui um numero");
-//                }
-//            }
             String autores = campos[3];
             String[] autor = autores.split(",");
             ArrayList<Long> autorLong = new ArrayList<Long>();
@@ -333,7 +328,6 @@ public class Sistema implements Serializable {
     public void atribuiPublicacao(Publicacao p) throws IOException {
         for (Long l : p.getAutores()) {
             Docente docente = docentesCadastrados.get(l);
-            // Docente docente = docentesCadastrados.get(p.getAutor());
             if (docente == null) {
                 throw new IOException("Código de docente não definido usado na "
                         + "publicação \"" + p.getTitulo() + "\": " + l + ".");
@@ -382,13 +376,13 @@ public class Sistema implements Serializable {
         linha = arquivo.readLine();
         while (linha != null) {
             String[] campos = linha.split(";");
-//            if (campos[0].length() != 10 || campos[1].length() != 10) {
-//                throw new NumberFormatException("data com fomato errado");
-//            } else {
-//                if (campos[0].charAt(2) != '/' || campos[0].charAt(5) != '/' || campos[1].charAt(2) != '/' || campos[1].charAt(5) != '/') {
-//                    throw new NumberFormatException("data com fomato errado");
-//                }
-//            }
+            if (campos[0].length() != 10 || campos[1].length() != 10) {
+                throw new NumberFormatException("data com fomato errado");
+            } else {
+                if (campos[0].charAt(2) != '/' || campos[0].charAt(5) != '/' || campos[1].charAt(2) != '/' || campos[1].charAt(5) != '/') {
+                    throw new NumberFormatException("data com fomato errado");
+                }
+            }
             String data[] = campos[0].split("/");
 
             LocalDate dataInicio = LocalDate.of(Integer.parseInt(data[2]),

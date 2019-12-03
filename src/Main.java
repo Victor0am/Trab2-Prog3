@@ -12,9 +12,8 @@ public class Main {
         FileReader arq5 = null;
         boolean read = false;
         boolean write = false;
-        try{
-            flow: 
-            for (int i = 0; i < args.length; i++){
+        try{ 
+            flow: for (int i = 0; i < args.length; i++){
                 switch (args[i]){
                 case "--write-only":
                     write = true;
@@ -52,7 +51,6 @@ public class Main {
             }
         }catch(FileNotFoundException e){
             System.err.println("Erro de I/O");
-            e.printStackTrace();
         }
         try  {
             if (!write){
@@ -93,11 +91,8 @@ public class Main {
             }
         } catch (FileNotFoundException e) {
             System.err.println("Erro de I/O");
-            // e.printStackTrace();
         } catch (IOException e) {
             System.err.println(e.getMessage());
-            // System.err.println("a");
-            // e.printStackTrace();
         }
         catch (NumberFormatException e) {
             System.err.println("Erro de formatação");
@@ -105,12 +100,9 @@ public class Main {
         }
         catch (IllegalArgumentException e){
             System.err.println(e.getMessage());
-            // System.err.println("b");
-            // e.printStackTrace();
         }
         catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
-
 }
