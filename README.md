@@ -1,2 +1,9 @@
-# Trab2-Prog3
-Trabalho 2 da disciplina de programação 3 (poo em java)
+# Sistema PPGI
+
+O trabalho consiste em criar um sistema que produz relatórios com base nos dados de docentes, veículos, publicações, regras e qualificações.
+
+## Checklist
+
+- [] Otimizando o README
+- [] Fase de testes de tratamento de erros finalizada
+

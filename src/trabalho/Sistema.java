@@ -326,7 +326,6 @@ public class Sistema implements Serializable {
 
     /**
      * Atribui uma publicação a um determinado docente.
-     *
      * @param p instancia da Classe publicação.
      * @throws IOException O mesmo código foi usado para dois
      *                     docentes ou veículos diferentes.
@@ -350,7 +349,6 @@ public class Sistema implements Serializable {
     /**
      * Adiciona uma publicação a lista de publicações com base no sigla
      * do veiculo da publicação de entrada.
-     *
      * @param p Instância da Classe Publicação.
      * @throws IOException Sigla de veículo especificada para uma
      *                     publicação não foi definida na planilha de veículos.
@@ -375,7 +373,6 @@ public class Sistema implements Serializable {
 
     /**
      * Carrega as regras do arquivo de entrada no sistema.
-     *
      * @param arquivo Contém as informações das regras.
      * @throws IOException
      */
@@ -702,7 +699,7 @@ public class Sistema implements Serializable {
             bw.append(p.getVeiculo() + ';');
             bw.append(veiculosCadastrados.get(p.getVeiculo()).getNome() + ';');
             bw.append(p.getQuali() + ';');
-            NumberFormat formatter = new DecimalFormat("#0.000"); // Formatar para 3 digitos decimais
+            NumberFormat formatter = new DecimalFormat("#0.000"); /* Formatar para 3 digitos decimais */
             aux = String.valueOf(formatter.format(veiculosCadastrados.get(p.getVeiculo()).getFatorImpacto()));
             aux = aux.replace(".", ",");
             bw.append(aux + ';');
